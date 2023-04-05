@@ -1,12 +1,12 @@
 {
-  "name": "JOSS",
-  "description": "The JOSS application",
+  "name": "neurolibre-neo",
+  "description": "The new NeuroLibre application, forked from JOSS",
   "keywords": [
-    "JOSS",
-    "Open Journals"
+    "NeuroLibre",
+    "Preprints"
   ],
-  "website": "http://joss.theoj.org",
-  "repository": "https://github.com/openjournals/joss/tree/generalize",
+  "website": "http://neurolibre-neo.herokuapp.com",
+  "repository": "https://github.com/neurolibre/neurolibre-neo",
   "success_url": "/",
   "scripts": {
   },
@@ -31,7 +31,7 @@
     },
     "PORTICO_PASSWORD": {
       "description": "The FTP password for Portico"
-    },
+    }
   },
   "addons": [
     "scheduler",
