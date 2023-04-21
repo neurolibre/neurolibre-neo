@@ -13,6 +13,7 @@
 ActiveRecord::Schema[7.0].define(version: 2022_06_16_085520) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
+  enable_extension "pg_stat_statements"
   enable_extension "plpgsql"
 
   create_table "editors", id: :serial, force: :cascade do |t|

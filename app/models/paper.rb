@@ -268,15 +268,18 @@ class Paper < ApplicationRecord
     end
   end
 
+  # @NeuroLibre 
+  # JOSS uses archive_doi here, which corresponds to repository_url 
+  # in NeuroLibre glosary. Hence changed to repository_doi.
   def pretty_doi
-    return "DOI pending" unless archive_doi
+    return "DOI pending" unless repository_doi
 
-    matches = archive_doi.scan(/\b(10[.][0-9]{4,}(?:[.][0-9]+)*\/(?:(?!["&\'<>])\S)+)\b/).flatten
+    matches = repository_doi.scan(/\b(10[.][0-9]{4,}(?:[.][0-9]+)*\/(?:(?!["&\'<>])\S)+)\b/).flatten
 
     if matches.any?
       return matches.first
     else
-      return archive_doi
+      return repository_doi
     end
   end
 
@@ -522,40 +525,4 @@ private
   def set_last_activity
     self.last_activity = Time.now
   end
-
-  # @NeuroLibre - START
-  # _nl suffix denotes NeuroLibre
-  # Following section is to get full doi.org URLs for each 
-  # reproducibility asset archive
-  # Also gets rid of double quotes if there's a formatting issue 
-  # with the input.
-  def doi_helper_nl(input_doi)
-    return "DOI pending" unless input_doi
-    bare_doi = input_doi[/\b(10[.][0-9]{4,}(?:[.][0-9]+)*\/(?:(?!["&\'<>])\S)+)\b/]
-    if input_doi.include?("https://doi.org/")
-      return input_doi
-    elsif bare_doi
-      return "https://doi.org/#{bare_doi}"
-    else
-      return input_doi
-    end
-  end
-
-  def clean_repository_doi_nl
-    doi_helper_nl(repository_doi).gsub(/\"/, "")
-  end
-
-  def clean_book_doi_nl
-    doi_helper_nl(book_doi).gsub(/\"/, "")
-  end
-
-  def clean_data_doi_nl
-    doi_helper_nl(data_doi).gsub(/\"/, "")
-  end
-
-  def clean_docker_doi_nl
-    doi_helper_nl(docker_doi).gsub(/\"/, "")
-  end
-  # @NeuroLibre - END
-
 end

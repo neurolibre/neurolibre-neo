@@ -13,7 +13,7 @@ google_analytics: ""
 github: "neurolibre/neurolibre-neo"
 reviews: "neurolibre/neurolibre-reviews"
 papers_repo: "neurolibre/neurolibre-papers"
-papers_html_url: "http://0.0.0.0:5000/papers"
+papers_html_url: "https://neurolibre.github.io/preprints"
 reviewers_signup_url: ""
 product: "notebooks" # the *thing* being submitted for review
 reviewers: "https://tinyurl.com/y22xx6ux"

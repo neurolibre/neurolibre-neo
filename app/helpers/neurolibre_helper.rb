@@ -59,4 +59,16 @@ module NeurolibreHelper
         false # false if can't find the server
     end
 
+    def doi_helper_nl(input_doi)
+      return "DOI pending" unless input_doi
+      bare_doi = input_doi[/\b(10[.][0-9]{4,}(?:[.][0-9]+)*\/(?:(?!["&\'<>])\S)+)\b/]
+      if input_doi.include?("https://doi.org/")
+        return input_doi.gsub(/\"/, "")
+      elsif bare_doi
+        return "https://doi.org/#{bare_doi}".gsub(/\"/, "")
+      else
+        return input_doi.gsub(/\"/, "")
+      end
+    end
+
 end
