@@ -60,7 +60,7 @@ Rails.application.routes.draw do
   get '/papers/year/:year', to: "papers#filter", as: 'papers_by_year'
   get '/papers/:id/status.svg', to: "papers#status", format: "svg", as: 'status_badge'
 
-  doi_prefix_name = Rails.application.settings[:abbreviation].downcase || "joss"
+  doi_prefix_name = Rails.application.settings[:abbreviation].downcase || "neurolibre"
 
   get '/papers/:doi/status.svg', to: "papers#status", format: "svg", constraints: { doi: /10.55458\/#{doi_prefix_name}\.\d{5}/}
   get '/papers/:doi', to: "papers#show", constraints: { doi: /10.55458\/#{doi_prefix_name}\.\d{5}/}

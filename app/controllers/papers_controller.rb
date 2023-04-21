@@ -293,7 +293,8 @@ class PapersController < ApplicationController
   end
 
   def valid_doi?
-    if params[:doi] && params[:doi].include?("10.21105")
+# @NeuroLibre
+    if params[:doi] && params[:doi].include?("10.55458")
       return true
     else
       return false
