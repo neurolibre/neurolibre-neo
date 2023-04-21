@@ -39,10 +39,10 @@ atom_feed do |feed|
             end
           end
           entry.doi(paper.doi)
-          entry.repository_doi(paper.clean_repository_doi_nl)
-          entry.book_doi(paper.clean_book_doi_nl)
-          entry.data_doi(paper.clean_data_doi_nl)
-          entry.docker_doi(paper.clean_docker_doi_nl)
+          entry.repository_doi(paper.repository_doi)
+          entry.book_doi(paper.book_doi)
+          entry.data_doi(paper.data_doi)
+          entry.docker_doi(paper.docker_doi)
           entry.book_exec_url(paper.book_exec_url)
           entry.archive_doi(paper.clean_archive_doi)
           entry.languages(paper.language_tags.join(', '))
