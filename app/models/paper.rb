@@ -1,7 +1,7 @@
 require 'open3'
 
 class Paper < ApplicationRecord
-  searchkick index_name: "joss-production"
+  searchkick index_name: "neurolibre-production"
 
   include SettingsHelper
   serialize :activities, Hash
@@ -553,8 +553,8 @@ private
     doi_helper_nl(data_doi).gsub(/\"/, "")
   end
 
-  def clean_dcoker_doi_nl
-    doi_helper_nl(data_doi).gsub(/\"/, "")
+  def clean_docker_doi_nl
+    doi_helper_nl(docker_doi).gsub(/\"/, "")
   end
   # @NeuroLibre - END
 

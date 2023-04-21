@@ -1,0 +1,17 @@
+.btn.paper-others{
+    background-color: #343a40;
+    color: #fff;
+    font-weight: bold;
+    padding: 1em 2em;
+    position: relative;
+    line-height: 1em;
+    overflow: hidden;
+    height: 3em;
+    transition:all 0.35s ease;
+
+    &:hover {
+        // line-height: 9em;
+        background-color: maroon;
+        color: #fff;
+    }
+}
