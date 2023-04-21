@@ -313,7 +313,8 @@ class Paper < ApplicationRecord
   # version if no DOI is set.
   def seo_url
     if accepted?
-      "#{Rails.application.settings["url"]}/papers/10.21105/#{joss_id}"
+      # @NeuroLibre
+      "#{Rails.application.settings["url"]}/papers/10.55458/#{joss_id}"
     else
       "#{Rails.application.settings["url"]}/papers/#{to_param}"
     end
@@ -478,11 +479,13 @@ class Paper < ApplicationRecord
     when "review_pending"
       "<svg xmlns='http://www.w3.org/2000/svg' width='108' height='20'><linearGradient id='b' x2='0' y2='100%'><stop offset='0' stop-color='#bbb' stop-opacity='.1'/><stop offset='1' stop-opacity='.1'/></linearGradient><mask id='a'><rect width='108' height='20' rx='3' fill='#fff'/></mask><g mask='url(#a)'><path fill='#555' d='M0 0h40v20H0z'/><path fill='#007ec6' d='M40 0h68v20H40z'/><path fill='url(#b)' d='M0 0h108v20H0z'/></g><g fill='#fff' text-anchor='middle' font-family='DejaVu Sans,Verdana,Geneva,sans-serif' font-size='11'><text x='20' y='15' fill='#010101' fill-opacity='.3'>#{prefix}</text><text x='20' y='14'>#{prefix}</text><text x='73' y='15' fill='#010101' fill-opacity='.3'>Submitted</text><text x='73' y='14'>Submitted</text></g></svg>"
     when "under_review"
-      "<svg xmlns='http://www.w3.org/2000/svg' width='129' height='20'><linearGradient id='b' x2='0' y2='100%'><stop offset='0' stop-color='#bbb' stop-opacity='.1'/><stop offset='1' stop-opacity='.1'/></linearGradient><mask id='a'><rect width='129' height='20' rx='3' fill='#fff'/></mask><g mask='url(#a)'><path fill='#555' d='M0 0h40v20H0z'/><path fill='#dfb317' d='M40 0h89v20H40z'/><path fill='url(#b)' d='M0 0h129v20H0z'/></g><g fill='#fff' text-anchor='middle' font-family='DejaVu Sans,Verdana,Geneva,sans-serif' font-size='11'><text x='20' y='15' fill='#010101' fill-opacity='.3'>#{prefix}</text><text x='20' y='14'>#{prefix}</text><text x='83.5' y='15' fill='#010101' fill-opacity='.3'>Under Review</text><text x='83.5' y='14'>Under Review</text></g></svg>"
+# @NeuroLibre
+      "<svg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' width='158' height='20' role='img' aria-label='#{prefix}: Under Review'><title>#{prefix}: Under Review</title><linearGradient id='s' x2='0' y2='100%'><stop offset='0' stop-color='#bbb' stop-opacity='.1'/><stop offset='1' stop-opacity='.1'/></linearGradient><clipPath id='r'><rect width='158' height='20' rx='3' fill='#fff'/></clipPath><g clip-path='url(#r)'><rect width='71' height='20' fill='#555'/><rect x='71' width='87' height='20' fill='#fe7d37'/><rect width='158' height='20' fill='url(#s)'/></g><g fill='#fff' text-anchor='middle' font-family='Verdana,Geneva,DejaVu Sans,sans-serif' text-rendering='geometricPrecision' font-size='110'><text aria-hidden='true' x='365' y='150' fill='#010101' fill-opacity='.3' transform='scale(.1)' textLength='610'>#{prefix}</text><text x='365' y='140' transform='scale(.1)' fill='#fff' textLength='610'>#{prefix}</text><text aria-hidden='true' x='1135' y='150' fill='#010101' fill-opacity='.3' transform='scale(.1)' textLength='770'>Under Review</text><text x='1135' y='140' transform='scale(.1)' fill='#fff' textLength='770'>Under Review</text></g></svg>"
     when "review_completed"
       "<svg xmlns='http://www.w3.org/2000/svg' width='150' height='20'><linearGradient id='b' x2='0' y2='100%'><stop offset='0' stop-color='#bbb' stop-opacity='.1'/><stop offset='1' stop-opacity='.1'/></linearGradient><mask id='a'><rect width='150' height='20' rx='3' fill='#fff'/></mask><g mask='url(#a)'><path fill='#555' d='M0 0h40v20H0z'/><path fill='#dfb317' d='M40 0h110v20H40z'/><path fill='url(#b)' d='M0 0h150v20H0z'/></g><g fill='#fff' text-anchor='middle' font-family='DejaVu Sans,Verdana,Geneva,sans-serif' font-size='11'><text x='20' y='15' fill='#010101' fill-opacity='.3'>#{prefix}</text><text x='20' y='14'>#{prefix}</text><text x='94' y='15' fill='#010101' fill-opacity='.3'>Review Complete</text><text x='94' y='14'>Review Complete</text></g></svg>"
     when "accepted"
-      "<svg xmlns='http://www.w3.org/2000/svg' width='168' height='20'><linearGradient id='b' x2='0' y2='100%'><stop offset='0' stop-color='#bbb' stop-opacity='.1'/><stop offset='1' stop-opacity='.1'/></linearGradient><mask id='a'><rect width='168' height='20' rx='3' fill='#fff'/></mask><g mask='url(#a)'><path fill='#555' d='M0 0h39v20H0z'/><path fill='#4c1' d='M39 0h129v20H39z'/><path fill='url(#b)' d='M0 0h168v20H0z'/></g><g fill='#fff' text-anchor='middle' font-family='DejaVu Sans,Verdana,Geneva,sans-serif' font-size='11'><text x='19.5' y='15' fill='#010101' fill-opacity='.3'>#{prefix}</text><text x='19.5' y='14'>#{prefix}</text><text x='102.5' y='15' fill='#010101' fill-opacity='.3'>#{self.doi}</text><text x='102.5' y='14'>#{self.doi}</text></g></svg>"
+# @NeuroLibre
+      "<svg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' width='220' height='20' role='img' aria-label='#{prefix}: #{self.doi}'><title>NeuroLibre: #{self.doi}</title><linearGradient id='s' x2='0' y2='100%'><stop offset='0' stop-color='#bbb' stop-opacity='.1'/><stop offset='1' stop-opacity='.1'/></linearGradient><clipPath id='r'><rect width='220' height='20' rx='3' fill='#fff'/></clipPath><g clip-path='url(#r)'><rect width='71' height='20' fill='#555'/><rect x='71' width='149' height='20' fill='#4c1'/><rect width='220' height='20' fill='url(#s)'/></g><g fill='#fff' text-anchor='middle' font-family='Verdana,Geneva,DejaVu Sans,sans-serif' text-rendering='geometricPrecision' font-size='110'><text aria-hidden='true' x='365' y='150' fill='#010101' fill-opacity='.3' transform='scale(.1)' textLength='610'>#{prefix}</text><text x='365' y='140' transform='scale(.1)' fill='#fff' textLength='610'>NeuroLibre</text><text aria-hidden='true' x='1445' y='150' fill='#010101' fill-opacity='.3' transform='scale(.1)' textLength='1390'>#{self.doi}</text><text x='1445' y='140' transform='scale(.1)' fill='#fff' textLength='1390'>#{self.doi}</text></g></svg>"
     when "rejected"
       "<svg xmlns='http://www.w3.org/2000/svg' width='100' height='20'><linearGradient id='b' x2='0' y2='100%'><stop offset='0' stop-color='#bbb' stop-opacity='.1'/><stop offset='1' stop-opacity='.1'/></linearGradient><mask id='a'><rect width='100' height='20' rx='3' fill='#fff'/></mask><g mask='url(#a)'><path fill='#555' d='M0 0h40v20H0z'/><path fill='#e05d44' d='M40 0h60v20H40z'/><path fill='url(#b)' d='M0 0h100v20H0z'/></g><g fill='#fff' text-anchor='middle' font-family='DejaVu Sans,Verdana,Geneva,sans-serif' font-size='11'><text x='20' y='15' fill='#010101' fill-opacity='.3'>#{prefix}</text><text x='20' y='14'>#{prefix}</text><text x='69' y='15' fill='#010101' fill-opacity='.3'>Rejected</text><text x='69' y='14'>Rejected</text></g></svg>"
     when "retracted"
@@ -493,7 +496,8 @@ class Paper < ApplicationRecord
   end
 
   def status_badge_url
-    "#{Rails.application.settings["url"]}/papers/10.21105/#{joss_id}/status.svg"
+    # @NeuroLibre
+    "#{Rails.application.settings["url"]}/papers/10.55458/#{joss_id}/status.svg"
   end
 
   def markdown_code
@@ -518,4 +522,40 @@ private
   def set_last_activity
     self.last_activity = Time.now
   end
+
+  # @NeuroLibre - START
+  # _nl suffix denotes NeuroLibre
+  # Following section is to get full doi.org URLs for each 
+  # reproducibility asset archive
+  # Also gets rid of double quotes if there's a formatting issue 
+  # with the input.
+  def doi_helper_nl(input_doi)
+    return "DOI pending" unless input_doi
+    bare_doi = input_doi[/\b(10[.][0-9]{4,}(?:[.][0-9]+)*\/(?:(?!["&\'<>])\S)+)\b/]
+    if input_doi.include?("https://doi.org/")
+      return input_doi
+    elsif bare_doi
+      return "https://doi.org/#{bare_doi}"
+    else
+      return input_doi
+    end
+  end
+
+  def clean_repository_doi_nl
+    doi_helper_nl(repository_doi).gsub(/\"/, "")
+  end
+
+  def clean_book_doi_nl
+    doi_helper_nl(book_doi).gsub(/\"/, "")
+  end
+
+  def clean_data_doi_nl
+    doi_helper_nl(data_doi).gsub(/\"/, "")
+  end
+
+  def clean_dcoker_doi_nl
+    doi_helper_nl(data_doi).gsub(/\"/, "")
+  end
+  # @NeuroLibre - END
+
 end

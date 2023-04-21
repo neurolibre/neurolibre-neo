@@ -27,6 +27,7 @@
 
       <div class="btn-group-vertical" role="group" aria-label="...">
         
+# @NeuroLibre -- START
         <%= link_to pretty_book_link(@paper.book_exec_url), class: 'btn paper-others' do %>
           <%= image_tag "icon_neurolibre_tiny.svg" %>
           Reproducible preprint
@@ -47,26 +48,26 @@
           Download PDF
         <% end %>
 
-        <%= link_to @paper.clean_repository_doi, class: 'btn paper-others' do %>
+        <%= link_to @paper.clean_repository_doi_nl, class: 'btn paper-others' do %>
           <%= image_tag "code-white.svg" %>
           Repository archive
         <% end %>
 
-        <%= link_to @paper.clean_data_doi, class: 'btn paper-others' do %>
+        <%= link_to @paper.clean_data_doi_nl, class: 'btn paper-others' do %>
           <%= image_tag "data-white.svg" %>
           Data archive
         <% end %>
 
-        <%= link_to @paper.clean_book_doi, class: 'btn paper-others' do %>
+        <%= link_to @paper.clean_book_doi_nl, class: 'btn paper-others' do %>
           <%= image_tag "book-white.svg" %>
           JupyterBook archive
         <% end %>
 
-        <%= link_to @paper.clean_docker_doi, class: 'btn paper-others' do %>
+        <%= link_to @paper.clean_docker_doi_nl, class: 'btn paper-others' do %>
           <%= image_tag "docker-white.svg" %>
           Container archive
         <% end %>
-
+# @NeuroLibre -- END
       </div>
 
       <div class="label">Review</div>
