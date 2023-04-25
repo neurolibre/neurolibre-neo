@@ -268,9 +268,11 @@ class Paper < ApplicationRecord
     end
   end
 
-  # @NeuroLibre 
-  # JOSS uses archive_doi here, which corresponds to repository_url 
+  # @NeuroLibre -- START
+  # JOSS uses archive_doi here, which corresponds to repository_doi 
   # in NeuroLibre glosary. Hence changed to repository_doi.
+  # In THEOJ, the word archive suffices (only repository is archived)
+  # NeuroLibre archives 4 reproducibility assets.
   def pretty_doi
     return "DOI pending" unless repository_doi
 
@@ -286,22 +288,23 @@ class Paper < ApplicationRecord
   # Make sure that DOIs have a full http URL
   # e.g. turn 10.6084/m9.figshare.828487 into https://doi.org/10.6084/m9.figshare.828487
   def doi_with_url
-    return "DOI pending" unless archive_doi
+    return "DOI pending" unless repository_doi
 
-    bare_doi = archive_doi[/\b(10[.][0-9]{4,}(?:[.][0-9]+)*\/(?:(?!["&\'<>])\S)+)\b/]
+    bare_doi = repository_doi[/\b(10[.][0-9]{4,}(?:[.][0-9]+)*\/(?:(?!["&\'<>])\S)+)\b/]
 
-    if archive_doi.include?("https://doi.org/")
-      return archive_doi
+    if repository_doi.include?("https://doi.org/")
+      return repository_doi
     elsif bare_doi
       return "https://doi.org/#{bare_doi}"
     else
-      return archive_doi
+      return repository_doi
     end
   end
 
-  def clean_archive_doi
+  def clean_repository_doi
     doi_with_url.gsub(/\"/, "")
   end
+  # @NeuroLibre -- END
 
   # A 5-figure integer used to produce the JOSS DOI
   def joss_id

@@ -126,20 +126,24 @@ class DispatchController < ApplicationController
         metadata = nil
       end
 
+      # @Neurolibre -- START
       @paper.update(
         doi: params[:doi],
+
         repository_doi: params[:repository_doi],
         data_doi: params[:data_doi],
         book_doi: params[:book_doi],
         docker_doi: params[:docker_doi],
         book_exec_url: params[:book_exec_url],
-        archive_doi: params[:archive_doi],
+        
+       #archive_doi: params[:archive_doi],
         accepted_at: @paper.accepted_at.present? ? @paper.accepted_at : Time.now,
         citation_string: params[:citation_string],
         authors: params[:authors],
         title: params[:title],
         metadata: metadata
       )
+      # @Neurolibre -- END
 
       if @paper.accept!
         render json: @paper.to_json, status: '201'

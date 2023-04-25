@@ -44,7 +44,6 @@ atom_feed do |feed|
           entry.data_doi(paper.data_doi)
           entry.docker_doi(paper.docker_doi)
           entry.book_exec_url(paper.book_exec_url)
-          entry.archive_doi(paper.clean_archive_doi)
           entry.languages(paper.language_tags.join(', '))
           entry.pdf_url(paper.seo_pdf_url)
           entry.tags(paper.author_tags.join(', '))

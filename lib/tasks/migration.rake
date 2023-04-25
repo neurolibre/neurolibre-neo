@@ -96,7 +96,11 @@ def build_new_header(header, issue_type)
 **Version:** <!--version-->#{version}<!--end-version-->
 **Editor:** <!--editor-->#{editor}<!--end-editor-->
 **Reviewers:** <!--reviewers-list-->#{reviewers}<!--end-reviewers-list-->
-**Archive:** <!--archive-->#{archive}<!--end-archive-->
+**Reproducible preprint:** <!--book-exec-url-->Pending<!--end-book-exec-url-->
+**Repository archive:** <!--repository-archive-->Pending<!--end-repository-archive-->
+**Data archive:** <!--data-archive-->Pending<!--end-data-archive-->
+**Book archive:** <!--book-archive-->Pending<!--end-book-archive-->
+**Docker archive:** <!--docker-archive-->Pending<!--end-docker-archive-->
     NEWHEADER
   else
     new_header = nil
