@@ -1,21 +1,21 @@
 # Changing this file necessitates a server restart
 name: "NeuroLibre"
-abbreviation: "NeuroLibre"
+abbreviation: "TEST_JOURNAL"
 issn: ""
 tagline: "a preprint server for <strong>reproducible</strong> data analyses."
 logo_url: "https://conp-pcno.github.io/images/neurolibre-icon-red.png"
-url: "http://neurolibre-neo.herokuapp.com"
+url: "https://neurolibre.org"
 editor_email: "admin@neurolibre.org"
 noreply_email: "noreply@neurolibre.org"
 twitter: "@NeuroLibre"
 mastodon_url: ""
 google_analytics: ""
 github: "neurolibre/neurolibre-neo"
-reviews: "neurolibre/neurolibre-reviews"
-papers_html_url: "https://neurolibre.github.io/preprints"
+reviews: "neurolibre/neurolibre-reviews-testing"
+papers_html_url: "https://neurolibre.github.io/neurolibre-preprints-testing"
 reviewers_signup_url: ""
-papers_repo: "neurolibre/preprints"
-product: "notebooks" # the *thing* being submitted for review
+papers_repo: "neurolibre/neurolibre-preprints-testing"
+product: "reproducible preprint" # the *thing* being submitted for review
 reviewers: "https://tinyurl.com/y22xx6ux"
 submission_enquiry: |-
   **Project repository URL:** INSERT YOUR REPOSITORY LINK HERE
