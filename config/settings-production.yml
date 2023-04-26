@@ -4,7 +4,7 @@ abbreviation: "NeuroLibre"
 issn: ""
 tagline: "a preprint server for <strong>reproducible</strong> data analyses."
 logo_url: "https://conp-pcno.github.io/images/neurolibre-icon-red.png"
-url: "http://neurolibre-neo.herokuapp.com"
+url: "https://neurolibre.org"
 editor_email: "admin@neurolibre.org"
 noreply_email: "noreply@neurolibre.org"
 twitter: "@NeuroLibre"
@@ -15,7 +15,7 @@ reviews: "neurolibre/neurolibre-reviews"
 papers_html_url: "https://neurolibre.github.io/preprints"
 reviewers_signup_url: ""
 papers_repo: "neurolibre/preprints"
-product: "notebooks" # the *thing* being submitted for review
+product: "reproducible preprint" # the *thing* being submitted for review
 reviewers: "https://tinyurl.com/y22xx6ux"
 submission_enquiry: |-
   **Project repository URL:** INSERT YOUR REPOSITORY LINK HERE
