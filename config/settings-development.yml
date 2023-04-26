@@ -16,7 +16,7 @@ papers_repo: "neurolibre/neurolibre-papers"
 papers_html_url: "https://neurolibre.github.io/preprints"
 reviewers_signup_url: ""
 product: "notebooks" # the *thing* being submitted for review
-reviewers: "https://tinyurl.com/y22xx6ux"
+reviewers: "https://bit.ly/neurolibre_reviewers"
 submission_enquiry: |-
   **Project repository URL:** INSERT YOUR REPOSITORY LINK HERE
 

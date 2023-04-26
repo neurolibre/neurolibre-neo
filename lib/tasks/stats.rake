@@ -34,7 +34,7 @@ namespace :stats do
     client_secret = StringIO.new(decoded)
     google = GoogleDrive::Session.from_service_account_key(client_secret)
 
-    sheet = google.spreadsheet_by_key("1PAPRJ63yq9aPC1COLjaQp8mHmEq3rZUzwUYxTulyu78").worksheets[0]
+    sheet = google.spreadsheet_by_key("1q7AMtbE5P6N-_MudYJ6wyiiQ2d3uGxf5YfDWaOtTVkw").worksheets[0]
 
     sheet.rows.each_with_index do |row, index|
       # Need to slow down for the Google API.
