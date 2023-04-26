@@ -15,8 +15,8 @@ development:
   client_secret: <%= ENV["ORCID_SECRET"] %>
 
 test:
-  site: https://0.0.0.0:3000
+  site: http://0.0.0.0:3000
   authorize_url: https://orcid.org/oauth/authorize#show_login
   token_url: https://pub.orcid.org/oauth/token
-  client_id: <%= ENV["ORCID_KEY"] %>
-  client_secret: <%= ENV["ORCID_SECRET"] %>
+  client_id:
+  client_secret:
