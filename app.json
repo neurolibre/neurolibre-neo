@@ -17,7 +17,7 @@
     "ORCID_SECRET": {
       "description": "The OAuth secret key for ORCID logins"
     },
-    "BOT_SECRET": {
+    "ROBONEURO_SECRET": {
       "description": "The key that the editorial bot uses to authenticate"
     },
     "GH_TOKEN": {

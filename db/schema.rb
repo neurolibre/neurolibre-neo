@@ -13,6 +13,7 @@
 ActiveRecord::Schema[7.0].define(version: 2022_06_16_085520) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
+  enable_extension "pg_stat_statements"
   enable_extension "plpgsql"
 
   create_table "editors", id: :serial, force: :cascade do |t|
@@ -108,6 +109,11 @@ ActiveRecord::Schema[7.0].define(version: 2022_06_16_085520) do
     t.integer "eic_id"
     t.string "submission_kind"
     t.string "git_branch"
+    t.string "repository_doi"
+    t.string "data_doi"
+    t.string "book_doi"
+    t.string "docker_doi"
+    t.string "book_exec_url"
     t.bigint "track_id"
     t.string "suggested_subject"
     t.index ["editor_id"], name: "index_papers_on_editor_id"

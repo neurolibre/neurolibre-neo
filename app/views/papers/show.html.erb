@@ -13,6 +13,7 @@
 
   <title><%= Rails.application.settings['name'] %>: <%= @paper.title %></title>
   <%= stylesheet_link_tag    'application', media: 'all' %>
+  <%= stylesheet_link_tag    'neurolibre', media: 'all' %>
   <%= javascript_importmap_tags %>
   <%= javascript_import_module_tag 'custom/clipboards' %>
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -90,7 +91,7 @@
   </div>
 
   <% if @paper.doi? %>
-    <%= render partial: "papers/show_published" %>
+    <%= render partial: "papers/show_published_nl" %>
   <% else %>
     <%= render partial: "papers/show_unpublished" %>
   <% end %>

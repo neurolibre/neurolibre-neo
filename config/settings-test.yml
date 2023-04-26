@@ -4,7 +4,7 @@ abbreviation: "NeuroLibre"
 issn: ""
 tagline: "a preprint server for <strong>reproducible</strong> data analyses."
 logo_url: "https://conp-pcno.github.io/images/neurolibre-icon-red.png"
-url: "http://neurolibre-neo.herokuapp.com"
+url: "https://neurolibre.org"
 editor_email: "editors@neurolibre.org"
 noreply_email: "noreply@neurolibre.org"
 twitter: "@NeuroLibre"
@@ -12,14 +12,14 @@ mastodon_url: ""
 google_analytics: ""
 github: "neurolibre/neurolibre-neo"
 reviews: "neurolibre/neurolibre-reviews-testing"
-papers_repo: "neurolibre/neurolibre-papers-testing"
-papers_html_url: "http://neurolibre-neo.herokuapp.com/preprints"
+papers_repo: "neurolibre/neurolibre-preprints-testing"
+papers_html_url: "http://neurolibre.github.io/neurolibre-preprints-testing"
 reviewers_signup_url: ""
 product: "preprint" # the *thing* being submitted for review
 reviewers: "https://tinyurl.com/y22xx6ux"
 submission_enquiry: |-
   **Project repository URL:** INSERT YOUR REPOSITORY LINK HERE
 
-  Briefly describe your software, its research application and any questions you have about the JOSS submission criteria.
+  Briefly describe your software, its research application and any questions you have about the NeuroLibre submission criteria.
 paper_types: []
-bot_username: editorialbot
+bot_username: roboneuro

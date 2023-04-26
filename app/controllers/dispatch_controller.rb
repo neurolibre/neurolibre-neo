@@ -25,7 +25,7 @@ class DispatchController < ApplicationController
   end
 
   def api_assign_editor
-    if params[:secret] == ENV['BOT_SECRET']
+    if params[:secret] == ENV['ROBONEURO_SECRET']
       paper = Paper.find_by_meta_review_issue_id(params[:id])
       paper = Paper.find_by_review_issue_id(params[:id]) if paper.nil?
       editor_params = params[:editor].gsub(/^\@/, "")
@@ -38,7 +38,7 @@ class DispatchController < ApplicationController
   end
 
   def api_editor_invite
-    if params[:secret] == ENV['BOT_SECRET']
+    if params[:secret] == ENV['ROBONEURO_SECRET']
       paper = Paper.find_by_meta_review_issue_id(params[:id])
       return head :unprocessable_entity unless paper
       if paper.invite_editor(params[:editor])
@@ -52,7 +52,7 @@ class DispatchController < ApplicationController
   end
 
   def api_assign_reviewers
-    if params[:secret] == ENV['BOT_SECRET']
+    if params[:secret] == ENV['ROBONEURO_SECRET']
       paper = Paper.find_by_meta_review_issue_id(params[:id])
       return head :unprocessable_entity unless paper
       paper.set_reviewers(params[:reviewers])
@@ -62,7 +62,7 @@ class DispatchController < ApplicationController
   end
 
   def api_update_paper_info
-    if params[:secret] == ENV['BOT_SECRET']
+    if params[:secret] == ENV['ROBONEURO_SECRET']
       paper = Paper.find_by_meta_review_issue_id(params[:id])
       paper = Paper.find_by_review_issue_id(params[:id]) if paper.nil?
       return head :unprocessable_entity unless paper
@@ -76,7 +76,7 @@ class DispatchController < ApplicationController
   end
 
   def api_reject
-    if params[:secret] == ENV['BOT_SECRET']
+    if params[:secret] == ENV['ROBONEURO_SECRET']
       paper = Paper.where('review_issue_id = ? OR meta_review_issue_id = ?', params[:id], params[:id]).first
       return head :unprocessable_entity unless paper
       if paper.reject!
@@ -90,7 +90,7 @@ class DispatchController < ApplicationController
   end
 
   def api_withdraw
-    if params[:secret] == ENV['BOT_SECRET']
+    if params[:secret] == ENV['ROBONEURO_SECRET']
       paper = Paper.where('review_issue_id = ? OR meta_review_issue_id = ?', params[:id], params[:id]).first
       return head :unprocessable_entity unless paper
       if paper.withdraw!
@@ -104,7 +104,7 @@ class DispatchController < ApplicationController
   end
 
   def api_start_review
-    if params[:secret] == ENV['BOT_SECRET']
+    if params[:secret] == ENV['ROBONEURO_SECRET']
       @paper = Paper.find_by_meta_review_issue_id(params[:id])
       if @paper.start_review!(params[:editor], params[:reviewers], params[:branch])
         render json: @paper.to_json, status: '201'
@@ -117,7 +117,7 @@ class DispatchController < ApplicationController
   end
 
   def api_deposit
-    if params[:secret] == ENV['BOT_SECRET']
+    if params[:secret] == ENV['ROBONEURO_SECRET']
       @paper = Paper.find_by_review_issue_id(params[:id])
 
       if params[:metadata]
@@ -126,15 +126,24 @@ class DispatchController < ApplicationController
         metadata = nil
       end
 
+      # @Neurolibre -- START
       @paper.update(
         doi: params[:doi],
-        archive_doi: params[:archive_doi],
+
+        repository_doi: params[:repository_doi],
+        data_doi: params[:data_doi],
+        book_doi: params[:book_doi],
+        docker_doi: params[:docker_doi],
+        book_exec_url: params[:book_exec_url],
+        
+       #archive_doi: params[:archive_doi],
         accepted_at: @paper.accepted_at.present? ? @paper.accepted_at : Time.now,
         citation_string: params[:citation_string],
         authors: params[:authors],
         title: params[:title],
         metadata: metadata
       )
+      # @Neurolibre -- END
 
       if @paper.accept!
         render json: @paper.to_json, status: '201'

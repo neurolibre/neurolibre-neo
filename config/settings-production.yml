@@ -12,14 +12,14 @@ mastodon_url: ""
 google_analytics: ""
 github: "neurolibre/neurolibre-neo"
 reviews: "neurolibre/neurolibre-reviews"
-papers_html_url: "https://neurolibre-neo.herokuapp.com/neurolibre-papers"
+papers_html_url: "https://neurolibre.github.io/preprints"
 reviewers_signup_url: ""
-papers_repo: "neurolibre/neurolibre-papers"
-product: "preprint" # the *thing* being submitted for review
+papers_repo: "neurolibre/preprints"
+product: "notebooks" # the *thing* being submitted for review
 reviewers: "https://tinyurl.com/y22xx6ux"
 submission_enquiry: |-
   **Project repository URL:** INSERT YOUR REPOSITORY LINK HERE
 
-  Briefly describe your software, its research application and any questions you have about the JOSS submission criteria.
+  Briefly describe your software, its research application and any questions you have about the NeuroLibre submission criteria.
 paper_types: []
-bot_username: editorialbot
+bot_username: roboneuro

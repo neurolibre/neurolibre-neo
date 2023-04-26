@@ -293,7 +293,8 @@ class PapersController < ApplicationController
   end
 
   def valid_doi?
-    if params[:doi] && params[:doi].include?("10.21105")
+# @NeuroLibre
+    if params[:doi] && params[:doi].include?("10.55458")
       return true
     else
       return false
@@ -336,7 +337,8 @@ class PapersController < ApplicationController
   private
 
   def paper_params
-    params.require(:paper).permit(:title, :repository_url, :git_branch, :software_version, :body, :kind, :submission_kind, :suggested_subject, :track_id)
+    params.require(:paper).permit(:title, :repository_url, :book_exec_url, :docker_doi, :data_doi, :repository_doi, :book_doi, :body, :kind, :submission_kind)
+    #params.require(:paper).permit(:title, :repository_url, :git_branch, :software_version, :body, :kind, :submission_kind, :suggested_subject, :track_id)
   end
 
   def can_see_hidden_paper?(paper)

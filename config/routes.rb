@@ -60,11 +60,11 @@ Rails.application.routes.draw do
   get '/papers/year/:year', to: "papers#filter", as: 'papers_by_year'
   get '/papers/:id/status.svg', to: "papers#status", format: "svg", as: 'status_badge'
 
-  doi_prefix_name = Rails.application.settings[:abbreviation].downcase || "joss"
+  doi_prefix_name = Rails.application.settings[:abbreviation].downcase || "neurolibre"
 
-  get '/papers/:doi/status.svg', to: "papers#status", format: "svg", constraints: { doi: /10.21105\/#{doi_prefix_name}\.\d{5}/}
-  get '/papers/:doi', to: "papers#show", constraints: { doi: /10.21105\/#{doi_prefix_name}\.\d{5}/}
-  get '/papers/:doi.:format', to: "papers#show", constraints: { doi: /10.21105\/#{doi_prefix_name}\.\d{5}/}
+  get '/papers/:doi/status.svg', to: "papers#status", format: "svg", constraints: { doi: /10.55458\/#{doi_prefix_name}\.\d{5}/}
+  get '/papers/:doi', to: "papers#show", constraints: { doi: /10.55458\/#{doi_prefix_name}\.\d{5}/}
+  get '/papers/:doi.:format', to: "papers#show", constraints: { doi: /10.55458\/#{doi_prefix_name}\.\d{5}/}
 
   get '/editor_profile', to: 'editors#profile', as: 'editor_profile'
   patch '/update_editor_profile', to: 'editors#update_profile', as: 'update_editor_profile'
@@ -83,7 +83,7 @@ Rails.application.routes.draw do
   get '/auth/:provider/callback', to: 'sessions#create'
   get "/signout" => "sessions#destroy", as: :signout
 
-  get '/blog' => redirect("http://blog.joss.theoj.org"), as: :blog
+  #get '/blog' => redirect("http://blog.joss.theoj.org"), as: :blog
 
   # API methods
   post '/papers/api_editor_invite', to: 'dispatch#api_editor_invite'
