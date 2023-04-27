@@ -39,7 +39,7 @@ atom_feed do |feed|
             end
           end
           entry.doi(paper.doi)
-          entry.repository_doi(paper.repository_doi)
+          entry.repository_doi(paper.clean_repository_doi)
           entry.book_doi(paper.book_doi)
           entry.data_doi(paper.data_doi)
           entry.docker_doi(paper.docker_doi)

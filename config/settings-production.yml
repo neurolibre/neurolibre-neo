@@ -1,6 +1,6 @@
 # Changing this file necessitates a server restart
 name: "NeuroLibre"
-abbreviation: "NeuroLibre"
+abbreviation: "TEST_JOURNAL"
 issn: ""
 tagline: "a preprint server for <strong>reproducible</strong> data analyses."
 logo_url: "https://conp-pcno.github.io/images/neurolibre-icon-red.png"
