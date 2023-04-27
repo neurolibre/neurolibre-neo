@@ -1,5 +1,5 @@
 namespace :editorials do
-  desc "Send weekly emails to editors"
+  desc "Send weekly emails to editors on wednesdays"
   task send_weekly_emails: :environment do
     # We run this task daily on Heroku but only want the email
     # sent once per week (on a Monday)
