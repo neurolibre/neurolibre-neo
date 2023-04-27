@@ -3,7 +3,7 @@ namespace :editorials do
   task send_weekly_emails: :environment do
     # We run this task daily on Heroku but only want the email
     # sent once per week (on a Monday)
-    if Time.now.monday?
+    if Time.now.wednesday?
       reviews_repo = Rails.application.settings["reviews"]
       review_issues = ReviewIssue.download_review_issues(reviews_repo)
       # Sort issues in place in order of date created
@@ -26,7 +26,7 @@ namespace :editorials do
   task send_query_scope_email: :environment do
     # We run this task daily on Heroku but only want the email
     # sent once per week (on a Monday)
-    if Time.now.monday?
+    if Time.now.wednesday?
       reviews_repo = Rails.application.settings["reviews"]
       review_issues = ReviewIssue.download_review_issues(reviews_repo, 'query-scope')
 
