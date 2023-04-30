@@ -41,24 +41,28 @@
 
     <div class="hero-nav col-lg-4 offset-lg-3 align-self-end">
       <%= link_to papers_path do %>
-      <%= image_tag 'icon_papers.svg' %>
-      Explore Papers
+      <%= image_tag 'icon_papers-white.svg' %>
+      <span style="color:aliceblue;">Explore Papers</span>
       <% end %>
       <%= link_to "https://joss.readthedocs.io/en/latest/" do %>
-      <%= image_tag 'icon_docs.svg' %>
-      Documentation
+      <%= image_tag 'icon_docs-white.svg' %>
+      <span style="color:aliceblue;">Documentation</span>
       <% end %>
       <%= link_to about_path do %>
-      <%= image_tag 'icon_info.svg' %>
-      Learn More
+      <%= image_tag 'icon_info-white.svg' %>
+      <span style="color:aliceblue;">Learn More</span>
       <% end %>
-    </div>
   </div>
 </div>
 </div>
 
+</div>
 <div class="container">
-  <h4>Recently Published Papers <span class="badge-count"><%= Paper.visible.count %></span></h4>
+<center><p class="lead"> NeuroLibre sprouts your research to life. One publication at a time.<br>🌰 🌱 🌺</p></center>
+</div>
+
+<div class="container">
+  <h4>Recently Published Reproducible Preperints <span class="badge-count"><%= Paper.visible.count %></span></h4>
 
   <div class="paper-list" id="all-papers">
     <%= render partial: "papers/list", locals: { papers: @papers } %>
