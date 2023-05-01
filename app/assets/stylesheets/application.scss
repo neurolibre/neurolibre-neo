@@ -352,15 +352,18 @@ TODO
     }
 
     &:before {
-        content: ('');
-        background-image: url(image_path('logo_medium.png'));
-        background-size: 80px 84px;
-        width: 80px;
-        height: 84px;
+        content: '';
+        background-image: url(image_path('neurolibre_logo.svg'));
+        background-size: contain;
+        background-repeat: no-repeat;
+        background-position-x: center;
+        background-position-y: center;
+        width: 100px;
+        height: 100px;
         position: absolute;
         top: -42px;
         left: 50%;
-        transform: translateX(-40px);
+        transform: translateX(-50px);
         pointer-events: none;
         z-index: 10;
         animation: float 3s ease-in-out infinite;
