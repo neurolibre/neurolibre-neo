@@ -21,5 +21,9 @@ if @paper.published?
   json.tags @paper.author_tags.join(', ')
   json.paper_review @paper.review_url
   json.pdf_url @paper.seo_pdf_url
-  json.software_archive @paper.clean_archive_doi
+  json.repository_archive @paper.clean_repository_doi
+  json.data_archive @paper.data_doi
+  json.docker_archive @paper.docker_doi
+  json.book_archive @paper.book_doi
+  json.book_exec_url @paper.book_exec_url
 end

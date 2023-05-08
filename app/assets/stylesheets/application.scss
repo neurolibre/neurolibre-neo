@@ -24,7 +24,8 @@ html {
 }
 
 #flash-message-wrapper {
-    margin-bottom: 2em;
+    margin-top: 4em;
+    margin-bottom: 0;
 }
 
 
@@ -49,6 +50,13 @@ TODO
 
 .hero {
     padding: 3em 0;
+    background-image: url(image_path('nl_leaf.png'));
+    background-size:contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    display: flexbox;
+    
+    background-color: #091926;
 
     @media screen and (max-width: 500px) {
       padding: 0em;
@@ -344,15 +352,18 @@ TODO
     }
 
     &:before {
-        content: ('');
-        background-image: url(image_path('logo_medium.png'));
-        background-size: 80px 84px;
-        width: 80px;
-        height: 84px;
+        content: '';
+        background-image: url(image_path('neurolibre_logo.svg'));
+        background-size: contain;
+        background-repeat: no-repeat;
+        background-position-x: center;
+        background-position-y: center;
+        width: 100px;
+        height: 100px;
         position: absolute;
         top: -42px;
         left: 50%;
-        transform: translateX(-40px);
+        transform: translateX(-50px);
         pointer-events: none;
         z-index: 10;
         animation: float 3s ease-in-out infinite;
@@ -748,7 +759,7 @@ $btn-primary-border: darken($btn-primary-bg, 5%) !default;
 }
 
 .btn.orcid {
-    background-color: #a6ce39 !important;
+    background-color: red!important;
     font-weight: normal;
 }
 
@@ -972,7 +983,7 @@ $btn-primary-border: darken($btn-primary-bg, 5%) !default;
 }
 
 header {
-    margin-bottom: 4em;
+    margin-bottom: -3em;
     border-bottom: 1px solid rgba(46, 41, 78, 0.10);
     box-shadow: 0 2px 8px 0 rgba(46, 41, 78, 0.10);
 

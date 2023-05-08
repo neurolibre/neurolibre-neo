@@ -1,9 +1,9 @@
 Journal of Open Source Software
 ===============================
 
-The `Journal of Open Source Software <http://joss.theoj.org/>`_ (JOSS) is a developer friendly journal for research software packages.
+The `Journal of Open Source Software <https://neurolibre.org/>`_ (JOSS) is a developer friendly journal for research software packages.
 
-JOSS is an academic journal (ISSN 2475-9066) with a formal peer-review process that is designed to *improve the quality of the software submitted*. Upon acceptance into JOSS, we mint a CrossRef DOI for your paper and we list it on the `JOSS website <http://joss.theoj.org/>`_.
+JOSS is an academic journal (ISSN 2475-9066) with a formal peer-review process that is designed to *improve the quality of the software submitted*. Upon acceptance into JOSS, we mint a CrossRef DOI for your paper and we list it on the `JOSS website <https://neurolibre.org/>`_.
 
 About this site
 ---------------
@@ -15,7 +15,7 @@ If you're interested in learning more about JOSS, you might want to read:
 - `Our announcement blog post <http://www.arfon.org/announcing-the-journal-of-open-source-software>`_ describing some of the motivations for starting a new journal
 - `The paper in Computing in Science and Engineering <https://doi.org/10.1109/MCSE.2018.03221930>`_ introducing JOSS
 - `The paper in PeerJ CS <https://doi.org/10.7717/peerj-cs.147>`_ describing the first year of JOSS
-- The `about page <http://joss.theoj.org/about>`_ on the main JOSS site
+- The `about page <https://neurolibre.org/about>`_ on the main JOSS site
 
 Submitting a paper to JOSS
 --------------------------

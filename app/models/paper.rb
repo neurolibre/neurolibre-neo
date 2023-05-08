@@ -304,7 +304,6 @@ class Paper < ApplicationRecord
   def clean_repository_doi
     doi_with_url.gsub(/\"/, "")
   end
-  # @NeuroLibre -- END
 
   # A 5-figure integer used to produce the JOSS DOI
   def joss_id
