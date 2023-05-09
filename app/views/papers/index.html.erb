@@ -41,7 +41,11 @@
     <% end %>
 
   <div id ="primary-content row" class="paper-list">
+  <% if request.user_agent =~ /Mobile/ %>
     <%= render partial: "list", locals: { papers: @papers } %>
+  <% else %>
+    <%= render partial: "list_nl", locals: { papers: @papers } %>
+  <% end %>
   </div>
   <div class="row">
     <!-- :class not applying here? --> <div class="pagination_helper"><%= page_entries_info(@papers).capitalize.html_safe %></div>
