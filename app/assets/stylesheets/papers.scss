@@ -28,7 +28,8 @@
 
   .paper-title {
     display: flex;
-    margin-bottom: 4em;
+    margin-bottom: 1em;
+    margin-top: 4em;
 
     @media screen and (max-width: 500px) {
       margin-bottom: 1em;
