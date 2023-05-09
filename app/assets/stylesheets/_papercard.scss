@@ -170,11 +170,11 @@ $border-radius-small: rem-calc(0.1875);
 
   @media (min-width: 500px) {
     .meta {
-      width:40%;
+      width:30%;
       height: auto;
     }
     .description {
-      flex-basis: 70%;
+      flex-basis: 80%;
       &:before {
         transform: skewX(-3deg);
         content: "";
@@ -188,7 +188,8 @@ $border-radius-small: rem-calc(0.1875);
       }
     }
     &.alt {
-      flex-direction: row-reverse;
+      min-height: 150px;
+      flex-direction: row;
       .description {
         &:before {
           left: inherit;

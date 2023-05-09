@@ -31,15 +31,28 @@
   <div class="hero">
   
     <div class="hero-content col-lg-5">
-    <h1 style="color:aliceblue;"><%= Rails.application.settings['name'] %> is <%= setting(:tagline).html_safe %></h1>
+    <h1 style="color:aliceblue;margin-top:10px;"><%= Rails.application.settings['name'] %> is <%= setting(:tagline).html_safe %></h1>
     <br><br>
-      <p class="lead" style="color:blanchedalmond;">Committed to publishing <a href="https://executablebooks.org/en/latest" style="color:#6ae384;">executable books</a> along with all the
+
+      <% if request.user_agent =~ /Mobile/ %>
+     <p class="lead" style="color:blanchedalmond;background-color:#091926;margin:3px;border-radius:5px;text-shadow: 0 0 white;">Committed to publishing <a href="https://executablebooks.org/en/latest" style="color:#6ae384;">executable books</a> along with all the
        <span style="color:#02faf9;">reproducibility assets:</span> code, data, and reproducible runtime.</p>
+  <% else %>
+     <p class="lead" style="color:blanchedalmond;">Committed to publishing <a href="https://executablebooks.org/en/latest" style="color:#6ae384;">executable books</a> along with all the
+       <span style="color:#02faf9;">reproducibility assets:</span> code, data, and reproducible runtime.</p>
+  <% end %>
+
        <br>
+
        <%= link_to "<button class=\"continue-application\" id=\"large-screen-submit-button\"><div><div class=\"pencil\"></div><div class=\"folder\"><div class=\"top\"><svg viewBox=\"0 0 24 27\"><path d=\"M1,0 L23,0 C23.5522847,-1.01453063e-16 24,0.44771525 24,1 L24,8.17157288 C24,8.70200585 23.7892863,9.21071368 23.4142136,9.58578644 L20.5857864,12.4142136 C20.2107137,12.7892863 20,13.2979941 20,13.8284271 L20,26 C20,26.5522847 19.5522847,27 19,27 L1,27 C0.44771525,27 6.76353751e-17,26.5522847 0,26 L0,1 C-6.76353751e-17,0.44771525 0.44771525,1.01453063e-16 1,0 Z\"></path></svg></div><div class=\"paper\"></div></div></div>Start submission</button>".html_safe, new_paper_path, class: "lead"%>
     </div>
 
-    <div class="hero-nav col-lg-4 offset-lg-3 align-self-end">
+    
+    <% if request.user_agent =~ /Mobile/ %>
+    <div style="background-color: rgba(46,41,78,0.5); border-radius:10px; margin-top:20px;" class="hero-nav col-lg-4 offset-lg-3 align-self-end">
+    <% else %>
+    <div  class="hero-nav col-lg-4 offset-lg-3 align-self-end">
+    <% end %>
       <%= link_to papers_path do %>
       <%= image_tag 'icon_papers-white.svg' %>
       <span style="color:aliceblue;">Explore Papers</span>
@@ -53,6 +66,8 @@
       <span style="color:aliceblue;">Learn More</span>
       <% end %>
   </div>
+
+
 </div>
 </div>
 
@@ -65,7 +80,12 @@
   <h4>Recently Published Reproducible Preperints <span class="badge-count"><%= Paper.visible.count %></span></h4>
 
   <div class="paper-list" id="all-papers">
-    <%= render partial: "papers/list", locals: { papers: @papers } %>
+    <% if request.user_agent =~ /Mobile/ %>
+      <%= render partial: "papers/list", locals: { papers: @papers } %>
+  <% else %>
+    <%= render partial: "papers/list_nl", locals: { papers: @papers } %>
+  <% end %>
+  </div>
   </div>
 
   <div class="my-5 text-center">
