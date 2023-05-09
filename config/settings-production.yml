@@ -1,6 +1,6 @@
 # Changing this file necessitates a server restart
 name: "NeuroLibre"
-abbreviation: "TEST_JOURNAL"
+abbreviation: "NeuroLibre"
 issn: ""
 tagline: "a preprint server for <strong>reproducible</strong> data analyses."
 logo_url: "https://conp-pcno.github.io/images/neurolibre-icon-red.png"
@@ -11,8 +11,8 @@ twitter: "@NeuroLibre"
 mastodon_url: ""
 google_analytics: ""
 github: "neurolibre/neurolibre-neo"
-reviews: "neurolibre/neurolibre-reviews-testing"
-papers_html_url: "https://neurolibre.github.io/neurolibre-preprints-testing"
+reviews: "neurolibre/neurolibre-reviews"
+papers_html_url: "https://neurolibre.github.io/preprints"
 reviewers_signup_url: ""
 papers_repo: "neurolibre/preprints"
 product: "reproducible preprint" # the *thing* being submitted for review
@@ -20,6 +20,6 @@ reviewers: "https://bit.ly/neurolibre_reviewers"
 submission_enquiry: |-
   **Project repository URL:** INSERT YOUR REPOSITORY LINK HERE
 
-  Briefly describe your software, its research application and any questions you have about the NeuroLibre submission criteria.
+  Briefly describe your preprint, its research application and any questions you have about the NeuroLibre submission criteria.
 paper_types: []
 bot_username: roboneuro
