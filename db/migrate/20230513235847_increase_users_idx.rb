@@ -1,4 +1,4 @@
-class IncreaseUserIdx < ActiveRecord::Migration[7.0]
+class IncreaseUsersIdx < ActiveRecord::Migration[7.0]
   def up
     execute "ALTER SEQUENCE users_id_seq RESTART WITH 34;"
   end
