@@ -126,14 +126,19 @@ class DispatchController < ApplicationController
         metadata = nil
       end
 
+      puts "Received data doi: " + params[:data_doi]
+      puts "Received book doi: " + params[:book_doi]
+      puts "Received docker doi: " + params[:docker_doi]
+      puts "Received repo doi: " + params[:repository_doi]
+      puts "Receoved exec uri: " + params[:book_exec_url]
       # @Neurolibre -- START
       @paper.update(
         doi: params[:doi],
 
-        repository_doi: params[:repository_doi],
-        data_doi: params[:data_doi],
-        book_doi: params[:book_doi],
-        docker_doi: params[:docker_doi],
+        repository_doi: "https://doi.org/" + params[:repository_doi],
+        data_doi: "https://doi.org/" + params[:data_doi],
+        book_doi: "https://doi.org/" + params[:book_doi],
+        docker_doi: "https://doi.org/" + params[:docker_doi],
         book_exec_url: params[:book_exec_url],
         
        #archive_doi: params[:archive_doi],
