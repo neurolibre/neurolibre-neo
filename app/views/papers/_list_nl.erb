@@ -21,7 +21,9 @@
           </ul>
         </div>
         <div class="description">
-          <%= pretty_status_badge(paper)%>
+        
+          <%= link_to paper.book_exec_url, target: "_blank" do %>
+          <%= pretty_status_badge(paper) %> <% end %> <%=pretty_archive_badge(paper)%> <%=pretty_prpub_badge(paper)%>
           <strong><h2 class="paper-title" style="font-size: 1.6em;"><%= link_to paper.title, paper.seo_url %></h2></strong>
           <% paper.language_tags.each do |tag| %>
             <span class="badge-lang"><%= link_to tag, papers_by_language_path(language: tag) %></span>

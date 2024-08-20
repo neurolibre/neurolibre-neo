@@ -144,6 +144,8 @@ GEM
     faraday-rack (1.0.0)
     faraday-retry (1.0.3)
     ffi (1.15.5)
+    font-awesome-sass (6.5.2)
+      sassc (~> 2.0)
     formatador (1.1.0)
     globalid (1.1.0)
       activesupport (>= 5.0)
@@ -478,6 +480,7 @@ DEPENDENCIES
   dotenv (~> 2.8.1)
   elasticsearch (< 7.14)
   factory_bot_rails (~> 6.2.0)
+  font-awesome-sass (~> 6.0)
   google_drive
   groupdate
   guard (~> 2.18)

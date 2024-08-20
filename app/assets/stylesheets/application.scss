@@ -15,6 +15,9 @@
 
  */
 
+// Custom bootstrap variables must be set or imported *before* bootstrap
+@import 'font-awesome';
+@import "bootstrap-4.3.1/bootstrap";
 
 //custom styles
 html {
@@ -229,13 +232,15 @@ TODO
 .badge {
     text-transform: uppercase !important;
     letter-spacing: .44px !important;
-    font-size: 8px !important;
+    font-size: 11px !important;
     padding: 0.5em 1.5em !important;
     border-radius: 5px !important;
     font-weight: 400;
 
     &.accepted {
-        background-color: #7ADFB7;
+        background-color: yellowgreen;
+        color: black;
+        padding: 0.4em 0.5em !important;
     }
 
     &.review-pending {
@@ -244,10 +249,71 @@ TODO
 
     &.under-review {
         background-color: #fff3cd;
+        padding: 0.4em 0.5em !important;
     }
 
     &.retracted {
         background-color: #ff3333;
+    }
+
+    &.peer-review {
+        background-color: #d64a57;
+        color: white;
+        padding: 0.4em 0.5em !important;
+        margin-top: 10px !important;
+    }
+
+    &.docker {
+        background-color: #1D63ED;
+        color: white;
+        padding: 0.4em 0.4em !important;
+        align-content: center;
+        font-size: 12px !important;
+    }
+
+    &.github {
+        background-color: #24292e;
+        color: white;
+        padding: 0.4em 0.4em !important;
+        align-content: center;
+        font-size: 12px !important;
+    }
+
+    &.data {
+        background-color: purple;
+        color: white;
+        padding: 0.4em 0.4em !important;
+        align-content: center;
+        font-size: 12px !important;
+    }
+
+    &.peer-review::before {
+        content: "🌺";
+        margin-right: 2px;
+        background-color: lightgray;
+        color: black;
+        padding: 0.6em 0.2em;
+        border-radius: 5px;
+        font-size: 12px !important;
+        margin-top: 3px !important;
+    }
+
+    &.under-review::before {
+        content: "🌰";
+        margin-right: 2px;
+        background-color: burlywood;
+        padding: 0.6em 0.2em;
+        border-radius: 5px;
+        font-size: 12px !important;
+    }
+
+    &.accepted::before {
+        content: "🌱";
+        margin-right: 2px;
+        background-color: darkgreen;
+        padding: 0.6em 0.2em;
+        border-radius: 5px;
+        font-size: 12px !important;
     }
 }
 
@@ -617,10 +683,6 @@ $btn-primary-color: #fff !default;
 $btn-primary-bg: $brand-primary !default;
 $btn-primary-border: darken($btn-primary-bg, 5%) !default;
 
-
-// Custom bootstrap variables must be set or imported *before* bootstrap
-
-@import "bootstrap-4.3.1/bootstrap";
 
 // Bootstrap overrides
 

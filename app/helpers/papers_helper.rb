@@ -84,9 +84,36 @@ module PapersHelper
     state = paper.state.gsub('_', ' ')
     badge_class = paper.state.gsub('_', '-')
 
-    state = "published" if state == "accepted"
+    if state == "accepted"
+      return content_tag(:span, "LIVING PREPRINT", class: "badge #{badge_class}")
+    else
+      return content_tag(:span, state, class: "badge #{badge_class}")
+    end
 
-    return content_tag(:span, state, class: "badge #{badge_class}")
+  end
+
+  def pretty_archive_badge(paper)
+    state = paper.state.gsub('_', ' ')
+
+    github_badge = paper.repository_doi ? link_to(content_tag(:span, icon('fa-brands', 'github'), class: "badge github"), paper.repository_doi,target: "_blank") : ""
+    data_badge = paper.data_doi ? link_to(content_tag(:span, icon('fa-solid', 'database'), class: "badge data"), paper.data_doi,target: "_blank") : ""
+    docker_badge = paper.docker_doi ? link_to(content_tag(:span, icon('fa-brands', 'docker'), class: "badge docker"), paper.docker_doi,target: "_blank") : ""
+    if state == "accepted"
+    return safe_join(["=",github_badge,"+",data_badge,"+",docker_badge],' ')
+    end
+  end
+
+  def pretty_prpub_badge(paper)
+    state = paper.state.gsub('_', ' ')
+
+    prpub_badge = paper.prpub_doi ? link_to(content_tag(:span, paper.prpub_journal, class: "badge peer-review"), paper.prpub_doi,target: "_blank") : ""
+    if state == "accepted"
+      if paper.prpub_doi
+        return safe_join([" ",prpub_badge],' ')
+      else
+        return ""
+      end
+    end
   end
 
   def time_words(paper)
