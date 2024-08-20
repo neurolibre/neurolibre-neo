@@ -18,6 +18,9 @@
             <%= image_tag 'doi.svg' %><%= link_to paper.doi, paper.seo_url %>
             <% end %>
             </li>
+            <li>
+            <%= time_words(paper) %>
+            </li>
           </ul>
         </div>
         <div class="description">

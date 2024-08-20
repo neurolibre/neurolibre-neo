@@ -3,7 +3,9 @@
 <div class="paper-card">
   <div class="row">
     <div class="col-lg-9">
-      <%= pretty_status_badge(paper) %> <%= time_words(paper) %>
+      <%= link_to paper.book_exec_url, target: "_blank" do %>
+      <%= pretty_status_badge(paper) %> <% end %> <%=pretty_archive_badge(paper)%> <%=pretty_prpub_badge(paper)%>
+      <%= time_words(paper) %>
       <h2 class="paper-title"><%= link_to paper.title, paper.seo_url %>
       </h2>
       <% paper.language_tags.each do |tag| %>
