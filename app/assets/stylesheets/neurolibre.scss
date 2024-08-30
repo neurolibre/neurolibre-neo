@@ -183,11 +183,16 @@
     height: 100%;
     text-align: center;
     width: 100%;
-    background: linear-gradient(to right, #53d6ff, #666be1) !important;
+    background: linear-gradient(to right, rgb(255 0 0), rgb(225 201 102)) !important;
+    font-size: 1.5em;
+    padding-top: 15px;
     color: white;
     font-family: Arial, sans;
     margin: 0;
-    padding: 0;
     vertical-align: middle;
-    font-size: 0.8em;
+  }
+
+  .announcement a { 
+    color: black;
+    text-decoration: overline;
   }
