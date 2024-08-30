@@ -179,20 +179,26 @@
   }
 
   .announcement {
-    display: inline-block;
-    height: 100%;
-    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     width: 100%;
-    background: linear-gradient(to right, #f00, #e1c966) !important;
-    font-size: 1.5em;
-    padding-top: 15px;
+    padding: 10px 0;
+    background: linear-gradient(to right, #f00, #e1c966);
     color: white;
-    font-family: Arial, sans;
-    margin: 0;
-    vertical-align: middle;
+    font-size: 1.2em;
+    font-family: Arial, sans-serif;
+    text-align: center;
   }
-
-  .announcement a { 
-    color: black;
+  
+  .announcement a {
+    color: #fff;
     text-decoration: underline;
+    margin-left: 10px;
+    font-weight: bold;
+    transition: color 0.3s ease;
+  }
+  
+  .announcement a:hover {
+    color: #000;
   }
