@@ -30,52 +30,48 @@
 
 
         <%= link_to @paper.book_exec_url, class: 'bg btn neurolibre-button' do %>
-          <%= image_tag "icon_neurolibre_tiny.svg" %>
-          LIVING PREPRINT
-          <div class="glowing">
-          <span style="--i:1;"></span>
-          <span style="--i:2;"></span>
-          <span style="--i:3;"></span>
-          <span style="--i:2;"></span>
-          <span style="--i:1;"></span>
-          <span style="--i:3;"></span>
-        </div>
+          <%= image_tag "book-white.svg", size: "25x25", class: "beat-animation" %>
+          <span class="beat-animation">LIVING PREPRINT</span>
         <% end %>
         
+        <%= link_to @paper.pdf_url, class: 'btn neurolibre-button' do %>
+          <%= image_tag "dl-icon-white.svg", size: "25x25" %>
+          Download PDF
+        <% end %>
 
         <%= link_to  @paper.repository_url, class: 'btn neurolibre-button' do %>
-          <%= image_tag "gh-icon-white.svg" %>
+          <%= image_tag "gh-icon-white.svg", size: "25x25" %>
           Preprint repository
         <% end %>
 
         <%= link_to @paper.review_url, class: 'btn neurolibre-button' do %>
-          <%= image_tag "icon_docs-white.svg" %>
+          <%= image_tag "icon_docs-white.svg", size: "25x25" %>
           Technical screening
         <% end %>
 
-        <%= link_to @paper.pdf_url, class: 'btn neurolibre-button' do %>
-          <%= image_tag "dl-icon-white.svg" %>
-          Download PDF
-        <% end %>
 
-        <%= link_to @paper.repository_doi, class: 'btn neurolibre-button' do %>
-          <%= image_tag "code-white.svg" %>
+        <%= link_to @paper.repository_doi, class: 'btn neurolibre-button archive-background' do %>
+          <%= image_tag "code-white.svg", size: "25x25" %>
           Repository archive
         <% end %>
 
-        <%= link_to @paper.data_doi, class: 'btn neurolibre-button' do %>
-          <%= image_tag "data-white.svg" %>
-          Data archive
+        <% if @paper.data_doi.present? && @paper.data_doi != "N/A" %>
+          <%= link_to @paper.data_doi, class: 'btn neurolibre-button archive-background' do %>
+            <%= image_tag "data-white.svg", size: "25x25" %>
+            Data archive
+          <% end %>
         <% end %>
 
-        <%= link_to @paper.book_doi, class: 'btn neurolibre-button' do %>
-          <%= image_tag "book-white.svg" %>
-          JupyterBook archive
+        <%= link_to @paper.book_doi, class: 'btn neurolibre-button archive-background' do %>
+          <%= image_tag "book-white.svg", size: "25x25" %>
+          HTML archive
         <% end %>
 
-        <%= link_to @paper.docker_doi, class: 'btn neurolibre-button' do %>
-          <%= image_tag "docker-white.svg" %>
-          Container archive
+        <% if @paper.docker_doi.present? && @paper.docker_doi != "N/A" %>
+          <%= link_to @paper.docker_doi, class: 'btn neurolibre-button archive-background' do %>
+            <%= image_tag "docker-white.svg", size: "25x25" %>
+            Container archive
+          <% end %>
         <% end %>
 
         

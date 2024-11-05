@@ -136,9 +136,11 @@ class DispatchController < ApplicationController
         doi: params[:doi],
 
         repository_doi: "https://doi.org/" + params[:repository_doi],
-        data_doi: "https://doi.org/" + params[:data_doi],
+        #data_doi: "https://doi.org/" + params[:data_doi],
+        data_doi: params[:data_doi] == "N/A" ? "N/A" : "https://doi.org/" + params[:data_doi],
         book_doi: "https://doi.org/" + params[:book_doi],
-        docker_doi: "https://doi.org/" + params[:docker_doi],
+        docker_doi: params[:docker_doi] == "N/A" ? "N/A" : "https://doi.org/" + params[:docker_doi],
+        #docker_doi: "https://doi.org/" + params[:docker_doi],
         book_exec_url: params[:book_exec_url],
         
        #archive_doi: params[:archive_doi],

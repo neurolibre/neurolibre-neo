@@ -96,10 +96,11 @@ module PapersHelper
     state = paper.state.gsub('_', ' ')
 
     github_badge = paper.repository_doi ? link_to(content_tag(:span, icon('fa-brands', 'github'), class: "badge github"), paper.repository_doi,target: "_blank") : ""
-    data_badge = paper.data_doi ? link_to(content_tag(:span, icon('fa-solid', 'database'), class: "badge data"), paper.data_doi,target: "_blank") : ""
-    docker_badge = paper.docker_doi ? link_to(content_tag(:span, icon('fa-brands', 'docker'), class: "badge docker"), paper.docker_doi,target: "_blank") : ""
+    book_badge = paper.book_doi ? link_to(content_tag(:span, icon('fa-solid', 'file-code'), class: "badge book"), paper.book_doi,target: "_blank") : ""
+    data_badge = (paper.data_doi && paper.data_doi != "N/A") ? link_to(content_tag(:span, icon('fa-solid', 'database'), class: "badge data"), paper.data_doi,target: "_blank") : ""
+    docker_badge = (paper.docker_doi && paper.docker_doi != "N/A") ? link_to(content_tag(:span, icon('fa-brands', 'docker'), class: "badge docker"), paper.docker_doi,target: "_blank") : ""
     if state == "accepted"
-    return safe_join(["=",github_badge,"+",data_badge,"+",docker_badge],' ')
+    return safe_join([github_badge,book_badge,data_badge,docker_badge],' ')
     end
   end
 
