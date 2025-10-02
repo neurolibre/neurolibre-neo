@@ -1,6 +1,7 @@
 # Changing this file necessitates a server restart
 name: "NeuroLibre"
 abbreviation: "NeuroLibre"
+doi_prefix: "10.55458"
 issn: ""
 tagline: "a preprint server for <strong>reproducible</strong> data analyses."
 logo_url: "https://conp-pcno.github.io/images/neurolibre-icon-red.png"

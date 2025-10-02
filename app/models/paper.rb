@@ -333,7 +333,7 @@ class Paper < ApplicationRecord
   def seo_url
     if accepted?
       # @NeuroLibre
-      "#{Rails.application.settings["url"]}/papers/10.55458/#{joss_id}"
+      "#{Rails.application.settings["url"]}/papers/#{Rails.application.settings["doi_prefix"]}/#{joss_id}"
     else
       "#{Rails.application.settings["url"]}/papers/#{to_param}"
     end
@@ -579,7 +579,7 @@ class Paper < ApplicationRecord
 
     # Format the issue number with leading zeros (e.g., 00023)
     formatted_issue = "%05d" % issue_number
-    doi_prefix = "10.55458.neurolibre.#{formatted_issue}"
+    doi_prefix = "#{Rails.application.settings["doi_prefix"]}.neurolibre.#{formatted_issue}"
 
     begin
       # List all files in the master branch of neurolibre/preprints
@@ -599,11 +599,13 @@ class Paper < ApplicationRecord
       # Check if files have version suffixes
       versioned_files = matching_files.select do |file|
         # Match pattern: 10.55458.neurolibre.00023.v1.pdf, v2.pdf, etc.
+        doi_prefix = "#{Rails.application.settings["doi_prefix"]}.neurolibre.#{formatted_issue}"
         file.name.match(/\.v(\d+)\.pdf$/)
       end
 
       if versioned_files.empty?
         # Files exist without version suffix (e.g., 10.55458.neurolibre.00023.pdf)
+        doi_prefix = "#{Rails.application.settings["doi_prefix"]}.neurolibre.#{formatted_issue}"
         # This means only v1 exists, so next version is v2
         return "v2"
       else

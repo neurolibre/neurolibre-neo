@@ -294,7 +294,7 @@ class PapersController < ApplicationController
 
   def valid_doi?
 # @NeuroLibre
-    if params[:doi] && params[:doi].include?("10.55458")
+    if params[:doi] && params[:doi].include?(Rails.application.settings["doi_prefix"])
       return true
     else
       return false
