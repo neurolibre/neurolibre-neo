@@ -57,6 +57,16 @@
       <%= f.label "Preprint Data DOI (if exists)" %>
       <%= f.text_field :data_doi, placeholder: "If your data already have a DOI assigned, please enter (https://doi.org/xx.xxx/xxxxx)", class: "form-control" %>
     </div>
+  </div>
+</div>
+
+<div class="form-group" id="existing-submission-doi" style="display: none;">
+  <div class="row">
+    <div class="col">
+      <%= f.label "DOI of existing submission" %>
+      <%= f.text_field :existing_submission_doi, placeholder: "Enter the DOI of your existing submission (e.g., https://doi.org/10.21105/joss.12345)", class: "form-control" %>
+    </div>
+  </div>
 </div>
 
 <div class="form-group">
@@ -85,3 +95,24 @@
   <%= submit_tag("Submit paper", class: "btn paper-submit disabled", disabled: "disabled", id: "author-submit") %>
 </div>
 <% end %>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  const submissionKindSelect = document.querySelector('#paper_submission_kind');
+  const existingSubmissionDoiField = document.querySelector('#existing-submission-doi');
+
+  function toggleExistingSubmissionDoi() {
+    if (submissionKindSelect.value === 'resubmission') {
+      existingSubmissionDoiField.style.display = 'block';
+    } else {
+      existingSubmissionDoiField.style.display = 'none';
+    }
+  }
+
+  // Check initial state
+  toggleExistingSubmissionDoi();
+
+  // Listen for changes
+  submissionKindSelect.addEventListener('change', toggleExistingSubmissionDoi);
+});
+</script>
