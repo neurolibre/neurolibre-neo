@@ -95,10 +95,10 @@ Rails.application.configure do
   config.action_mailer.default_url_options = { :host => "https://neurolibre.org" }
 
   config.action_mailer.smtp_settings = {
-    user_name: 'apikey',
-    password: ENV["SENDGRID_API"],
-    address: 'smtp.sendgrid.net',
-    domain: 'neurolibre.org',
+    user_name: ENV["AWS_SES_SMTP_USERNAME"],
+    password: ENV["AWS_SES_SMTP_PASSWORD"],
+    address: 'email-smtp.eu-north-1.amazonaws.com',
+    domain: 'evidencepub.io',
     port: 587,
     authentication: :plain,
     enable_starttls_auto: true
