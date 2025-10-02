@@ -101,7 +101,7 @@ def build_new_header(header, issue_type)
 **Data archive:** <!--data-archive-->Pending<!--end-data-archive-->
 **Book archive:** <!--book-archive-->Pending<!--end-book-archive-->
 **Docker archive:** <!--docker-archive-->Pending<!--end-docker-archive-->
-**Preprint version:** <!--preprint-version-->Pending<!--end-preprint-version-->
+**Preprint version:** <!--preprint-version-->v1<!--end-preprint-version-->
     NEWHEADER
   else
     new_header = nil

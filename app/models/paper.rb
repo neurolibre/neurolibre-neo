@@ -571,12 +571,95 @@ class Paper < ApplicationRecord
     issue_status[:status] == :closed
   end
 
+  # Detect the next preprint version by checking existing PDF files
+  # in the neurolibre/preprints repository
+  def detect_next_preprint_version
+    issue_number = existing_github_issue_number
+    return "v2" if issue_number.nil?
+
+    # Format the issue number with leading zeros (e.g., 00023)
+    formatted_issue = "%05d" % issue_number
+    doi_prefix = "10.55458.neurolibre.#{formatted_issue}"
+
+    begin
+      # List all files in the master branch of neurolibre/preprints
+      contents = GITHUB.contents("neurolibre/preprints", path: "", ref: "master")
+
+      # Filter files that match the DOI pattern
+      matching_files = contents.select do |file|
+        file.name.start_with?(doi_prefix) && file.name.end_with?(".pdf")
+      end
+
+      if matching_files.empty?
+        # No files found, shouldn't happen for resubmissions but default to v2
+        Rails.logger.warn "No existing preprint files found for #{doi_prefix}, defaulting to v2"
+        return "v2"
+      end
+
+      # Check if files have version suffixes
+      versioned_files = matching_files.select do |file|
+        # Match pattern: 10.55458.neurolibre.00023.v1.pdf, v2.pdf, etc.
+        file.name.match(/\.v(\d+)\.pdf$/)
+      end
+
+      if versioned_files.empty?
+        # Files exist without version suffix (e.g., 10.55458.neurolibre.00023.pdf)
+        # This means only v1 exists, so next version is v2
+        return "v2"
+      else
+        # Extract version numbers and find the highest
+        version_numbers = versioned_files.map do |file|
+          match = file.name.match(/\.v(\d+)\.pdf$/)
+          match[1].to_i
+        end
+
+        highest_version = version_numbers.max
+        next_version = highest_version + 1
+        return "v#{next_version}"
+      end
+
+    rescue Octokit::NotFound
+      Rails.logger.error "Repository neurolibre/preprints or path not found"
+      return "v2"
+    rescue => e
+      Rails.logger.error "Error detecting preprint version: #{e.message}"
+      return "v2"
+    end
+  end
+
+  # Update the preprint version in the GitHub issue body
+  def update_issue_preprint_version(issue_number, new_version)
+    begin
+      # Get the current issue
+      issue = GITHUB.issue(Rails.application.settings["reviews"], issue_number)
+      current_body = issue.body
+
+      # Update the preprint version using regex
+      updated_body = current_body.gsub(
+        /(?<=<!--preprint-version-->).*?(?=<!--end-preprint-version-->)/,
+        new_version
+      )
+
+      # Update the issue body
+      GITHUB.update_issue(Rails.application.settings["reviews"], issue_number, body: updated_body)
+
+      Rails.logger.info "Updated preprint version to #{new_version} in issue ##{issue_number}"
+      { success: true, version: new_version }
+    rescue => e
+      Rails.logger.error "Error updating preprint version in issue #{issue_number}: #{e.message}"
+      { success: false, error: e.message }
+    end
+  end
+
   # Reopen the existing GitHub issue
   def reopen_github_issue
     issue_number = existing_github_issue_number
     return { success: false, error: "No issue number found" } if issue_number.nil?
 
     begin
+      # Detect the next preprint version
+      next_version = detect_next_preprint_version
+
       # Reopen the issue
       GITHUB.reopen_issue(Rails.application.settings["reviews"], issue_number)
 
@@ -595,17 +678,21 @@ class Paper < ApplicationRecord
       labels_to_add << self.track.label if self.track.present?
       GITHUB.add_labels_to_an_issue(Rails.application.settings["reviews"], issue_number, labels_to_add)
 
+      # Update the preprint version in the issue body
+      version_result = update_issue_preprint_version(issue_number, next_version)
+
       # Add a comment explaining the resubmission
       comment_body = "This issue has been reopened for a resubmission.\n\n" \
                      "**Original DOI:** #{published_parent_doi}\n" \
                      "**New Submission:** #{title}\n" \
-                     "**Repository:** #{repository_url}\n\n" \
+                     "**Repository:** #{repository_url}\n" \
+                     "**Preprint Version:** #{next_version}\n\n" \
                      "Please review the updated submission."
 
       GITHUB.add_comment(Rails.application.settings["reviews"], issue_number, comment_body)
 
-      Rails.logger.info "Successfully reopened GitHub issue ##{issue_number} for paper #{id}"
-      { success: true, issue_number: issue_number }
+      Rails.logger.info "Successfully reopened GitHub issue ##{issue_number} for paper #{id} with version #{next_version}"
+      { success: true, issue_number: issue_number, version: next_version }
     rescue => e
       Rails.logger.error "Error reopening GitHub issue #{issue_number}: #{e.message}"
       { success: false, error: e.message }

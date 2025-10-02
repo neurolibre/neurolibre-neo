@@ -371,8 +371,9 @@ class PapersController < ApplicationController
     if result[:success]
       render json: {
         success: true,
-        message: "Successfully reopened GitHub issue ##{result[:issue_number]}",
-        issue_number: result[:issue_number]
+        message: "Successfully reopened GitHub issue ##{result[:issue_number]} with preprint version #{result[:version]}",
+        issue_number: result[:issue_number],
+        preprint_version: result[:version]
       }
     else
       render json: {
