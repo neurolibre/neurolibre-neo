@@ -26,6 +26,13 @@
           Software repository
         <% end %>
 
+        <% if @paper.is_resubmission_with_doi? %>
+          <%= link_to "https://doi.org/#{@paper.existing_submission_doi}", class: 'btn paper-btn', target: '_blank' do %>
+            <%= image_tag "icon_docs.svg" %>
+            Existing version
+          <% end %>
+        <% end %>
+
         <% if @paper.meta_review_issue_id %>
           <%= link_to @paper.meta_review_url, class: 'btn paper-btn' do %>
             <%= image_tag "icon_docs.svg" %>

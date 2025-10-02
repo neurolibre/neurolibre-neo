@@ -566,6 +566,21 @@ class Paper < ApplicationRecord
       # Reopen the issue
       GITHUB.reopen_issue(Rails.application.settings["reviews"], issue_number)
 
+      # Remove old labels
+      labels_to_remove = ["accepted", "recommend-accept", "published", "review"]
+      labels_to_remove.each do |label|
+        begin
+          GITHUB.remove_label(Rails.application.settings["reviews"], issue_number, label)
+        rescue Octokit::NotFound
+          # Label doesn't exist on the issue, continue
+        end
+      end
+
+      # Add new labels
+      labels_to_add = ["reopened", "new-version"]
+      labels_to_add << self.track.label if self.track.present?
+      GITHUB.add_labels_to_an_issue(Rails.application.settings["reviews"], issue_number, labels_to_add)
+
       # Add a comment explaining the resubmission
       comment_body = "This issue has been reopened for a resubmission.\n\n" \
                      "**Original DOI:** #{existing_submission_doi}\n" \

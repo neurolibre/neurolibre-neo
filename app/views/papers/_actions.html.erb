@@ -114,34 +114,44 @@
       Paper actions
     </div>
     <div class="card-body">
-      <p class="card-text">Available actions for you on this paper (note to editors that if you use these buttons, you'll still have to manually close the review issue on GitHub).</p>
-
-      <div class="row">
-        <% if current_user.aeic? %>
-          <% unless paper.meta_review_issue_id %>
-          <div class="col-md-5">
-            <%= form_tag(start_meta_review_paper_url(paper), class: "left") do %>
-              Editor: <%= select_tag :editor, options_for_select(Repository.editors, selected: nil), prompt: "Suggest editor (optional)", class: "form-control left" %>
-              <%= submit_tag "Start pre review", class: "btn btn-primary left start-review" %>
+      <% if paper.submission_kind == 'resubmission' %>
+        <p class="card-text">If you want to withdraw the resubmission, you can do so here:</p>
+        <div class="row">
+          <% if current_user.aeic? %>
+            <div class="col-md-3">
+              <%= link_to "Withdraw resubmission", withdraw_paper_path(paper), data: { turbo_method: :post, turbo_confirm: "Withdrawing resubmission. Are you sure?" }, form_class: "left", class: "btn btn-danger" %>
+            </div>
+          <% end %>
+        </div>
+      <% else %>
+        <p class="card-text">Available actions for you on this paper (note to editors that if you use these buttons, you'll still have to manually close the review issue on GitHub).</p>
+        <div class="row">
+          <% if current_user.aeic? %>
+            <% unless paper.meta_review_issue_id %>
+            <div class="col-md-5">
+              <%= form_tag(start_meta_review_paper_url(paper), class: "left") do %>
+                Editor: <%= select_tag :editor, options_for_select(Repository.editors, selected: nil), prompt: "Suggest editor (optional)", class: "form-control left" %>
+                <%= submit_tag "Start pre review", class: "btn btn-primary left start-review" %>
+              <% end %>
+            </div>
+            <div class="col-md-1">
+            </div>
             <% end %>
-          </div>
-          <div class="col-md-1">
-          </div>
+
+            <% unless paper.review_issue_id %>
+            <div class="col-md-3">
+              <%= link_to "Reject paper", reject_paper_path(paper), data: { turbo_method: :post, turbo_confirm: "Rejecting. Are you sure?" }, form_class: "left", class: "btn btn-danger" %>
+            </div>
+            <% end %>
           <% end %>
 
-          <% unless paper.review_issue_id %>
-          <div class="col-md-3">
-            <%= link_to "Reject paper", reject_paper_path(paper), data: { turbo_method: :post, turbo_confirm: "Rejecting. Are you sure?" }, form_class: "left", class: "btn btn-danger" %>
-          </div>
+          <% if current_user.aeic? %>
+            <div class="col-md-3">
+              <%= link_to "Withdraw paper", withdraw_paper_path(paper), data: { turbo_method: :post, turbo_confirm: "Withdrawing. Are you sure?" }, form_class: "left", class: "btn btn-danger" %>
+            </div>
           <% end %>
-        <% end %>
-
-        <% if current_user.aeic? %>
-          <div class="col-md-3">
-            <%= link_to "Withdraw paper", withdraw_paper_path(paper), data: { turbo_method: :post, turbo_confirm: "Withdrawing. Are you sure?" }, form_class: "left", class: "btn btn-danger" %>
-          </div>
-        <% end %>
-      </div>
+        </div>
+      <% end %>
     </div>
   </div>
   <br />

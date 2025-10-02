@@ -93,7 +93,7 @@ def build_new_header(header, issue_type)
 **Submitting author:** <!--author-handle-->#{author_username}<!--end-author-handle--> #{author_link}
 **Repository:** <!--target-repository-->#{repository_url}<!--end-target-repository-->
 **Branch with paper.md** (empty if default branch): <!--branch--><!--end-branch-->
-**Version:** <!--version-->#{version}<!--end-version-->
+**Repository version:** <!--version-->#{version}<!--end-version-->
 **Editor:** <!--editor-->#{editor}<!--end-editor-->
 **Reviewers:** <!--reviewers-list-->#{reviewers}<!--end-reviewers-list-->
 **Reproducible preprint:** <!--book-exec-url-->Pending<!--end-book-exec-url-->
@@ -101,6 +101,7 @@ def build_new_header(header, issue_type)
 **Data archive:** <!--data-archive-->Pending<!--end-data-archive-->
 **Book archive:** <!--book-archive-->Pending<!--end-book-archive-->
 **Docker archive:** <!--docker-archive-->Pending<!--end-docker-archive-->
+**Preprint version:** <!--preprint-version-->Pending<!--end-preprint-version-->
     NEWHEADER
   else
     new_header = nil
