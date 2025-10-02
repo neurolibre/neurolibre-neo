@@ -386,7 +386,7 @@ class PapersController < ApplicationController
 
   def paper_params
     #params.require(:paper).permit(:title, :repository_url, :book_exec_url, :docker_doi, :data_doi, :repository_doi, :book_doi, :body, :kind, :submission_kind)
-    params.require(:paper).permit(:title, :repository_url, :git_branch, :software_version, :body, :kind, :submission_kind, :suggested_subject, :track_id, :existing_submission_doi)
+    params.require(:paper).permit(:title, :repository_url, :git_branch, :software_version, :body, :kind, :submission_kind, :suggested_subject, :track_id, :published_parent_doi)
   end
 
   def can_see_hidden_paper?(paper)

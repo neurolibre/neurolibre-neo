@@ -73,7 +73,7 @@
       <div class="card-body">
         <p class="card-text">
           <strong>Submission Type:</strong> Resubmission<br>
-          <strong>Original DOI:</strong> <code><%= paper.existing_submission_doi %></code>
+          <strong>Original DOI:</strong> <code><%= paper.published_parent_doi %></code>
           <% issue_number = paper.existing_github_issue_number %>
           <% if issue_number %>
             <br><strong>GitHub Issue:</strong> #<%= issue_number %>

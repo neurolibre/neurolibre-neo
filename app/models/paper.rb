@@ -307,16 +307,16 @@ class Paper < ApplicationRecord
     self.class.doi_with_url_for(repository_doi)
   end
 
-  def existing_submission_doi_with_url
-    self.class.doi_with_url_for(existing_submission_doi)
+  def published_parent_doi_with_url
+    self.class.doi_with_url_for(published_parent_doi)
   end
 
   def clean_repository_doi
     doi_with_url.gsub(/\"/, "")
   end
 
-  def clean_existing_submission_doi
-    existing_submission_doi_with_url.gsub(/\"/, "")
+  def clean_published_parent_doi
+    published_parent_doi_with_url.gsub(/\"/, "")
   end
 
   # A 5-figure integer used to produce the JOSS DOI
@@ -534,13 +534,13 @@ class Paper < ApplicationRecord
 
   # Check if this paper is a resubmission with valid existing DOI
   def is_resubmission_with_doi?
-    submission_kind == 'resubmission' && existing_submission_doi.present?
+    submission_kind == 'resubmission' && published_parent_doi.present?
   end
 
   # Get the GitHub issue number from existing submission DOI
   def existing_github_issue_number
     return nil unless is_resubmission_with_doi?
-    extract_issue_number_from_doi(existing_submission_doi)
+    extract_issue_number_from_doi(published_parent_doi)
   end
 
   # Check the status of the existing GitHub issue
@@ -597,7 +597,7 @@ class Paper < ApplicationRecord
 
       # Add a comment explaining the resubmission
       comment_body = "This issue has been reopened for a resubmission.\n\n" \
-                     "**Original DOI:** #{existing_submission_doi}\n" \
+                     "**Original DOI:** #{published_parent_doi}\n" \
                      "**New Submission:** #{title}\n" \
                      "**Repository:** #{repository_url}\n\n" \
                      "Please review the updated submission."

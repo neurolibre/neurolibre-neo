@@ -60,11 +60,11 @@
   </div>
 </div>
 
-<div class="form-group" id="existing-submission-doi" style="display: none;">
+<div class="form-group" id="published-parent-doi" style="display: none;">
   <div class="row">
     <div class="col">
-      <%= f.label "DOI of existing submission" %>
-      <%= f.text_field :existing_submission_doi, placeholder: "Enter the DOI of your existing submission (e.g., https://doi.org/10.21105/joss.12345)", class: "form-control" %>
+      <%= f.label "DOI of published parent" %>
+      <%= f.text_field :published_parent_doi, placeholder: "Enter the DOI of your published parent (e.g., https://doi.org/10.21105/joss.12345)", class: "form-control" %>
     </div>
   </div>
 </div>
@@ -99,20 +99,20 @@
 <script>
 document.addEventListener('DOMContentLoaded', function() {
   const submissionKindSelect = document.querySelector('#paper_submission_kind');
-  const existingSubmissionDoiField = document.querySelector('#existing-submission-doi');
+  const publishedParentDoiField = document.querySelector('#published-parent-doi');
 
-  function toggleExistingSubmissionDoi() {
+  function togglePublishedParentDoi() {
     if (submissionKindSelect.value === 'resubmission') {
-      existingSubmissionDoiField.style.display = 'block';
+      publishedParentDoiField.style.display = 'block';
     } else {
-      existingSubmissionDoiField.style.display = 'none';
+      publishedParentDoiField.style.display = 'none';
     }
   }
 
   // Check initial state
-  toggleExistingSubmissionDoi();
+  togglePublishedParentDoi();
 
   // Listen for changes
-  submissionKindSelect.addEventListener('change', toggleExistingSubmissionDoi);
+  submissionKindSelect.addEventListener('change', togglePublishedParentDoi);
 });
 </script>
