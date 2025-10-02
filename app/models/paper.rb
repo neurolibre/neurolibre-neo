@@ -350,7 +350,7 @@ class Paper < ApplicationRecord
   def pdf_url
     doi_to_file = doi.gsub('/', '.')
 
-    "#{Rails.application.settings["papers_html_url"]}/10.55458/#{joss_id}.pdf"
+    "#{Rails.application.settings["papers_html_url"]}/#{Rails.application.settings[:doi_prefix]}/#{joss_id}.pdf"
   end
 
   # 'reviewers' should be a string (and may be comma-separated)
@@ -516,7 +516,7 @@ class Paper < ApplicationRecord
 
   def status_badge_url
     # @NeuroLibre
-    "#{Rails.application.settings["url"]}/papers/10.55458/#{joss_id}/status.svg"
+    "#{Rails.application.settings["url"]}/papers/#{Rails.application.settings[:doi_prefix]}/#{joss_id}/status.svg"
   end
 
   def markdown_code
@@ -528,7 +528,10 @@ class Paper < ApplicationRecord
   def extract_issue_number_from_doi(doi_string)
     return nil if doi_string.blank?
 
-    match = doi_string.match(/10\.55458\/neurolibre\.(\d{5})/)
+    doi_prefix = Rails.application.settings[:doi_prefix]
+    doi_suffix_name = Rails.application.settings[:abbreviation].downcase
+    regex = /#{Regexp.escape(doi_prefix)}\/#{Regexp.escape(doi_suffix_name)}\.(\d{5})/
+    match = doi_string.match(regex)
     match ? match[1].to_i : nil
   end
 
