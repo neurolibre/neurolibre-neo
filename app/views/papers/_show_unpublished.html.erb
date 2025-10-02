@@ -11,9 +11,17 @@
   <div class="row">
     <div id="joss-paper-pdf-container" class="col-md-9">
       <div class="generic-content-item" style="margin-top: 0;">
-        <%= render partial: "papers/status", locals: { paper: @paper } %>
+        <% unless @paper.is_resubmission_with_doi? %>
+          <%= render partial: "papers/status", locals: { paper: @paper } %>
+        <% else %>
+          <div class="alert alert-warning">
+            This is a resubmission, please ensure (author, repository, etc.) consistency with the existing version.
+          </div>
+        <% end %>
         <%= render partial: "papers/eic_summary", locals: { paper: @paper } if current_user %>
-        <%= render partial: "papers/vote_summary", locals: { paper: @paper } if current_editor %>
+        <% unless @paper.is_resubmission_with_doi? %>
+          <%= render partial: "papers/vote_summary", locals: { paper: @paper } if current_editor %>
+        <% end %>
         <%= render partial: "papers/notes", locals: { paper: @paper } if current_editor %>
         <%= render partial: "papers/actions", locals: { paper: @paper } if current_user %>
       </div>
