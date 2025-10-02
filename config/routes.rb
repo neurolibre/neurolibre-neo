@@ -14,6 +14,7 @@ Rails.application.routes.draw do
       post 'reject'
       post 'withdraw'
       post 'change_track'
+      post 'reopen_github_issue'
       get 'lookup_track'
     end
 

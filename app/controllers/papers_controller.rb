@@ -334,6 +334,54 @@ class PapersController < ApplicationController
     end
   end
 
+  def reopen_github_issue
+    @paper = Paper.find(params[:id])
+
+    # Check if user has permission to reopen issues
+    unless current_user&.aeic? || current_user&.admin?
+      render json: { success: false, error: "Unauthorized" }, status: 403
+      return
+    end
+
+    # Check if this is a valid resubmission
+    unless @paper.is_resubmission_with_doi?
+      render json: { success: false, error: "This is not a resubmission with existing DOI" }
+      return
+    end
+
+    # Check if the issue can be reopened
+    unless @paper.can_reopen_github_issue?
+      issue_status = @paper.existing_github_issue_status
+      case issue_status[:status]
+      when :open
+        render json: { success: false, error: "GitHub issue ##{issue_status[:number]} is already open" }
+      when :not_found
+        render json: { success: false, error: "GitHub issue ##{issue_status[:number]} not found" }
+      when :error
+        render json: { success: false, error: "Error checking GitHub issue: #{issue_status[:error]}" }
+      else
+        render json: { success: false, error: "Cannot reopen this GitHub issue" }
+      end
+      return
+    end
+
+    # Attempt to reopen the issue
+    result = @paper.reopen_github_issue
+
+    if result[:success]
+      render json: {
+        success: true,
+        message: "Successfully reopened GitHub issue ##{result[:issue_number]}",
+        issue_number: result[:issue_number]
+      }
+    else
+      render json: {
+        success: false,
+        error: "Failed to reopen GitHub issue: #{result[:error]}"
+      }
+    end
+  end
+
   private
 
   def paper_params

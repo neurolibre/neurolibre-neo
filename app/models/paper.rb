@@ -509,6 +509,80 @@ class Paper < ApplicationRecord
     "[![DOI](#{status_badge_url})](https://doi.org/#{doi})"
   end
 
+  # Extract GitHub issue number from NeuroLibre DOI format
+  # e.g., "10.55458/neurolibre.00027" -> 27
+  def extract_issue_number_from_doi(doi_string)
+    return nil if doi_string.blank?
+
+    match = doi_string.match(/10\.55458\/neurolibre\.(\d{5})/)
+    match ? match[1].to_i : nil
+  end
+
+  # Check if this paper is a resubmission with valid existing DOI
+  def is_resubmission_with_doi?
+    submission_kind == 'resubmission' && existing_submission_doi.present?
+  end
+
+  # Get the GitHub issue number from existing submission DOI
+  def existing_github_issue_number
+    return nil unless is_resubmission_with_doi?
+    extract_issue_number_from_doi(existing_submission_doi)
+  end
+
+  # Check the status of the existing GitHub issue
+  def existing_github_issue_status
+    issue_number = existing_github_issue_number
+    return { status: :no_issue_number } if issue_number.nil?
+
+    begin
+      issue = GITHUB.issue(Rails.application.settings["reviews"], issue_number)
+      {
+        status: issue.state.to_sym, # :open or :closed
+        title: issue.title,
+        number: issue_number
+      }
+    rescue Octokit::NotFound
+      { status: :not_found, number: issue_number }
+    rescue => e
+      Rails.logger.error "Error checking GitHub issue #{issue_number}: #{e.message}"
+      { status: :error, number: issue_number, error: e.message }
+    end
+  end
+
+  # Check if the GitHub issue can be reopened
+  def can_reopen_github_issue?
+    return false unless is_resubmission_with_doi?
+
+    issue_status = existing_github_issue_status
+    issue_status[:status] == :closed
+  end
+
+  # Reopen the existing GitHub issue
+  def reopen_github_issue
+    issue_number = existing_github_issue_number
+    return { success: false, error: "No issue number found" } if issue_number.nil?
+
+    begin
+      # Reopen the issue
+      GITHUB.reopen_issue(Rails.application.settings["reviews"], issue_number)
+
+      # Add a comment explaining the resubmission
+      comment_body = "This issue has been reopened for a resubmission.\n\n" \
+                     "**Original DOI:** #{existing_submission_doi}\n" \
+                     "**New Submission:** #{title}\n" \
+                     "**Repository:** #{repository_url}\n\n" \
+                     "Please review the updated submission."
+
+      GITHUB.add_comment(Rails.application.settings["reviews"], issue_number, comment_body)
+
+      Rails.logger.info "Successfully reopened GitHub issue ##{issue_number} for paper #{id}"
+      { success: true, issue_number: issue_number }
+    rescue => e
+      Rails.logger.error "Error reopening GitHub issue #{issue_number}: #{e.message}"
+      { success: false, error: e.message }
+    end
+  end
+
 private
 
   def check_repository_address

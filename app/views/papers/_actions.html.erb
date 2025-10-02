@@ -64,6 +64,51 @@
 <% end %>
 
 <% if current_user.aeic? || (current_user == paper.submitting_author) %>
+  <!-- Resubmission Information -->
+  <% if paper.is_resubmission_with_doi? %>
+    <div class="card" id="resubmission-info">
+      <div class="card-header">
+        <span class="badge badge-info">Resubmission</span> Resubmission Information
+      </div>
+      <div class="card-body">
+        <p class="card-text">
+          <strong>Submission Type:</strong> Resubmission<br>
+          <strong>Original DOI:</strong> <code><%= paper.existing_submission_doi %></code>
+          <% issue_number = paper.existing_github_issue_number %>
+          <% if issue_number %>
+            <br><strong>GitHub Issue:</strong> #<%= issue_number %>
+            <% issue_status = paper.existing_github_issue_status %>
+            <span class="badge badge-<%= issue_status[:status] == :closed ? 'secondary' : 'success' %>">
+              <%= issue_status[:status].to_s.humanize %>
+            </span>
+          <% end %>
+        </p>
+
+        <% if current_user.aeic? && paper.can_reopen_github_issue? %>
+          <button id="reopen-github-issue-btn"
+                  class="btn btn-warning"
+                  data-paper-id="<%= paper.id %>"
+                  data-issue-number="<%= issue_number %>">
+            <i class="fa fa-redo"></i> Reopen Review Issue #<%= issue_number %>
+          </button>
+          <div id="reopen-result" class="mt-2" style="display: none;"></div>
+        <% elsif current_user.aeic? %>
+          <p class="text-muted">
+            <% case paper.existing_github_issue_status[:status] %>
+            <% when :open %>
+              GitHub issue #<%= issue_number %> is already open.
+            <% when :not_found %>
+              GitHub issue #<%= issue_number %> was not found.
+            <% when :error %>
+              Error checking GitHub issue status.
+            <% end %>
+          </p>
+        <% end %>
+      </div>
+    </div>
+    <br />
+  <% end %>
+
   <div class="card">
     <div class="card-header">
       Paper actions
@@ -100,4 +145,75 @@
     </div>
   </div>
   <br />
+
+  <!-- JavaScript for Reopen GitHub Issue functionality -->
+  <script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const reopenBtn = document.getElementById('reopen-github-issue-btn');
+    if (reopenBtn) {
+      reopenBtn.addEventListener('click', function() {
+        const paperId = this.dataset.paperId;
+        const issueNumber = this.dataset.issueNumber;
+        const resultDiv = document.getElementById('reopen-result');
+
+        // Disable button and show loading state
+        this.disabled = true;
+        this.innerHTML = '<i class="fa fa-spinner fa-spin"></i> Reopening...';
+
+        // Make AJAX request
+        fetch(`/papers/${paperId}/reopen_github_issue`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'X-CSRF-Token': document.querySelector('[name="csrf-token"]').getAttribute('content')
+          }
+        })
+        .then(response => response.json())
+        .then(data => {
+          resultDiv.style.display = 'block';
+
+          if (data.success) {
+            resultDiv.innerHTML = `
+              <div class="alert alert-success">
+                <i class="fa fa-check"></i> ${data.message}
+                <br><a href="https://github.com/<%= Rails.application.settings["reviews"] %>/issues/${data.issue_number}" target="_blank">
+                  View reopened issue #${data.issue_number} <i class="fa fa-external-link-alt"></i>
+                </a>
+              </div>
+            `;
+            // Update the badge to show as open
+            const badge = document.querySelector('#resubmission-info .badge');
+            if (badge) {
+              badge.className = 'badge badge-success';
+              badge.textContent = 'Open';
+            }
+            // Hide the button since issue is now open
+            this.style.display = 'none';
+          } else {
+            resultDiv.innerHTML = `
+              <div class="alert alert-danger">
+                <i class="fa fa-exclamation-triangle"></i> ${data.error}
+              </div>
+            `;
+            // Re-enable button
+            this.disabled = false;
+            this.innerHTML = '<i class="fa fa-redo"></i> Reopen Review Issue #' + issueNumber;
+          }
+        })
+        .catch(error => {
+          console.error('Error:', error);
+          resultDiv.style.display = 'block';
+          resultDiv.innerHTML = `
+            <div class="alert alert-danger">
+              <i class="fa fa-exclamation-triangle"></i> An error occurred while reopening the issue.
+            </div>
+          `;
+          // Re-enable button
+          this.disabled = false;
+          this.innerHTML = '<i class="fa fa-redo"></i> Reopen Review Issue #' + issueNumber;
+        });
+      });
+    }
+  });
+  </script>
 <% end %>
