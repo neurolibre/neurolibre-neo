@@ -287,22 +287,36 @@ class Paper < ApplicationRecord
 
   # Make sure that DOIs have a full http URL
   # e.g. turn 10.6084/m9.figshare.828487 into https://doi.org/10.6084/m9.figshare.828487
-  def doi_with_url
-    return "DOI pending" unless repository_doi
+  # Returns a DOI as a full https://doi.org/ URL, or "DOI pending" if missing.
+  # Accepts a string (the DOI field), so it can be reused for any DOI attribute.
+  def self.doi_with_url_for(doi_value)
+    return "DOI pending" if doi_value.blank?
 
-    bare_doi = repository_doi[/\b(10[.][0-9]{4,}(?:[.][0-9]+)*\/(?:(?!["&\'<>])\S)+)\b/]
+    bare_doi = doi_value[/\b(10[.][0-9]{4,}(?:[.][0-9]+)*\/(?:(?!["&\'<>])\S)+)\b/]
 
-    if repository_doi.include?("https://doi.org/")
-      return repository_doi
+    if doi_value.include?("https://doi.org/")
+      doi_value
     elsif bare_doi
-      return "https://doi.org/#{bare_doi}"
+      "https://doi.org/#{bare_doi}"
     else
-      return repository_doi
+      doi_value
     end
+  end
+
+  def doi_with_url
+    self.class.doi_with_url_for(repository_doi)
+  end
+
+  def existing_submission_doi_with_url
+    self.class.doi_with_url_for(existing_submission_doi)
   end
 
   def clean_repository_doi
     doi_with_url.gsub(/\"/, "")
+  end
+
+  def clean_existing_submission_doi
+    existing_submission_doi_with_url.gsub(/\"/, "")
   end
 
   # A 5-figure integer used to produce the JOSS DOI
