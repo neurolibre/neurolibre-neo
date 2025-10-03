@@ -1,9 +1,9 @@
 class IncreasePapersIdx < ActiveRecord::Migration[7.0]
   def up
-    execute "ALTER SEQUENCE papers_id_seq RESTART WITH 5;"
+    execute "SELECT setval('papers_id_seq', COALESCE((SELECT MAX(id) FROM papers), 0) + 1, false);"
   end
 
   def down
-    execute "ALTER SEQUENCE papers_id_seq RESTART WITH 1;"
+    # No-op: Don't reset sequence on rollback
   end
 end
