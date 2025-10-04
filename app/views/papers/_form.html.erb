@@ -63,8 +63,10 @@
 <div class="form-group" id="published-parent-doi" style="display: none;">
   <div class="row">
     <div class="col">
-      <%= f.label "DOI of published parent" %>
-      <%= f.text_field :published_parent_doi, placeholder: "Enter the DOI of your published parent (e.g., https://doi.org/10.21105/joss.12345)", class: "form-control" %>
+      <%= f.label :published_parent_doi do %>
+        <strong>DOI of the published version of the preprint</strong>
+      <% end %>
+      <%= f.text_field :published_parent_doi, placeholder: "Enter the existing DOI of your published preprint (e.g., https://doi.org/10.55458/neurolibre.12345)", class: "form-control" %>
     </div>
   </div>
 </div>
