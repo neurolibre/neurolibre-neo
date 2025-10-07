@@ -3,9 +3,9 @@ name: "NeuroLibre"
 abbreviation: "NeuroLibre"
 doi_prefix: "10.55458"
 issn: ""
-tagline: "a preprint server for <strong>reproducible</strong> data analyses."
+tagline: "TEST a preprint server for <strong>reproducible</strong> data analyses."
 logo_url: "https://conp-pcno.github.io/images/neurolibre-icon-red.png"
-url: "https://neurolibre.org"
+url: "https://staging.neurolibre.org"
 editor_email: "editors@evidencepub.io"
 noreply_email: "noreply@evidencepub.io"
 twitter: "@NeuroLibre"
@@ -17,7 +17,6 @@ papers_repo: "neurolibre/neurolibre-preprints-testing"
 papers_html_url: "http://neurolibre.github.io/neurolibre-preprints-testing"
 reviewers_signup_url: ""
 product: "preprint" # the *thing* being submitted for review
-reviewers: "https://bit.ly/neurolibre_reviewers"
 submission_enquiry: |-
   **Project repository URL:** INSERT YOUR REPOSITORY LINK HERE
 
