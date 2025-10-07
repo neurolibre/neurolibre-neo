@@ -13,8 +13,8 @@ mastodon_url: ""
 google_analytics: ""
 github: "neurolibre/neurolibre-neo"
 reviews: "neurolibre/neurolibre-reviews-testing"
-papers_repo: "neurolibre/neurolibre-preprints-testing"
-papers_html_url: "http://neurolibre.github.io/neurolibre-preprints-testing"
+papers_repo: "neurolibre/preprints-testing"
+papers_html_url: "http://neurolibre.github.io/preprints-testing"
 reviewers_signup_url: ""
 product: "preprint" # the *thing* being submitted for review
 submission_enquiry: |-
