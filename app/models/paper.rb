@@ -350,7 +350,9 @@ class Paper < ApplicationRecord
   def pdf_url
     doi_to_file = doi.gsub('/', '.')
 
-    "#{Rails.application.settings["papers_html_url"]}/#{Rails.application.settings[:doi_prefix]}/#{joss_id}.pdf"
+    # TEMPORARY CHANGE FOR TESTING
+    # "#{Rails.application.settings["papers_html_url"]}/#{Rails.application.settings[:doi_prefix]}/#{joss_id}.pdf"
+    "#{setting(:papers_html_url)}/#{joss_id}/#{setting(:doi_prefix)}.#{joss_id}.pdf"
   end
 
   # 'reviewers' should be a string (and may be comma-separated)
