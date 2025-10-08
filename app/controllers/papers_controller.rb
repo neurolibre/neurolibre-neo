@@ -233,17 +233,21 @@ class PapersController < ApplicationController
 
   def show
     if params[:doi] && valid_doi?
-      # Extract the issue number from the DOI
-      issue_number = extract_issue_number_from_doi(params[:doi])
+      # Extract the issue number and version from the DOI
+      doi_param = params[:doi]
+      version_from_doi = extract_version_from_doi(doi_param)
+      issue_number = extract_issue_number_from_doi(doi_param)
 
       if issue_number
         # Fetch all accepted versions for this issue (ordered for display)
         @all_versions = Paper.where(review_issue_id: issue_number, state: 'accepted')
                              .order(Arel.sql("SUBSTRING(version FROM 'v([0-9]+)')::int ASC"))
 
-        # Select the requested version or default to latest
-        if params[:version].present?
-          @paper = @all_versions.find_by(version: params[:version])
+        # Determine which version to show: URL suffix > query param > latest
+        requested_version = version_from_doi || params[:version]
+
+        if requested_version.present?
+          @paper = @all_versions.find_by(version: requested_version)
           # Fallback to latest if requested version not found
           @paper ||= @all_versions.order(Arel.sql("SUBSTRING(version FROM 'v([0-9]+)')::int DESC")).first
         else
@@ -254,8 +258,8 @@ class PapersController < ApplicationController
         # If no paper found at all, raise not found
         raise ActiveRecord::RecordNotFound unless @paper
 
-        # Set the canonical DOI (always the parent DOI without version param)
-        @canonical_doi = params[:doi]
+        # Set the canonical DOI (always the parent DOI without version suffix)
+        @canonical_doi = doi_param.gsub(/\.v\d+$/, '')
       else
         # Fallback to old behavior if issue number can't be extracted
         @paper = Paper.find_by_doi!(params[:doi])
@@ -439,6 +443,7 @@ class PapersController < ApplicationController
 
   # Extract GitHub issue number from NeuroLibre DOI format
   # e.g., "10.55458/neurolibre.00027" -> 27
+  # e.g., "10.55458/neurolibre.00027.v2" -> 27
   def extract_issue_number_from_doi(doi_string)
     return nil if doi_string.blank?
 
@@ -447,5 +452,15 @@ class PapersController < ApplicationController
     regex = /#{Regexp.escape(doi_prefix)}\/#{Regexp.escape(doi_suffix_name)}\.(\d{5})/
     match = doi_string.match(regex)
     match ? match[1].to_i : nil
+  end
+
+  # Extract version suffix from DOI format
+  # e.g., "10.55458/neurolibre.00027.v2" -> "v2"
+  # e.g., "10.55458/neurolibre.00027" -> nil
+  def extract_version_from_doi(doi_string)
+    return nil if doi_string.blank?
+
+    match = doi_string.match(/\.(v\d+)$/)
+    match ? match[1] : nil
   end
 end
