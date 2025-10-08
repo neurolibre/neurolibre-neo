@@ -237,7 +237,7 @@ class PapersController < ApplicationController
       issue_number = extract_issue_number_from_doi(params[:doi])
 
       if issue_number
-        # Fetch all accepted versions for this issue
+        # Fetch all accepted versions for this issue (ordered for display)
         @all_versions = Paper.where(review_issue_id: issue_number, state: 'accepted')
                              .order(Arel.sql("SUBSTRING(version FROM 'v([0-9]+)')::int ASC"))
 
@@ -245,10 +245,10 @@ class PapersController < ApplicationController
         if params[:version].present?
           @paper = @all_versions.find_by(version: params[:version])
           # Fallback to latest if requested version not found
-          @paper ||= @all_versions.last
+          @paper ||= @all_versions.order(Arel.sql("SUBSTRING(version FROM 'v([0-9]+)')::int DESC")).first
         else
-          # Default to latest version
-          @paper = @all_versions.last
+          # Default to latest version (highest version number)
+          @paper = @all_versions.order(Arel.sql("SUBSTRING(version FROM 'v([0-9]+)')::int DESC")).first
         end
 
         # If no paper found at all, raise not found
