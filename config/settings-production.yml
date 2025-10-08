@@ -14,7 +14,7 @@ google_analytics: ""
 github: "neurolibre/neurolibre-neo"
 reviews: "neurolibre/neurolibre-reviews-testing"
 papers_repo: "neurolibre/preprints-testing"
-papers_html_url: "https://neurolibre.github.io/preprints-testing"
+papers_html_url: "https://pdf-staging.neurolibre.org"
 reviewers_signup_url: ""
 product: "preprint" # the *thing* being submitted for review
 submission_enquiry: |-
