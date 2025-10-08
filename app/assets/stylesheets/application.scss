@@ -323,6 +323,19 @@ TODO
         border-radius: 5px;
         font-size: 12px !important;
     }
+
+    &.badge-version {
+        position: absolute;
+        top: 8px;
+        right: 8px;
+        z-index: 10;
+        background-color: #2E294E;
+        color: white;
+        padding: 0.3em 0.6em !important;
+        font-size: 10px !important;
+        font-weight: 600;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    }
 }
 
 .badge-lang {

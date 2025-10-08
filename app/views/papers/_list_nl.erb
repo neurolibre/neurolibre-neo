@@ -2,7 +2,7 @@
     <% unless paper.submitted? %>
     <div class="blog-card alt">
         <div class="meta">
-        
+          <%= pretty_version_badge(paper) %>
           <div class="photo" style="background-image: url(<%= pretty_card_image(paper) %>)"></div>
           <ul class="details">
             <li class="submitted_by">

@@ -182,4 +182,16 @@ module PapersHelper
 
     return output.empty? ? "–" : output.join(" • ").html_safe
   end
+
+  def pretty_version_badge(paper)
+    return "" unless paper.version
+
+    # Extract version number (e.g., "v2" -> 2)
+    version_num = paper.version.gsub(/[^0-9]/, '').to_i
+
+    # Only show badge for versions greater than v1
+    return "" if version_num <= 1
+
+    content_tag(:span, paper.version.upcase, class: "badge badge-version", title: "Paper version")
+  end
 end
