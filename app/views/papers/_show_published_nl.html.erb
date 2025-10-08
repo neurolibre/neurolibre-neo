@@ -25,8 +25,27 @@
 
     <div class="col-md-3 paper-sidebar">
     <div class="ball"></div>
+
+      <% if @all_versions&.count.to_i > 1 %>
+        <div class="version-selector" style="margin-bottom: 15px;">
+          <div class="label">Version</div>
+          <%= form_tag request.path, method: :get, class: 'version-form' do %>
+            <%= select_tag :version,
+                options_for_select(@all_versions.map { |p| [p.version, p.version] }, @paper.version),
+                onchange: 'this.form.submit()',
+                class: 'form-control' %>
+          <% end %>
+          <% unless @paper.latest_version? %>
+            <p class="small text-warning" style="margin-top: 5px;">
+              ⚠️ You are viewing an older version.
+              <%= link_to "View latest (#{@paper.latest_version.version})", request.path, class: 'text-primary' %>
+            </p>
+          <% end %>
+        </div>
+      <% end %>
+
       <div class="btn-group-vertical" role="group" aria-label="...">
-        
+
 
 
         <%= link_to @paper.book_exec_url, class: 'bg btn neurolibre-button' do %>

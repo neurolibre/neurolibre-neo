@@ -708,6 +708,45 @@ class Paper < ApplicationRecord
     end
   end
 
+  # Get all accepted versions in this paper family, ordered by version number
+  def all_versions
+    return Paper.none unless review_issue_id.present?
+
+    Paper.where(review_issue_id: review_issue_id, state: 'accepted')
+         .order(Arel.sql("SUBSTRING(version FROM 'v([0-9]+)')::int ASC"))
+  end
+
+  # Check if this is the latest version in the family
+  def latest_version?
+    return true unless review_issue_id.present?
+    all_versions.last == self
+  end
+
+  # Get the latest version in the paper family
+  def latest_version
+    return self unless review_issue_id.present?
+    all_versions.last
+  end
+
+  # Get the canonical DOI for this paper family (parent paper's DOI)
+  def canonical_doi
+    return doi if doi.blank? || review_issue_id.blank?
+
+    # Format: 10.55458/neurolibre.00041
+    doi_prefix = Rails.application.settings[:doi_prefix]
+    doi_suffix_name = Rails.application.settings[:abbreviation].downcase
+    formatted_issue = "%05d" % review_issue_id
+
+    "#{doi_prefix}/#{doi_suffix_name}.#{formatted_issue}"
+  end
+
+  # Class method: Find latest version for a given review issue ID
+  def self.latest_version_for_issue(review_issue_id)
+    Paper.where(review_issue_id: review_issue_id, state: 'accepted')
+         .order(Arel.sql("SUBSTRING(version FROM 'v([0-9]+)')::int DESC"))
+         .first
+  end
+
 private
 
   def check_repository_address
