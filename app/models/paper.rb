@@ -721,13 +721,15 @@ class Paper < ApplicationRecord
   # Check if this is the latest version in the family
   def latest_version?
     return true unless review_issue_id.present?
-    all_versions.last == self
+    # Compare with the highest version number
+    all_versions.order(Arel.sql("SUBSTRING(version FROM 'v([0-9]+)')::int DESC")).first == self
   end
 
   # Get the latest version in the paper family
   def latest_version
     return self unless review_issue_id.present?
-    all_versions.last
+    # Get the paper with the highest version number
+    all_versions.order(Arel.sql("SUBSTRING(version FROM 'v([0-9]+)')::int DESC")).first
   end
 
   # Get the canonical DOI for this paper family (parent paper's DOI)
