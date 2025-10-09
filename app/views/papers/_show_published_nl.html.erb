@@ -29,7 +29,7 @@
       <% if @all_versions&.count.to_i > 1 %>
         <div class="version-selector" style="margin-bottom: 15px;">
           <div class="label">Version</div>
-          <%= form_tag request.path, method: :get, class: 'version-form' do %>
+          <%= form_tag paper_path(@paper), method: :get, class: 'version-form' do %>
             <%= select_tag :version,
                 options_for_select(@all_versions.map { |p| [p.version, p.version] }, @paper.version),
                 onchange: 'this.form.submit()',
