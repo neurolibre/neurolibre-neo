@@ -194,4 +194,139 @@ module PapersHelper
 
     content_tag(:span, paper.version.upcase, class: "badge badge-version", title: "Paper version")
   end
+
+  # FAIR Signposting helpers
+  # Generate a single signposting <link> element
+  def signposting_link_tag(rel:, href:, type: nil, profile: nil)
+    return "" if href.blank?
+
+    attrs = { rel: rel, href: href }
+    attrs[:type] = type if type.present?
+    attrs[:profile] = profile if profile.present?
+
+    tag.link(**attrs)
+  end
+
+  # Generate author ORCID signposting links
+  def signposting_author_links(paper)
+    return "" unless paper.metadata_authors.present?
+
+    links = []
+    paper.metadata_authors.each do |author|
+      if author['orcid'].present?
+        orcid_url = author['orcid'].start_with?('http') ? author['orcid'] : "https://orcid.org/#{author['orcid']}"
+        links << signposting_link_tag(rel: 'author', href: orcid_url)
+      end
+    end
+
+    safe_join(links, "\n  ")
+  end
+
+  # Generate content resource (item) signposting links
+  def signposting_item_links(paper)
+    links = []
+
+    # PDF content resource
+    if paper.pdf_url.present?
+      links << signposting_link_tag(rel: 'item', href: paper.pdf_url, type: 'application/pdf')
+    end
+
+    # Executable book content resource
+    if paper.book_exec_url.present?
+      links << signposting_link_tag(rel: 'item', href: paper.book_exec_url, type: 'text/html')
+    end
+
+    safe_join(links, "\n  ")
+  end
+
+  # Generate metadata resource (describedby) signposting links
+  def signposting_metadata_links(paper)
+    links = []
+
+    # JSON metadata
+    json_url = "#{paper.seo_url}.json"
+    links << signposting_link_tag(rel: 'describedby', href: json_url, type: 'application/json')
+
+    safe_join(links, "\n  ")
+  end
+
+  # Generate persistent identifier (cite-as) signposting links
+  def signposting_cite_as_links(paper, canonical_doi: nil)
+    links = []
+
+    # Use canonical DOI if provided (for versioned papers), otherwise use paper's DOI
+    if canonical_doi.present?
+      canonical_url = "https://doi.org/#{canonical_doi}"
+      links << signposting_link_tag(rel: 'cite-as', href: canonical_url)
+    elsif paper.doi.present?
+      links << signposting_link_tag(rel: 'cite-as', href: paper.cross_ref_doi_url)
+    end
+
+    safe_join(links, "\n  ")
+  end
+
+  # Generate resource type signposting links
+  def signposting_type_links
+    links = []
+
+    # Required: AboutPage type
+    links << signposting_link_tag(rel: 'type', href: 'https://schema.org/AboutPage')
+
+    # Specific creative work type
+    links << signposting_link_tag(rel: 'type', href: 'https://schema.org/ScholarlyArticle')
+
+    safe_join(links, "\n  ")
+  end
+
+  # Generate related resource signposting links (archive DOIs)
+  def signposting_related_links(paper)
+    links = []
+
+    # Repository DOI (archived code)
+    if paper.repository_doi.present? && paper.repository_doi != "DOI pending"
+      repo_url = Paper.doi_with_url_for(paper.repository_doi)
+      links << signposting_link_tag(rel: 'related', href: repo_url)
+    end
+
+    # Book DOI (archived executable book)
+    if paper.book_doi.present?
+      book_url = Paper.doi_with_url_for(paper.book_doi)
+      links << signposting_link_tag(rel: 'related', href: book_url)
+    end
+
+    # Data DOI (archived data)
+    if paper.data_doi.present? && paper.data_doi != "N/A"
+      data_url = Paper.doi_with_url_for(paper.data_doi)
+      links << signposting_link_tag(rel: 'related', href: data_url)
+    end
+
+    # Docker DOI (archived compute environment)
+    if paper.docker_doi.present? && paper.docker_doi != "N/A"
+      docker_url = Paper.doi_with_url_for(paper.docker_doi)
+      links << signposting_link_tag(rel: 'related', href: docker_url)
+    end
+
+    safe_join(links, "\n  ")
+  end
+
+  # Generate LDN inbox signposting link
+  def signposting_inbox_link
+    inbox_url = "https://robo.neurolibre.org/coar_notify/inbox"
+    signposting_link_tag(rel: 'http://www.w3.org/ns/ldp#inbox', href: inbox_url)
+  end
+
+  # Generate version-related signposting links
+  def signposting_version_links(paper, all_versions: [])
+    links = []
+
+    # Link to latest version if this is not the latest
+    if all_versions.any? && !paper.latest_version?
+      latest = paper.latest_version
+      if latest && latest != paper
+        links << signposting_link_tag(rel: 'latest-version', href: latest.seo_url)
+      end
+    end
+
+    safe_join(links, "\n  ")
+  end
 end

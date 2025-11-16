@@ -1,0 +1,30 @@
+<%# FAIR Signposting for scholarly resource discovery %>
+<%# https://signposting.org/FAIR/ %>
+<%# Only include signposting for published papers %>
+<% if @paper.published? %>
+
+  <!-- FAIR Signposting: Content Resources (item) -->
+  <%= signposting_item_links(@paper) %>
+
+  <!-- FAIR Signposting: Metadata Resources (describedby) -->
+  <%= signposting_metadata_links(@paper) %>
+
+  <!-- FAIR Signposting: Persistent Identifier (cite-as) -->
+  <%= signposting_cite_as_links(@paper, canonical_doi: @canonical_doi) %>
+
+  <!-- FAIR Signposting: Author Identifiers (author) -->
+  <%= signposting_author_links(@paper) %>
+
+  <!-- FAIR Signposting: Resource Type (type) -->
+  <%= signposting_type_links %>
+
+  <!-- FAIR Signposting: Related Resources (related) - Archive DOIs -->
+  <%= signposting_related_links(@paper) %>
+
+  <!-- FAIR Signposting: LDN Inbox for COAR Notify -->
+  <%= signposting_inbox_link %>
+
+  <!-- FAIR Signposting: Version Links (latest-version) -->
+  <%= signposting_version_links(@paper, all_versions: @all_versions) %>
+
+<% end %>

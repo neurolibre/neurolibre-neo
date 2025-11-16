@@ -71,6 +71,9 @@
   <meta name="citation_abstract_html_url" content="<%= @paper.seo_url %>">
   <meta name="citation_pdf_url" content="<%= @paper.seo_pdf_url %>">
   <% end %>
+
+  <!-- FAIR Signposting -->
+  <%= render partial: "papers/signposting" %>
 </head>
 <body>
   <header class="container-fluid">
