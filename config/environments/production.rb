@@ -95,12 +95,12 @@ Rails.application.configure do
   config.action_mailer.default_url_options = { :host => "https://neurolibre.org" }
 
   config.action_mailer.smtp_settings = {
-    user_name: ENV["AWS_SES_SMTP_USERNAME"],
-    password: ENV["AWS_SES_SMTP_PASSWORD"],
-    address: 'email-smtp.eu-north-1.amazonaws.com',
+    user_name: ENV["SMTP2GO_USERNAME"],
+    password: ENV["SMTP2GO_PASSWORD"],
+    address: 'mail.smtp2go.com',
     domain: 'evidencepub.io',
-    port: 587,
-    authentication: :plain,
+    port: 2525,
+    authentication: :login,
     enable_starttls_auto: true
   }
 end
