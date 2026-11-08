@@ -118,7 +118,7 @@ class Paper < ApplicationRecord
   scope :not_archived, -> { where('archived = ?', false) }
   scope :by_track, -> (track_id) { where('track_id = ?', track_id) }
 
-  before_create :set_sha, :set_last_activity
+  before_create :set_sha, :set_last_activity, :populate_resubmission_fields, :set_version
   after_create :notify_editors, :notify_author
 
   validates_presence_of :title, message: "The paper must have a title"
@@ -333,9 +333,9 @@ class Paper < ApplicationRecord
   def seo_url
     if accepted?
       # @NeuroLibre
-      "#{Rails.application.settings["url"]}/papers/#{Rails.application.settings["doi_prefix"]}/#{joss_id}"
+      "#{setting(:url)}/papers/#{setting(:doi_prefix)}/#{joss_id}"
     else
-      "#{Rails.application.settings["url"]}/papers/#{to_param}"
+      "#{setting(:url)}/papers/#{to_param}"
     end
   end
 
@@ -350,7 +350,9 @@ class Paper < ApplicationRecord
   def pdf_url
     doi_to_file = doi.gsub('/', '.')
 
-    "#{Rails.application.settings["papers_html_url"]}/#{Rails.application.settings[:doi_prefix]}/#{joss_id}.pdf"
+    # TEMPORARY CHANGE FOR TESTING
+    # "#{Rails.application.settings["papers_html_url"]}/#{Rails.application.settings[:doi_prefix]}/#{joss_id}.pdf"
+    "#{setting(:papers_html_url)}/#{joss_id}/#{setting(:doi_prefix)}.#{joss_id}.pdf"
   end
 
   # 'reviewers' should be a string (and may be comma-separated)
@@ -516,7 +518,7 @@ class Paper < ApplicationRecord
 
   def status_badge_url
     # @NeuroLibre
-    "#{Rails.application.settings["url"]}/papers/#{Rails.application.settings[:doi_prefix]}/#{joss_id}/status.svg"
+    "#{setting(:url)}/papers/#{setting(:doi_prefix)}/#{joss_id}/status.svg"
   end
 
   def markdown_code
@@ -528,8 +530,8 @@ class Paper < ApplicationRecord
   def extract_issue_number_from_doi(doi_string)
     return nil if doi_string.blank?
 
-    doi_prefix = Rails.application.settings[:doi_prefix]
-    doi_suffix_name = Rails.application.settings[:abbreviation].downcase
+    doi_prefix = setting(:doi_prefix)
+    doi_suffix_name = setting(:abbreviation).downcase
     regex = /#{Regexp.escape(doi_prefix)}\/#{Regexp.escape(doi_suffix_name)}\.(\d{5})/
     match = doi_string.match(regex)
     match ? match[1].to_i : nil
@@ -576,17 +578,23 @@ class Paper < ApplicationRecord
 
   # Detect the next preprint version by checking existing PDF files
   # in the neurolibre/preprints repository
+  # TODO: This method can be simplified for new papers that are going to be 
+  # created with a "version" field. We can simply check all the types resubmission
+  # of the same review_issue_id and increment the version based on that.
+  # However, we need to keep this method for existing papers that are already
+  # in the system and don't have a version field.
   def detect_next_preprint_version
     issue_number = existing_github_issue_number
     return "v2" if issue_number.nil?
 
     # Format the issue number with leading zeros (e.g., 00023)
     formatted_issue = "%05d" % issue_number
-    doi_prefix = "#{Rails.application.settings["doi_prefix"]}.neurolibre.#{formatted_issue}"
+    doi_suffix_name = setting(:abbreviation).downcase
+    doi_prefix = "#{setting(:doi_prefix)}.#{doi_suffix_name}.#{formatted_issue}"
 
     begin
       # List all files in the master branch of neurolibre/preprints
-      contents = GITHUB.contents("neurolibre/preprints", path: "", ref: "master")
+      contents = GITHUB.contents(setting(:papers_repo), path: "", ref: "master")
 
       # Filter files that match the DOI pattern
       matching_files = contents.select do |file|
@@ -602,18 +610,16 @@ class Paper < ApplicationRecord
       # Check if files have version suffixes
       versioned_files = matching_files.select do |file|
         # Match pattern: 10.55458.neurolibre.00023.v1.pdf, v2.pdf, etc.
-        doi_prefix = "#{Rails.application.settings["doi_prefix"]}.neurolibre.#{formatted_issue}"
         file.name.match(/\.v(\d+)\.pdf$/)
       end
 
       if versioned_files.empty?
         # Files exist without version suffix (e.g., 10.55458.neurolibre.00023.pdf)
-        doi_prefix = "#{Rails.application.settings["doi_prefix"]}.neurolibre.#{formatted_issue}"
         # This means only v1 exists, so next version is v2
         return "v2"
       else
         # Extract version numbers and find the highest
-        version_numbers = versioned_files.map do |file|
+          version_numbers = versioned_files.map do |file|
           match = file.name.match(/\.v(\d+)\.pdf$/)
           match[1].to_i
         end
@@ -704,6 +710,47 @@ class Paper < ApplicationRecord
     end
   end
 
+  # Get all accepted versions in this paper family, ordered by version number
+  def all_versions
+    return Paper.none unless review_issue_id.present?
+
+    Paper.where(review_issue_id: review_issue_id, state: 'accepted')
+         .order(Arel.sql("SUBSTRING(version FROM 'v([0-9]+)')::int ASC"))
+  end
+
+  # Check if this is the latest version in the family
+  def latest_version?
+    return true unless review_issue_id.present?
+    # Compare with the highest version number
+    all_versions.order(Arel.sql("SUBSTRING(version FROM 'v([0-9]+)')::int DESC")).first == self
+  end
+
+  # Get the latest version in the paper family
+  def latest_version
+    return self unless review_issue_id.present?
+    # Get the paper with the highest version number
+    all_versions.order(Arel.sql("SUBSTRING(version FROM 'v([0-9]+)')::int DESC")).first
+  end
+
+  # Get the canonical DOI for this paper family (parent paper's DOI)
+  def canonical_doi
+    return doi if doi.blank? || review_issue_id.blank?
+
+    # Format: 10.55458/neurolibre.00041
+    doi_prefix = Rails.application.settings[:doi_prefix]
+    doi_suffix_name = Rails.application.settings[:abbreviation].downcase
+    formatted_issue = "%05d" % review_issue_id
+
+    "#{doi_prefix}/#{doi_suffix_name}.#{formatted_issue}"
+  end
+
+  # Class method: Find latest version for a given review issue ID
+  def self.latest_version_for_issue(review_issue_id)
+    Paper.where(review_issue_id: review_issue_id, state: 'accepted')
+         .order(Arel.sql("SUBSTRING(version FROM 'v([0-9]+)')::int DESC"))
+         .first
+  end
+
 private
 
   def check_repository_address
@@ -721,5 +768,44 @@ private
 
   def set_last_activity
     self.last_activity = Time.now
+  end
+
+  # Populate fields from parent paper for resubmissions
+  def populate_resubmission_fields
+    return unless is_resubmission_with_doi?
+
+    issue_number = existing_github_issue_number
+    return if issue_number.nil?
+
+    begin
+      # Find the parent paper by review_issue_id
+      parent_paper = Paper.find_by(review_issue_id: issue_number)
+      return if parent_paper.nil?
+
+      # Copy fields from parent paper
+      self.review_issue_id = parent_paper.review_issue_id
+      self.reviewers = parent_paper.reviewers
+      self.editor_id = parent_paper.editor_id
+      self.meta_review_issue_id = parent_paper.meta_review_issue_id
+      self.citation_string = parent_paper.citation_string
+
+      Rails.logger.info "Populated resubmission fields from parent paper ##{parent_paper.id} (issue ##{issue_number})"
+    rescue => e
+      Rails.logger.error "Error populating resubmission fields: #{e.message}"
+    end
+  end
+
+  # Set the version for new papers and resubmissions
+  def set_version
+    if submission_kind == 'resubmission' && published_parent_doi.present?
+      # For resubmissions, use the next detected version, which will be 
+      # using a more straighforward logic (to be implemented)
+      self.version = detect_next_preprint_version
+    else
+      # For new submissions, default to v1
+      self.version = 'v1'
+    end
+
+    Rails.logger.info "Set version to #{self.version} for paper submission (kind: #{submission_kind})"
   end
 end

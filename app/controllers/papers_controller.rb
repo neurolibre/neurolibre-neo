@@ -233,13 +233,54 @@ class PapersController < ApplicationController
 
   def show
     if params[:doi] && valid_doi?
-      @paper = Paper.find_by_doi!(params[:doi])
+      # Extract the issue number and version from the DOI
+      doi_param = params[:doi]
+      version_from_doi = extract_version_from_doi(doi_param)
+      issue_number = extract_issue_number_from_doi(doi_param)
+
+      if issue_number
+        # Fetch all accepted versions for this issue (ordered for display)
+        @all_versions = Paper.where(review_issue_id: issue_number, state: 'accepted')
+                             .order(Arel.sql("SUBSTRING(version FROM 'v([0-9]+)')::int ASC"))
+
+        # Determine which version to show: URL suffix > query param > latest
+        requested_version = version_from_doi || params[:version]
+
+        if requested_version.present?
+          @paper = @all_versions.find_by(version: requested_version)
+          # Fallback to latest if requested version not found
+          @paper ||= @all_versions.order(Arel.sql("SUBSTRING(version FROM 'v([0-9]+)')::int DESC")).first
+        else
+          # Default to latest version (highest version number)
+          @paper = @all_versions.order(Arel.sql("SUBSTRING(version FROM 'v([0-9]+)')::int DESC")).first
+        end
+
+        # If no paper found at all, raise not found
+        raise ActiveRecord::RecordNotFound unless @paper
+
+        # Set the canonical DOI (always the parent DOI without version suffix)
+        @canonical_doi = doi_param.gsub(/\.v\d+$/, '')
+      else
+        # Fallback to old behavior if issue number can't be extracted
+        @paper = Paper.find_by_doi!(params[:doi])
+        @all_versions = [@paper]
+        @canonical_doi = params[:doi]
+      end
     else
       @paper = Paper.includes(:votes, :editor, notes: :editor, track: :aeics).find_by_sha!(params[:id])
       # By default we want people to use the URLs with the DOI in the path if
       # the paper is accepted.
       if @paper.accepted?
         redirect_to @paper.seo_url, status: 301, allow_other_host: true and return
+      end
+
+      # For SHA-based lookups, load all versions if available
+      if @paper.review_issue_id.present?
+        @all_versions = @paper.all_versions
+        @canonical_doi = @paper.canonical_doi
+      else
+        @all_versions = [@paper]
+        @canonical_doi = @paper.doi
       end
     end
 
@@ -398,5 +439,28 @@ class PapersController < ApplicationController
     else
       return false
     end
+  end
+
+  # Extract GitHub issue number from NeuroLibre DOI format
+  # e.g., "10.55458/neurolibre.00027" -> 27
+  # e.g., "10.55458/neurolibre.00027.v2" -> 27
+  def extract_issue_number_from_doi(doi_string)
+    return nil if doi_string.blank?
+
+    doi_prefix = Rails.application.settings[:doi_prefix]
+    doi_suffix_name = Rails.application.settings[:abbreviation].downcase
+    regex = /#{Regexp.escape(doi_prefix)}\/#{Regexp.escape(doi_suffix_name)}\.(\d{5})/
+    match = doi_string.match(regex)
+    match ? match[1].to_i : nil
+  end
+
+  # Extract version suffix from DOI format
+  # e.g., "10.55458/neurolibre.00027.v2" -> "v2"
+  # e.g., "10.55458/neurolibre.00027" -> nil
+  def extract_version_from_doi(doi_string)
+    return nil if doi_string.blank?
+
+    match = doi_string.match(/\.(v\d+)$/)
+    match ? match[1] : nil
   end
 end

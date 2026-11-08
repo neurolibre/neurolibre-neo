@@ -35,6 +35,11 @@
   <!-- Dimensions -->
   <script async src="https://badge.dimensions.ai/badge.js" charset="utf-8"></script>
 
+  <!-- Canonical URL for SEO (points to parent DOI without version parameter) -->
+  <% if @canonical_doi.present? %>
+    <link rel="canonical" href="<%= "#{Rails.application.settings["url"]}/papers/#{@canonical_doi}" %>" />
+  <% end %>
+
   <!-- facebook open graph tags -->
   <meta property="og:type" content="article" />
   <meta property="og:url" content="<%= @paper.seo_url %>" />
@@ -66,6 +71,9 @@
   <meta name="citation_abstract_html_url" content="<%= @paper.seo_url %>">
   <meta name="citation_pdf_url" content="<%= @paper.seo_pdf_url %>">
   <% end %>
+
+  <!-- FAIR Signposting -->
+  <%= render partial: "papers/signposting" %>
 </head>
 <body>
   <header class="container-fluid">

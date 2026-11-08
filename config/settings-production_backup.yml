@@ -1,0 +1,26 @@
+# Changing this file necessitates a server restart
+name: "NeuroLibre"
+abbreviation: "NeuroLibre"
+doi_prefix: "10.55458"
+issn: ""
+tagline: "a <strong>next-gen</strong> preprint publisher for <s>neuro</s> all sciences."
+logo_url: "https://conp-pcno.github.io/images/neurolibre-icon-red.png"
+url: "https://neurolibre.org"
+editor_email: "editor@evidencepub.io"
+noreply_email: "noreply@evidencepub.io"
+twitter: "@NeuroLibre"
+mastodon_url: ""
+google_analytics: ""
+github: "neurolibre/neurolibre-neo"
+reviews: "neurolibre/neurolibre-reviews"
+papers_html_url: "https://preprint.neurolibre.org"
+reviewers_signup_url: ""
+papers_repo: "neurolibre/preprints"
+product: "reproducible preprint" # the *thing* being submitted for review
+reviewers: "https://bit.ly/neurolibre_reviewers"
+submission_enquiry: |-
+  **Project repository URL:** INSERT YOUR REPOSITORY LINK HERE
+
+  Briefly describe your preprint, its research application and any questions you have about the NeuroLibre submission criteria.
+paper_types: []
+bot_username: roboneuro
