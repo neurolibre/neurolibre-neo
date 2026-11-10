@@ -35,6 +35,12 @@ describe "home/_hero_nl.html.erb", type: :view do
     expect(doc.css(".nl-hero__bow path").size).to eq(5)
   end
 
+  it "names each lower layer on the layer itself" do
+    tags = doc.css(".nl-hero__layer-tag").map { |t| t.text.squish }
+    expect(tags).to eq(%w[Runtime Code Data Prose])
+    expect(doc.css(".nl-hero__layer-tag svg").size).to eq(4)
+  end
+
   it "labels the four layer colours in the legend" do
     expect(doc.css(".nl-hero__legend li").map { |li| li.text.squish }).to eq(%w[Prose Data Code Runtime])
   end

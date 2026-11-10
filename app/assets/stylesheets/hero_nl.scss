@@ -213,12 +213,40 @@ $nl-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
 
   &__plate-head {
     display: flex;
-    justify-content: space-between;
+    justify-content: flex-end;
     font-family: Inter, sans-serif;
     font-size: 11px;
     font-weight: 600;
     letter-spacing: .12em;
     text-transform: uppercase;
+  }
+
+  // The layer's name, large, in its lower-left corner, with its leaf.
+  &__layer-tag {
+    position: absolute;
+    left: 16px;
+    bottom: 14px;
+    z-index: 2;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 7px 14px 7px 10px;
+    border-radius: 10px;
+    border: 1px solid currentColor;
+    background: rgba(4, 9, 16, .72);
+    font-family: "Inter Tight", Inter, sans-serif;
+    font-size: 22px;
+    font-weight: 800;
+    letter-spacing: .06em;
+    line-height: 1;
+    text-transform: uppercase;
+
+    svg { width: 24px; height: 24px; flex: none; }
+
+    &--runtime { color: #9fd08f; }
+    &--code { color: #ffaa5c; }
+    &--data { color: #7fe0f0; }
+    &--prose { color: #c4a0ff; }
   }
 
   &__plate--runtime {

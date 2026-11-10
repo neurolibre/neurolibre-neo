@@ -4,14 +4,16 @@
   <div class="nl-hero__stack" aria-hidden="true">
 
     <div class="nl-hero__plate nl-hero__plate--runtime">
-      <div class="nl-hero__plate-head"><span>Runtime</span><span>DOI</span></div>
+      <div class="nl-hero__plate-head"><span>DOI</span></div>
+      <div class="nl-hero__layer-tag nl-hero__layer-tag--runtime"><%= render "home/hero_nl/leaf", kind: :runtime %>Runtime</div>
       <div class="nl-hero__cmd">FROM python:3.11</div>
       <div class="nl-hero__cmd">pip install -r requirements.txt</div>
       <div class="nl-hero__cmd">COPY notebooks/ data/</div>
     </div>
 
     <div class="nl-hero__plate nl-hero__plate--code">
-      <div class="nl-hero__plate-head"><span>Code</span><span>analysis.py · DOI</span></div>
+      <div class="nl-hero__plate-head"><span>analysis.py · DOI</span></div>
+      <div class="nl-hero__layer-tag nl-hero__layer-tag--code"><%= render "home/hero_nl/leaf", kind: :code %>Code</div>
       <div>
         <div><span class="kw">import</span> pandas <span class="kw">as</span> pd</div>
         <div><span class="kw">import</span> matplotlib.pyplot <span class="kw">as</span> plt</div>
@@ -25,7 +27,8 @@
     </div>
 
     <div class="nl-hero__plate nl-hero__plate--data">
-      <div class="nl-hero__plate-head"><span>Data</span><span>DOI</span></div>
+      <div class="nl-hero__plate-head"><span>DOI</span></div>
+      <div class="nl-hero__layer-tag nl-hero__layer-tag--data"><%= render "home/hero_nl/leaf", kind: :data %>Data</div>
       <div class="nl-hero__row nl-hero__row--head"><span>subject</span><span>group</span><span>age</span><span>fa</span></div>
       <% NeurolibreHeroHelper::NL_HERO_DATA_ROWS.each_with_index do |row, i| %>
         <div class="nl-hero__row" style="animation-delay: <%= i %>s"><% row.each do |cell| %><span><%= cell %></span><% end %></div>
@@ -33,7 +36,8 @@
     </div>
 
     <div class="nl-hero__plate nl-hero__plate--prose">
-      <div class="nl-hero__plate-head"><span>Prose</span><span>MyST</span></div>
+      <div class="nl-hero__plate-head"><span>MyST</span></div>
+      <div class="nl-hero__layer-tag nl-hero__layer-tag--prose"><%= render "home/hero_nl/leaf", kind: :prose %>Prose</div>
       <div class="heading"># Results</div>
       <div>Anisotropy falls with age in both groups, and faster in group B.</div>
       <div class="directive">:::{figure} #fig-fa</div>
