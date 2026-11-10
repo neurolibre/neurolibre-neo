@@ -12,13 +12,13 @@
 <div class="form-group">
   <div class="row">
     <div class="col">
-      <%= f.label :title do %>Title<%= required_mark %><% end %>
-      <%= f.text_field :title, placeholder: "What's the title of this preprint?", class: "form-control", required: true %>
+      <%= f.label :title %>
+      <%= f.text_field :title, placeholder: "What's the title of this preprint?", class: "form-control" %>
     </div>
 
     <div class="col">
-      <%= f.label :repository_url do %>Preprint's Git repository URL<%= required_mark %><% end %>
-      <%= f.text_field :repository_url, placeholder: "e.g. https://github.com/neurolibre/template", class: "form-control", required: true %>
+      <label for="repository_url">Preprint's Git repository URL</label>
+      <%= f.text_field :repository_url, placeholder: "e.g. https://github.com/neurolibre/template", class: "form-control" %>
     </div>
   </div>
 </div>
@@ -26,14 +26,12 @@
 <div class="form-group">
   <div class="row">
     <div class="col">
-      <%= f.label :git_branch, "Name of git branch containing the paper" %>
-      <%= f.text_field :git_branch, class: "form-control" %>
-      <small class="form-text text-muted">The branch name, not a path. Leave as main unless the paper is on another branch.</small>
+      <%= f.label "Name of git branch containing the paper, not the path" %>
+      <%= f.text_field :git_branch, placeholder: "You can leave blank.", class: "form-control" %>
     </div>
     <div class="col">
-      <%= f.label :software_version do %>Preprint repository version<%= required_mark %><% end %>
-      <%= f.text_field :software_version, class: "form-control", required: true %>
-      <small class="form-text text-muted">Leave as v1.0.0 unless your repository has its own release tag.</small>
+      <%= f.label "Preprint repository version" %>
+      <%= f.text_field :software_version, placeholder: "e.g. v1.0.0", class: "form-control" %>
     </div>
   </div>
 </div>
@@ -41,13 +39,14 @@
 <div class="form-group">
   <div class="row">
     <div class="col">
-      <%= f.label :submission_kind do %>Type of submission<%= required_mark %><% end %>
-      <%= f.select(:submission_kind, {'New submission' => 'new', 'Resubmission' => 'resubmission', 'Major new version' => 'new version'}, {include_blank: false}, class: "form-control", style: "margin-right: 12px;") %>
+      <%= f.label "Type of submission" %>
+      <%= f.select(:submission_kind, {'New submission' => 'new', 'Resubmission' => 'resubmission', 'Major new version' => 'new version'}, {include_blank: false, prompt: "Select one and explain choice below"}, class: "form-control", style: "margin-right: 12px;") %>
     </div>
-    <div class="col">
-      <%= f.label :suggested_subject do %>Main subject of the paper<%= required_mark %><% end %>
-      <%= f.select :suggested_subject, Subject.order(:name).pluck(:name), {prompt: "Select a subject"}, class: "form-control", required: true %>
-      <small class="form-text text-muted">If your subject is not on the list, please <%= mail_to setting(:editor_email), "contact us" %>.</small>
+    <div class="col" data-controller="autocomplete" data-autocomplete-url-value="<%= search_subjects_path %>">
+      <%= f.label "Main subject of the paper" %>
+      <%= f.text_field :suggested_subject, placeholder: "Select the subject that best applies to your paper", class: "form-control", style: "margin-right: 12px;", data: {"autocomplete-target" => "input"} %>
+      <%= f.hidden_field :track_id, data: {"autocomplete-target" => "hidden"} %>
+      <ul class="list-group subjects-options" data-autocomplete-target="results"></ul>
     </div>
   </div>
 </div>
@@ -55,7 +54,7 @@
 <div class="form-group">
   <div class="row">
     <div class="col">
-      <%= f.label :data_doi, "Preprint Data DOI (if exists)" %>
+      <%= f.label "Preprint Data DOI (if exists)" %>
       <%= f.text_field :data_doi, placeholder: "If your data already have a DOI assigned, please enter (https://doi.org/xx.xxx/xxxxx)", class: "form-control" %>
     </div>
   </div>
@@ -73,8 +72,8 @@
 </div>
 
 <div class="form-group">
-  <%= f.label :body do %>Message to editors<%= required_mark %><% end %>
-  <%= f.text_area :body, rows: "7", required: true,
+  <%= f.label "Message to editors" %>
+  <%= f.text_area :body, rows: "7",
     placeholder: "Has any portion of the submitted work (which includes code and documentation) been published or submitted, or is planned for submission, to another peer-reviewed publication venue? If yes, please describe. Please also give short (1-2 line) description of your #{setting(:product)} including specific notes to the editor if this is a resubmission or a second paper in #{setting(:abbreviation)} about this #{setting(:product)}. Please disclose any potential conflicts of interest, including financial ones.", class: 'form-control' %>
 </div>
 
@@ -100,9 +99,7 @@
 <% end %>
 
 <script>
-// Runs as soon as Turbo renders the form, including after a failed submit.
-// (A DOMContentLoaded listener only fires on a full page load.)
-(function() {
+document.addEventListener('DOMContentLoaded', function() {
   const submissionKindSelect = document.querySelector('#paper_submission_kind');
   const publishedParentDoiField = document.querySelector('#published-parent-doi');
 
@@ -119,5 +116,5 @@
 
   // Listen for changes
   submissionKindSelect.addEventListener('change', togglePublishedParentDoi);
-})();
+});
 </script>
