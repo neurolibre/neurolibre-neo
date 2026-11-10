@@ -4,7 +4,11 @@ describe "papers/_provenance_nl.html.erb", type: :view do
   let(:doc) { Nokogiri::HTML(rendered) }
   let(:steps) { doc.css(".nl-provenance__step") }
   let(:evidence) { nil }
-  before { allow(view).to receive(:nl_evidence).and_return(evidence) }
+  let(:structured) { nil }
+  before do
+    allow(view).to receive(:nl_evidence).and_return(evidence)
+    allow(view).to receive(:nl_structured_content_url).and_return(structured)
+  end
 
   context "with every step present" do
     let(:paper) do
@@ -62,6 +66,14 @@ describe "papers/_provenance_nl.html.erb", type: :view do
 
   context "when the CDN lists the paper's Sakiori walk and crosswalks" do
     let(:paper) { build(:accepted_paper, doi: "10.55458/neurolibre.00048", review_issue_id: 48) }
+    let(:structured) { "https://cdn.evidencepub.io/content/neurolibre-00048/index.json" }
+
+    it "offers the structured content under the PDF" do
+      published = steps.find { |s| s.at_css("strong").text == "Published" }
+      buttons = published.css(".nl-provenance__btn")
+      expect(buttons.map { |b| b.text.squish }.last(2)).to eq(["Download PDF", "Structured content"])
+      expect(buttons.last["href"]).to eq(structured)
+    end
     let(:evidence) do
       { sakiori: "https://sakiori.evidencepub.io/00048",
         crosswalks: [{ label: "FAIR²", url: "https://cdn.evidencepub.io/crosswalks/10.55458/neurolibre.00048/fair2.json" },

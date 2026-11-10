@@ -6,6 +6,7 @@
 <%= stylesheet_link_tag "provenance_nl", media: "all" %>
 <% artifacts = nl_recent_layers(paper) %>
 <% evidence = nl_evidence(paper) %>
+<% structured = nl_structured_content_url(paper) %>
 <% repo_name = paper.repository_url.to_s.sub(%r{\Ahttps?://(www\.)?github\.com/}i, "").delete_suffix("/").delete_suffix(".git") %>
 
 <section class="nl-provenance" aria-labelledby="nl-provenance-title">
@@ -59,6 +60,11 @@
         <% end %>
         <%= link_to paper.pdf_url, class: "nl-provenance__btn" do %>
           <%= icon("fa-solid", "download") %>Download PDF
+        <% end %>
+        <% if structured %>
+          <%= link_to structured, class: "nl-provenance__btn", target: "_blank", rel: "noopener", title: "The article as MyST JSON" do %>
+            <%= icon("fa-solid", "sitemap") %>Structured content
+          <% end %>
         <% end %>
       </div>
     </li>
