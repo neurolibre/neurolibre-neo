@@ -1,9 +1,26 @@
 <section class="nl-section">
-  <h2 class="nl-section-title">Data <span class="nl-optional">optional</span></h2>
+  <h2 class="nl-section-title">Data</h2>
 
-  <div class="form-group mb-0">
-    <%= f.label :data_doi, "Preprint data DOI" %>
-    <%= f.text_field :data_doi, placeholder: "https://doi.org/xx.xxx/xxxxx", class: "form-control" %>
-    <small class="form-text text-muted">If your data already have a DOI assigned, enter it here.</small>
+  <fieldset class="form-group">
+    <legend class="nl-legend">Do your data already have a DOI?<%= required_mark %></legend>
+    <%# An empty value is sent when neither option is picked, so the server can tell "unanswered". %>
+    <%= hidden_field_tag "paper[has_data_doi]", "", id: nil %>
+    <div class="nl-choice">
+      <%= f.radio_button :has_data_doi, "yes", class: "form-check-input", required: true,
+                         data: { action: "submission-form#toggleDataDoi", submission_form_target: "dataDoiAnswer" } %>
+      <%= f.label :has_data_doi_yes, "Yes", class: "form-check-label" %>
+    </div>
+    <div class="nl-choice">
+      <%= f.radio_button :has_data_doi, "no", class: "form-check-input",
+                         data: { action: "submission-form#toggleDataDoi", submission_form_target: "dataDoiAnswer" } %>
+      <%= f.label :has_data_doi_no, "No, not yet", class: "form-check-label" %>
+    </div>
+  </fieldset>
+
+  <div class="form-group mb-0" data-submission-form-target="dataDoi" hidden>
+    <%= f.label :data_doi do %>Data DOI<%= required_mark %><% end %>
+    <%= f.text_field :data_doi, placeholder: "e.g. https://doi.org/10.5281/zenodo.12345", class: "form-control",
+                     data: { submission_form_target: "dataDoiInput" } %>
+    <small class="form-text text-muted">The DOI where your data are archived, for example on Zenodo or OSF.</small>
   </div>
 </section>

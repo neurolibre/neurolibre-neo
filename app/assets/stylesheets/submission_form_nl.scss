@@ -47,6 +47,44 @@
     margin-bottom: 0.5rem;
   }
 
+  .nl-legend {
+    font-size: 1rem;
+    font-weight: 500;
+    margin-bottom: 0.5rem;
+  }
+
+  // Yes / No answers shown as two pill buttons side by side.
+  .nl-choice {
+    display: inline-flex;
+    align-items: center;
+    position: relative;
+    margin-right: 0.5rem;
+
+    .form-check-input {
+      position: absolute;
+      opacity: 0;
+      margin: 0;
+    }
+
+    .form-check-label {
+      padding: 0.4rem 1.1rem;
+      border: 1px solid #ced4da;
+      border-radius: 999px;
+      cursor: pointer;
+      user-select: none;
+    }
+
+    .form-check-input:checked + .form-check-label {
+      background: #343a40;
+      border-color: #343a40;
+      color: #fff;
+    }
+
+    .form-check-input:focus-visible + .form-check-label {
+      box-shadow: 0 0 0 0.2rem rgba(52, 58, 64, 0.25);
+    }
+  }
+
   .form-check-label {
     font-weight: 400;
   }
