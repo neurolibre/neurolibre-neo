@@ -36,6 +36,8 @@ $nl-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
 .nl-hero {
   position: relative;
   overflow: hidden;
+  // Set by nl_hero_controller.js: pulls the hero up under the navbar.
+  margin-top: var(--nl-hero-pull, 0px);
   margin-bottom: 1em;
   font-family: Inter, system-ui, sans-serif;
   color: $nl-ink;
@@ -435,6 +437,28 @@ $nl-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
       border-bottom-color: #d9d2ec;
       animation: none;
       svg { animation: nl-hero-sort 6s ease-in-out infinite; margin-left: 3px; }
+    }
+  }
+
+  // ---- desktop: fill the window below the navbar ----
+  // nl_hero_controller.js sets --nl-hero-h (window height below the navbar),
+  // --nl-hero-pad, and the scales for the stack and the copy. Without it the
+  // defaults keep the fixed 960px design.
+  @media (min-width: 992px) {
+    &__inner {
+      min-height: var(--nl-hero-h, 960px);
+      height: var(--nl-hero-h, auto);
+      padding-top: var(--nl-hero-pad, 96px);
+      padding-bottom: var(--nl-hero-pad, 80px);
+    }
+    // Keep the copy and the stack side by side from 992px up.
+    &__inner { flex-wrap: nowrap; }
+    &__copy { flex: 1 1 400px; zoom: var(--nl-hero-copy, 1); }
+    &__visual { flex: 1 1 520px; }
+    &__visual { height: calc(760px * var(--nl-hero-stack, 1)); }
+    &__stack {
+      scale: var(--nl-hero-stack, 1);
+      margin-top: calc(170px * var(--nl-hero-stack, 1));
     }
   }
 

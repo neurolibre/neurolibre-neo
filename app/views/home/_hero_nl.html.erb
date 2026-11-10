@@ -5,7 +5,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@600;700;800&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <%= stylesheet_link_tag "hero_nl", media: "all" %>
 
-<section class="nl-hero" aria-labelledby="nl-hero-title">
+<section class="nl-hero" aria-labelledby="nl-hero-title" data-controller="nl-hero">
   <%= render "home/hero_nl/neuron" %>
 
   <% nl_hero_particles.each do |dot| %>
@@ -13,7 +13,7 @@
   <% end %>
 
   <div class="nl-hero__inner">
-    <div class="nl-hero__copy">
+    <div class="nl-hero__copy" data-nl-hero-target="copy">
       <h1 id="nl-hero-title" class="nl-hero__title">More than a <span>PDF</span></h1>
       <p class="nl-hero__lead">A NeuroLibre preprint packages the article together with its reproducibility artifacts. Every component is archived and assigned its own DOI.</p>
 

@@ -23,6 +23,11 @@ describe "home/_hero_nl.html.erb", type: :view do
     expect(doc.at_css(".nl-hero__article-head img")["src"]).to match(/joss2.*\.svg/)
   end
 
+  it "is fitted to the window by the nl-hero controller" do
+    expect(doc.at_css("section.nl-hero")["data-controller"]).to eq("nl-hero")
+    expect(doc.at_css(".nl-hero__copy")["data-nl-hero-target"]).to eq("copy")
+  end
+
   it "labels the four layer colours in the legend" do
     expect(doc.css(".nl-hero__legend li").map { |li| li.text.squish }).to eq(%w[Prose Data Code Runtime])
   end
