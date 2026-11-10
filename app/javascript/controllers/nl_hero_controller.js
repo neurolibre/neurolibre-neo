@@ -10,7 +10,8 @@ import { Controller } from "@hotwired/stimulus"
 // It only sets CSS variables on the hero; hero_nl.scss decides what they do,
 // and the hero keeps its fixed design size if this does not run.
 const DESKTOP = 992        // px, the layout's lg breakpoint
-const STACK_HEIGHT = 760   // px, the stack's design height
+const STACK_PAINT = 590    // px, how tall the layers actually paint at scale 1
+const STACK_MAX = 1.2      // let the layers grow a little when there is room
 const MIN_HEIGHT = 560     // px, never squeeze the hero below this
 
 export default class extends Controller {
@@ -55,7 +56,7 @@ export default class extends Controller {
     const room = height - 2 * pad
     style.setProperty("--nl-hero-h", `${height}px`)
     style.setProperty("--nl-hero-pad", `${pad}px`)
-    style.setProperty("--nl-hero-stack", Math.min(1, room / STACK_HEIGHT).toFixed(3))
+    style.setProperty("--nl-hero-stack", Math.min(STACK_MAX, room / STACK_PAINT).toFixed(3))
 
     if (this.hasCopyTarget) {
       const copyHeight = this.copyTarget.offsetHeight

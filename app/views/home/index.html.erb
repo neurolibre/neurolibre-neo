@@ -2,13 +2,6 @@
 <%= render "home/hero_nl" %>
 
 <div class="container">
-<center><p class="lead"> Rooting for reproducible research. One publication at a time.<br>🌰 🌱 🌺</p></center>
-<div class="announcement">
-<p>NeuroLibre now hosts a ✨<a href="https://mystmd.org/guide/deployment">MyST server</a> ✨ to publish living preprints as dynamic pages, powered by structured data! <br> You can get started with this <a href="https://github.com/neurolibre/mystical-article">template repository</a>.</p>
-</div>
-</div>
-
-<div class="container">
   <h4>Recently Published Reproducible Preprints <span class="badge-count"><%= Paper.visible.count %></span></h4>
 
   <div class="paper-list" id="all-papers">

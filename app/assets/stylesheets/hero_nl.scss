@@ -456,7 +456,7 @@ $nl-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
     &__inner { flex-wrap: nowrap; }
     &__copy { flex: 1 1 400px; zoom: var(--nl-hero-copy, 1); }
     &__visual { flex: 1 1 520px; }
-    &__visual { height: calc(760px * var(--nl-hero-stack, 1)); }
+    &__visual { height: calc(var(--nl-hero-h, 960px) - 2 * var(--nl-hero-pad, 96px)); }
     &__stack {
       scale: var(--nl-hero-stack, 1);
       margin-top: calc(170px * var(--nl-hero-stack, 1));
