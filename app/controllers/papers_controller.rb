@@ -228,7 +228,7 @@ class PapersController < ApplicationController
   end
 
   def new
-    @paper = Paper.new(software_version: "v1.0.0", submission_kind: "new")
+    @paper = Paper.new(software_version: "v1.0.0", submission_kind: "new", git_branch: "main")
   end
 
   def show

@@ -12,13 +12,13 @@
 <div class="form-group">
   <div class="row">
     <div class="col">
-      <%= f.label :title %>
-      <%= f.text_field :title, placeholder: "What's the title of this preprint?", class: "form-control" %>
+      <%= f.label :title do %>Title<%= required_mark %><% end %>
+      <%= f.text_field :title, placeholder: "What's the title of this preprint?", class: "form-control", required: true %>
     </div>
 
     <div class="col">
-      <label for="repository_url">Preprint's Git repository URL</label>
-      <%= f.text_field :repository_url, placeholder: "e.g. https://github.com/neurolibre/template", class: "form-control" %>
+      <%= f.label :repository_url do %>Preprint's Git repository URL<%= required_mark %><% end %>
+      <%= f.text_field :repository_url, placeholder: "e.g. https://github.com/neurolibre/template", class: "form-control", required: true %>
     </div>
   </div>
 </div>
@@ -26,11 +26,12 @@
 <div class="form-group">
   <div class="row">
     <div class="col">
-      <%= f.label "Name of git branch containing the paper, not the path" %>
-      <%= f.text_field :git_branch, placeholder: "You can leave blank.", class: "form-control" %>
+      <%= f.label :git_branch, "Name of git branch containing the paper" %>
+      <%= f.text_field :git_branch, class: "form-control" %>
+      <small class="form-text text-muted">The branch name, not a path. Leave as main unless the paper is on another branch.</small>
     </div>
     <div class="col">
-      <%= f.label :software_version, "Preprint repository version (required)" %>
+      <%= f.label :software_version do %>Preprint repository version<%= required_mark %><% end %>
       <%= f.text_field :software_version, class: "form-control", required: true %>
       <small class="form-text text-muted">Leave as v1.0.0 unless your repository has its own release tag.</small>
     </div>
@@ -40,12 +41,13 @@
 <div class="form-group">
   <div class="row">
     <div class="col">
-      <%= f.label "Type of submission" %>
+      <%= f.label :submission_kind do %>Type of submission<%= required_mark %><% end %>
       <%= f.select(:submission_kind, {'New submission' => 'new', 'Resubmission' => 'resubmission', 'Major new version' => 'new version'}, {include_blank: false}, class: "form-control", style: "margin-right: 12px;") %>
     </div>
     <div class="col">
-      <%= f.label :suggested_subject, "Main subject of the paper (required)" %>
+      <%= f.label :suggested_subject do %>Main subject of the paper<%= required_mark %><% end %>
       <%= f.select :suggested_subject, Subject.order(:name).pluck(:name), {prompt: "Select a subject"}, class: "form-control", required: true %>
+      <small class="form-text text-muted">If your subject is not on the list, please <%= mail_to setting(:editor_email), "contact us" %>.</small>
     </div>
   </div>
 </div>
@@ -53,7 +55,7 @@
 <div class="form-group">
   <div class="row">
     <div class="col">
-      <%= f.label "Preprint Data DOI (if exists)" %>
+      <%= f.label :data_doi, "Preprint Data DOI (if exists)" %>
       <%= f.text_field :data_doi, placeholder: "If your data already have a DOI assigned, please enter (https://doi.org/xx.xxx/xxxxx)", class: "form-control" %>
     </div>
   </div>
@@ -71,8 +73,8 @@
 </div>
 
 <div class="form-group">
-  <%= f.label "Message to editors" %>
-  <%= f.text_area :body, rows: "7",
+  <%= f.label :body do %>Message to editors<%= required_mark %><% end %>
+  <%= f.text_area :body, rows: "7", required: true,
     placeholder: "Has any portion of the submitted work (which includes code and documentation) been published or submitted, or is planned for submission, to another peer-reviewed publication venue? If yes, please describe. Please also give short (1-2 line) description of your #{setting(:product)} including specific notes to the editor if this is a resubmission or a second paper in #{setting(:abbreviation)} about this #{setting(:product)}. Please disclose any potential conflicts of interest, including financial ones.", class: 'form-control' %>
 </div>
 

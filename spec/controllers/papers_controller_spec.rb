@@ -19,6 +19,21 @@ describe PapersController, type: :controller do
       expect(response).to be_successful
       expect(response.body).to include('value="v1.0.0"')
       expect(response.body).to match(/<option selected="selected" value="new">/)
+      expect(response.body).to match(/<input[^>]*value="main"[^>]*name="paper\[git_branch\]"/)
+    end
+
+    it "marks each required field with a red asterisk, and only those" do
+      get :new
+      doc = Nokogiri::HTML(response.body)
+      marked = doc.css("label:has(span.required-mark)").map { |l| l["for"] }.sort
+      expect(marked).to eq(%w(paper_body paper_repository_url paper_software_version paper_submission_kind
+                              paper_suggested_subject paper_title))
+    end
+
+    it "tells authors to contact the editors when their subject is not listed" do
+      get :new
+      expect(response.body).to include("If your subject is not on the list, please")
+      expect(response.body).to include("mailto:#{Rails.application.settings[:editor_email]}")
     end
 
     it "lists the subjects in a dropdown" do

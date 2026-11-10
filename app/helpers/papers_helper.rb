@@ -1,4 +1,9 @@
 module PapersHelper
+  # Red asterisk after the label of a required form field.
+  def required_mark
+    content_tag(:span, "*", class: "required-mark", style: "color: #dc3545; margin-left: 2px;", title: "Required")
+  end
+
   def selected_class(tab_name)
     if controller.action_name == tab_name
       "selected"
