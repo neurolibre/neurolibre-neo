@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2024_08_19_195337) do
+ActiveRecord::Schema[7.0].define(version: 2025_10_08_104715) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
   enable_extension "pg_stat_statements"
@@ -118,6 +118,8 @@ ActiveRecord::Schema[7.0].define(version: 2024_08_19_195337) do
     t.string "suggested_subject"
     t.string "prpub_doi"
     t.string "prpub_journal"
+    t.string "published_parent_doi"
+    t.string "version", default: "v1"
     t.index ["editor_id"], name: "index_papers_on_editor_id"
     t.index ["eic_id"], name: "index_papers_on_eic_id"
     t.index ["labels"], name: "index_papers_on_labels", using: :gin
