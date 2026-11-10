@@ -5,6 +5,9 @@
     paper_view_nl.scss (scoped to .nl-paper-view). %>
 <%= stylesheet_link_tag "paper_view_nl", media: "all" %>
 <% living = paper.book_exec_url.presence %>
+<%# The same article in the Pretext reader, served at the same path on pretext.neurolibre.org. %>
+<% pretext = living&.sub(%r{\Ahttps://preprint\.neurolibre\.org/}, "https://pretext.neurolibre.org/") %>
+<% pretext = nil if pretext == living %>
 <% pdf_src = "#{paper.pdf_url}#toolbar=0&navpanes=0&scrollbar=0&statusbar=0&messages=0&view=FitH" %>
 
 <div class="nl-paper-view" data-controller="paper-view">
@@ -14,8 +17,10 @@
         <button type="button" aria-pressed="true" data-paper-view-target="tab" data-view="living" data-action="paper-view#show"><%= icon("fa-solid", "book-open-reader") %>Living preprint</button>
         <button type="button" aria-pressed="false" data-paper-view-target="tab" data-view="pdf" data-action="paper-view#show"><%= icon("fa-solid", "file-pdf") %>PDF</button>
       </div>
-      <%= link_to living, class: "nl-paper-view__open", target: "_blank", rel: "noopener" do %>
-        <%= icon("fa-solid", "arrow-up-right-from-square") %>Open in a new tab
+      <% if pretext %>
+        <%= link_to pretext, class: "nl-paper-view__open", target: "_blank", rel: "noopener" do %>
+          <%= icon("fa-solid", "arrow-up-right-from-square") %>Open in Pretext reader
+        <% end %>
       <% end %>
     </div>
 

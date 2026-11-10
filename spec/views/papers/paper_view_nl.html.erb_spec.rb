@@ -28,9 +28,10 @@ describe "papers/_paper_view_nl.html.erb", type: :view do
       expect(doc.at_css(".nl-paper-view__open i, .nl-paper-view__open svg")).to be_present
     end
 
-    it "offers the living preprint in a new tab" do
+    it "offers the article in the Pretext reader, in a new tab" do
       link = doc.at_css(".nl-paper-view__open")
-      expect(link["href"]).to eq(paper.book_exec_url)
+      expect(link.text.squish).to eq("Open in Pretext reader")
+      expect(link["href"]).to eq("https://pretext.neurolibre.org/10.55458/neurolibre.00048")
       expect(link["target"]).to eq("_blank")
     end
   end
