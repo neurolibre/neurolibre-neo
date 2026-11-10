@@ -1,14 +1,17 @@
-<%# One paper in the grid: image, date, title, short authors, archive dots. %>
+<%# One paper in the grid. The title link covers the whole card (see
+    .nl-recent__stretch), so clicking anywhere opens the paper page in a new
+    tab; the artifact icons sit above it and open their archives. %>
 <article class="nl-recent__card">
-  <%= link_to paper.seo_url, class: "nl-recent__card-image", tabindex: "-1", "aria-hidden": "true" do %>
+  <div class="nl-recent__card-image">
     <%= image_tag pretty_card_image(paper), alt: "", loading: "lazy" %>
-  <% end %>
+  </div>
   <div class="nl-recent__card-body">
     <span class="nl-recent__date"><%= nl_recent_date(paper) %></span>
-    <h3><%= link_to paper.title, paper.seo_url %></h3>
+    <h3><%= link_to paper.title, paper.seo_url, class: "nl-recent__stretch", target: "_blank", rel: "noopener" %></h3>
     <p class="nl-recent__authors"><%= nl_recent_authors_short(paper) %></p>
-    <div class="nl-recent__card-foot">
-      <% layers = nl_recent_layers(paper) %>
+    <span class="nl-recent__doi">doi:<%= paper.doi %></span>
+    <% layers = nl_recent_layers(paper) %>
+    <% if layers.any? %>
       <div class="nl-recent__artifacts">
         <span class="nl-recent__artifacts-label">Reproducibility artifacts</span>
         <div class="nl-recent__icons">
@@ -18,7 +21,6 @@
           <% end %>
         </div>
       </div>
-      <%= link_to "Open →", nl_recent_open_url(paper), class: "nl-recent__card-open", target: "_blank", rel: "noopener" %>
-    </div>
+    <% end %>
   </div>
 </article>

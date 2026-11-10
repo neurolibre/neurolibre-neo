@@ -22,6 +22,9 @@
     border: 1px solid #e3e5ea;
 
     button {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
       min-height: 40px;
       padding: 0 18px;
       border: 0;
@@ -35,10 +38,13 @@
       &:hover { color: #121826; }
       &:focus-visible { outline: 2px solid #e2362b; outline-offset: 2px; }
 
+      i { font-size: 15px; color: #6b7280; }
+
       &[aria-pressed="true"] {
         background: #ffffff;
         color: #121826;
         box-shadow: 0 1px 3px rgba(18, 24, 38, .15);
+        i { color: #e2362b; }
       }
     }
   }
@@ -46,7 +52,7 @@
   &__open {
     display: inline-flex;
     align-items: center;
-    gap: 6px;
+    gap: 8px;
     min-height: 40px;
     font-size: 14px;
     font-weight: 600;
@@ -60,8 +66,9 @@
     iframe {
       display: block;
       width: 100%;
-      height: calc(100vh - 150px);
-      min-height: 720px;
+      // The same A4 proportions as the PDF, so both views are equally tall.
+      aspect-ratio: 1 / 1.41421;
+      height: auto;
       border: 1px solid #e3e5ea;
       border-radius: 12px;
       background: #ffffff;

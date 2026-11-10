@@ -2,7 +2,7 @@
 <article class="nl-recent__featured">
   <div class="nl-recent__featured-body">
     <span class="nl-recent__new">New · <%= nl_recent_date(paper) %></span>
-    <h3><%= link_to paper.title, paper.seo_url %></h3>
+    <h3><%= link_to paper.title, paper.seo_url, class: "nl-recent__stretch", target: "_blank", rel: "noopener" %></h3>
     <p class="nl-recent__authors"><%= nl_recent_author_names(paper).join(", ") %></p>
     <span class="nl-recent__doi">doi:<%= paper.doi %></span>
 

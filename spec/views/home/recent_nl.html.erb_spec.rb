@@ -39,6 +39,16 @@ describe "home/_recent_nl.html.erb", type: :view do
     expect(links.first["target"]).to eq("_blank")
   end
 
+  it "shows each card's DOI, and opens the paper page in a new tab when the card is clicked" do
+    card = doc.at_css(".nl-recent__card")
+    expect(card.at_css(".nl-recent__doi").text).to include("10.55458/neurolibre.00001")
+    link = card.at_css("h3 a")
+    expect(link["href"]).to eq(older.seo_url)
+    expect(link["target"]).to eq("_blank")
+    expect(link["class"]).to include("nl-recent__stretch")
+    expect(card.text).not_to include("Open →")
+  end
+
   it "treats N/A as no archive" do
     paper = build(:accepted_paper, data_doi: "N/A", docker_doi: "N/A")
     expect(view.nl_recent_layers(paper).map { |l| l[:kind] }).to eq([])

@@ -1,0 +1,8 @@
+<%# One "Load more" page of cards, answering the frame of the same id. %>
+<% prefetch_card_images(papers) %>
+<turbo-frame id="nl-recent-page-<%= page %>" class="nl-recent__page">
+  <% papers.each do |paper| %>
+    <%= render "home/recent_nl/card", paper: paper %>
+  <% end %>
+  <%= render "home/recent_nl/more", page: page + 1 if more %>
+</turbo-frame>

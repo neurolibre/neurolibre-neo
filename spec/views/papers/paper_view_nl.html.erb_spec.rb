@@ -23,6 +23,11 @@ describe "papers/_paper_view_nl.html.erb", type: :view do
       expect(template.inner_html).to include(paper.pdf_url)
     end
 
+    it "gives the toggle and the new-tab link icons" do
+      expect(doc.css(".nl-paper-view__toggle button i, .nl-paper-view__toggle button svg").size).to eq(2)
+      expect(doc.at_css(".nl-paper-view__open i, .nl-paper-view__open svg")).to be_present
+    end
+
     it "offers the living preprint in a new tab" do
       link = doc.at_css(".nl-paper-view__open")
       expect(link["href"]).to eq(paper.book_exec_url)

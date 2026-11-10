@@ -98,4 +98,5 @@ Rails.application.routes.draw do
   post '/dispatch', to: 'dispatch#github_receiver', format: 'json'
 
   root to: 'home#index'
+  get '/recent', to: 'neurolibre_recent#index', as: 'neurolibre_recent' # NeuroLibre: load more papers on the home page
 end

@@ -1,0 +1,7 @@
+<%# The "Load more" button: a Turbo Frame that NeurolibreRecentController
+    fills with the next page of cards (and the button for the page after). %>
+<turbo-frame id="nl-recent-page-<%= page %>" class="nl-recent__page">
+  <%= link_to neurolibre_recent_path(page: page), class: "nl-recent__more" do %>
+    <%= icon("fa-solid", "arrow-down") %> Load more preprints
+  <% end %>
+</turbo-frame>

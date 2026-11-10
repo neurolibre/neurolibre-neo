@@ -21,6 +21,7 @@
           <% papers.drop(1).each do |paper| %>
             <%= render "home/recent_nl/card", paper: paper %>
           <% end %>
+          <%= render "home/recent_nl/more", page: 2 if Paper.visible.count > papers.size %>
         </div>
       <% end %>
     <% end %>
