@@ -752,7 +752,16 @@ class Paper < ApplicationRecord
 private
 
   def check_repository_address
-    stdout_str, stderr_str, status = Open3.capture3("git ls-remote #{repository_url}")
+    # Only web URLs. This also stops a value starting with "-" from being read
+    # as a git option (e.g. --upload-pack, which runs a program).
+    unless repository_url.to_s.match?(%r{\Ahttps?://[^\s]+\z})
+      errors.add(:base, :invalid, message: "Invalid Git repository address. Enter the repository's http:// or https:// URL.")
+      return false
+    end
+
+    # Arguments are passed separately, so no shell runs and characters such as
+    # ; | $ ` in the URL are not interpreted.
+    _stdout_str, _stderr_str, status = Open3.capture3("git", "ls-remote", repository_url)
 
     if !status.success?
       errors.add(:base, :invalid, message: "Invalid Git repository address. Check that the repository can be cloned using the value entered in the form, and that access doesn't require authentication.")

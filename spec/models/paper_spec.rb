@@ -11,6 +11,35 @@ describe Paper do
     expect { paper.save! }.to raise_error(ActiveRecord::RecordInvalid)
   end
 
+  describe "repository address check" do
+    it "runs git ls-remote without a shell, passing the URL as one argument" do
+      paper = build(:paper, repository_url: "https://github.com/openjournals/joss")
+      expect(Open3).to receive(:capture3).with("git", "ls-remote", "https://github.com/openjournals/joss")
+                                         .and_return(["", "", OpenStruct.new(success?: true)])
+      expect(paper).to be_valid
+    end
+
+    it "does not run shell commands hidden in the repository URL" do
+      marker = Rails.root.join("tmp", "repo-url-injection-#{SecureRandom.hex(4)}")
+      allow(Open3).to receive(:capture3).and_call_original
+      paper = build(:paper, repository_url: "https://example.invalid/repo;touch${IFS}#{marker}")
+
+      paper.valid?
+
+      expect(File.exist?(marker)).to be(false)
+    ensure
+      FileUtils.rm_f(marker) if marker
+    end
+
+    ["--upload-pack=touch /tmp/x", "-c core.sshCommand=x", "file:///etc", "git@github.com:x/y.git", "github.com/x/y", ""].each do |url|
+      it "rejects #{url.inspect} without running git" do
+        expect(Open3).not_to receive(:capture3)
+        paper = build(:paper, repository_url: url)
+        expect(paper).not_to be_valid
+      end
+    end
+  end
+
   it "belongs to the submitting author" do
     association = Paper.reflect_on_association(:submitting_author)
     expect(association.macro).to eq(:belongs_to)
