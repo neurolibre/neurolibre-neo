@@ -162,7 +162,7 @@ $nl-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
     background: rgba(101, 155, 89, .10);
     border: 1px solid rgba(143, 210, 126, .28);
 
-    svg { flex: none; margin-top: 1px; }
+    svg { flex: none; width: 56px; height: 56px; margin-top: -2px; }
     strong { display: block; font-size: 17px; font-weight: 600; color: $nl-ink; margin-bottom: 6px; }
     p { margin: 0; font-size: 16px; line-height: 1.55; color: #c9ddc2; }
   }
@@ -356,8 +356,9 @@ $nl-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
     font-family: Inter, sans-serif;
     color: #1b1640;
     background: rgba(250, 248, 255, .97);
-    border: 1px solid #ffffff;
-    box-shadow: 0 0 30px rgba(111, 0, 183, .4);
+    // NeuroLibre red edge and glow, like the coloured edges of the layers below.
+    border: 1px solid rgba(255, 92, 80, .9);
+    box-shadow: 0 0 24px rgba(226, 54, 43, .55);
   }
 
   &__article-head {

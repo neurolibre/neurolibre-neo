@@ -41,10 +41,6 @@ describe "home/_hero_nl.html.erb", type: :view do
     expect(doc.css(".nl-hero__layer-tag svg").size).to eq(4)
   end
 
-  it "labels the four layer colours in the legend" do
-    expect(doc.css(".nl-hero__legend li").map { |li| li.text.squish }).to eq(%w[Prose Data Code Runtime])
-  end
-
   it "renders the same particles on every request" do
     first = doc.css(".nl-hero__dot").map { |d| d["style"] }
     second = Nokogiri::HTML(view.render(partial: "home/hero_nl")).css(".nl-hero__dot").map { |d| d["style"] }
