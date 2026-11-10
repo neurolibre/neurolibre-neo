@@ -1,0 +1,161 @@
+// NeuroLibre paper page sidebar: provenance trail (papers/_provenance_nl).
+// Every rule is scoped to .nl-provenance so nothing leaks onto other pages.
+
+.nl-provenance {
+  font-family: Inter, system-ui, sans-serif;
+  color: #121826;
+  margin-bottom: 28px;
+
+  a { text-decoration: none; }
+
+  &__eyebrow {
+    margin: 0 0 4px;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    color: #6b7280;
+  }
+
+  &__lede {
+    margin: 0 0 18px;
+    padding: 0;
+    font-size: 13px;
+    line-height: 1.5;
+    color: #4b5563;
+  }
+
+  &__steps {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  // Each step draws the line down to the next dot. The last step has none,
+  // so the trail ends at "Published".
+  &__step {
+    position: relative;
+    display: flex;
+    gap: 14px;
+
+    &::before {
+      content: "";
+      position: absolute;
+      left: 17px;
+      top: 36px;
+      bottom: -6px;
+      width: 2px;
+      background: #d1d5db;
+    }
+
+    &:nth-last-child(2)::before { background: linear-gradient(180deg, #d1d5db, #e2362b); }
+    &:last-child::before { display: none; }
+  }
+
+  &__dot {
+    flex: none;
+    position: relative;
+    z-index: 1;
+    width: 36px;
+    height: 36px;
+    box-sizing: border-box;
+    border-radius: 50%;
+    background: #fff;
+    border: 2px solid #d1d5db;
+    color: #374151;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 15px;
+  }
+
+  &__step--done &__dot {
+    background: #e2362b;
+    border-color: #e2362b;
+    color: #fff;
+    box-shadow: 0 0 0 4px #fdecea;
+  }
+
+  &__link, &__body {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    flex: 1;
+    padding: 6px 0 14px;
+
+    strong { font-size: 14px; font-weight: 600; color: #121826; }
+  }
+
+  &__link {
+    span { font-size: 12px; color: #6b7280; overflow-wrap: anywhere; }
+    &:hover strong, &:focus-visible strong { color: #c8302a; }
+  }
+
+  &__body { gap: 8px; padding-bottom: 0; }
+  &__step:not(:last-child) &__body { padding-bottom: 14px; }
+
+  &__artifacts {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 6px;
+  }
+
+  &__artifact {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    min-height: 40px;
+    padding: 0 10px;
+    border-radius: 10px;
+    font-size: 12.5px;
+    font-weight: 600;
+    transition: filter .15s ease;
+
+    &:hover, &:focus-visible { filter: brightness(.95); }
+
+    &--html    { background: #f3ebff; color: #5b0096; }
+    &--data    { background: #e3f7fb; color: #0b6b7d; }
+    &--code    { background: #fff0e2; color: #9a4a05; }
+    &--runtime { background: #eaf4e6; color: #3b6b31; }
+    &--html:hover    { color: #5b0096; }
+    &--data:hover    { color: #0b6b7d; }
+    &--code:hover    { color: #9a4a05; }
+    &--runtime:hover { color: #3b6b31; }
+  }
+
+  &__doi {
+    font-family: "JetBrains Mono", ui-monospace, monospace;
+    font-size: 11.5px;
+    color: #4b5563;
+    overflow-wrap: anywhere;
+    &:hover { color: #c8302a; }
+  }
+
+  &__btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    min-height: 42px;
+    border-radius: 12px;
+    border: 1px solid #e5e7eb;
+    background: #fff;
+    color: #121826;
+    font-weight: 600;
+    font-size: 13.5px;
+
+    &:hover, &:focus-visible { color: #c8302a; border-color: #d1d5db; }
+
+    &--primary {
+      min-height: 46px;
+      border-color: #e2362b;
+      background: #e2362b;
+      color: #fff;
+      font-size: 14px;
+      &:hover, &:focus-visible { color: #fff; background: #c8302a; border-color: #c8302a; }
+    }
+  }
+}

@@ -1,0 +1,63 @@
+<%# Paper page sidebar: the steps from the source repository to the published
+    preprint, each with its link. Steps the paper has no data for are left
+    out. Styles in provenance_nl.scss (scoped to .nl-provenance). %>
+<%= stylesheet_link_tag "provenance_nl", media: "all" %>
+<% artifacts = nl_recent_layers(paper) %>
+<% repo_name = paper.repository_url.to_s.sub(%r{\Ahttps?://(www\.)?github\.com/}i, "").delete_suffix("/").delete_suffix(".git") %>
+
+<section class="nl-provenance" aria-labelledby="nl-provenance-title">
+  <h2 class="nl-provenance__eyebrow" id="nl-provenance-title">Traceable to its sources</h2>
+  <p class="nl-provenance__lede">Every step from the repository to this page, with a link to each.</p>
+
+  <ol class="nl-provenance__steps">
+    <li class="nl-provenance__step">
+      <span class="nl-provenance__dot"><%= icon("fa-brands", "github") %></span>
+      <%= link_to paper.repository_url, class: "nl-provenance__link", target: "_blank", rel: "noopener" do %>
+        <strong>Source repository</strong>
+        <span><%= repo_name %></span>
+      <% end %>
+    </li>
+
+    <% if paper.review_issue_id.present? %>
+      <li class="nl-provenance__step">
+        <span class="nl-provenance__dot"><%= icon("fa-solid", "clipboard-check") %></span>
+        <%= link_to paper.review_url, class: "nl-provenance__link", target: "_blank", rel: "noopener" do %>
+          <strong>Technical screening</strong>
+          <span>Built and checked that it runs · #<%= paper.review_issue_id %></span>
+        <% end %>
+      </li>
+    <% end %>
+
+    <% if artifacts.any? %>
+      <li class="nl-provenance__step">
+        <span class="nl-provenance__dot"><%= icon("fa-solid", "box-archive") %></span>
+        <div class="nl-provenance__body">
+          <strong>Reproducibility artifacts</strong>
+          <div class="nl-provenance__artifacts">
+            <% artifacts.each do |a| %>
+              <%= link_to a[:url], class: "nl-provenance__artifact nl-provenance__artifact--#{a[:kind]}", target: "_blank", rel: "noopener", title: "#{a[:label]} archive" do %>
+                <%= icon(*a[:icon]) %><%= a[:label] %>
+              <% end %>
+            <% end %>
+          </div>
+        </div>
+      </li>
+    <% end %>
+
+    <li class="nl-provenance__step nl-provenance__step--done">
+      <span class="nl-provenance__dot"><%= icon("fa-solid", "check") %></span>
+      <div class="nl-provenance__body">
+        <strong>Published</strong>
+        <%= link_to "doi:#{paper.doi}", "https://doi.org/#{paper.doi}", class: "nl-provenance__doi" %>
+        <% if paper.book_exec_url.present? %>
+          <%= link_to paper.book_exec_url, class: "nl-provenance__btn nl-provenance__btn--primary", target: "_blank", rel: "noopener" do %>
+            <%= icon("fa-solid", "book-open-reader") %>Living preprint
+          <% end %>
+        <% end %>
+        <%= link_to paper.pdf_url, class: "nl-provenance__btn" do %>
+          <%= icon("fa-solid", "download") %>Download PDF
+        <% end %>
+      </div>
+    </li>
+  </ol>
+</section>
