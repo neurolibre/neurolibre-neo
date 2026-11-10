@@ -1,12 +1,15 @@
 <%# Paper page sidebar: the steps from the source repository to the published
     preprint, each with its link, then what is built from it after
-    publication (Sakiori, crosswalks; NeurolibreEvidenceHelper). Steps the
+    publication: the peer-reviewed version when one is recorded (prpub_doi,
+    prpub_journal) and Sakiori and the crosswalks (NeurolibreEvidenceHelper). Steps the
     paper has no data for are left out. Styles in provenance_nl.scss (scoped
     to .nl-provenance). %>
 <%= stylesheet_link_tag "provenance_nl", media: "all" %>
 <% artifacts = nl_recent_layers(paper) %>
 <% evidence = nl_evidence(paper) %>
 <% structured = nl_structured_content_url(paper) %>
+<% peer_doi = paper.prpub_doi.to_s.strip.sub(%r{\Ahttps?://(dx\.)?doi\.org/}i, "").presence %>
+<% peer_journal = paper.prpub_journal.to_s.squish.presence %>
 <% repo_name = paper.repository_url.to_s.sub(%r{\Ahttps?://(www\.)?github\.com/}i, "").delete_suffix("/").delete_suffix(".git") %>
 
 <section class="nl-provenance" aria-labelledby="nl-provenance-title">
@@ -51,7 +54,7 @@
     <li class="nl-provenance__step nl-provenance__step--done">
       <span class="nl-provenance__dot"><%= icon("fa-solid", "check") %></span>
       <div class="nl-provenance__body">
-        <strong>Published</strong>
+        <strong>NeuroLibre publication</strong>
         <%= link_to "doi:#{paper.doi}", "https://doi.org/#{paper.doi}", class: "nl-provenance__doi" %>
         <% if paper.book_exec_url.present? %>
           <%= link_to paper.book_exec_url, class: "nl-provenance__btn nl-provenance__btn--primary", target: "_blank", rel: "noopener" do %>
@@ -68,6 +71,17 @@
         <% end %>
       </div>
     </li>
+
+    <% if peer_doi %>
+      <li class="nl-provenance__step nl-provenance__step--peer">
+        <span class="nl-provenance__dot"><%= icon("fa-solid", "award") %></span>
+        <%= link_to "https://doi.org/#{peer_doi}", class: "nl-provenance__link", target: "_blank", rel: "noopener" do %>
+          <strong>Peer-reviewed publication</strong>
+          <% if peer_journal %><span class="nl-provenance__journal"><%= peer_journal %></span><% end %>
+          <span class="nl-provenance__doi">doi:<%= peer_doi %></span>
+        <% end %>
+      </li>
+    <% end %>
 
     <% if evidence %>
       <li class="nl-provenance__step nl-provenance__step--evidence">

@@ -24,9 +24,9 @@ describe "papers/_provenance_nl.html.erb", type: :view do
     end
     before { render partial: "papers/provenance_nl", locals: { paper: paper } }
 
-    it "lists the four steps in order, ending with Published" do
+    it "lists the four steps in order, ending with the NeuroLibre publication" do
       expect(steps.map { |s| s.at_css("strong").text }).to eq(
-        ["Source repository", "Technical screening", "Reproducibility artifacts", "Published"])
+        ["Source repository", "Technical screening", "Reproducibility artifacts", "NeuroLibre publication"])
       expect(steps.last["class"]).to include("nl-provenance__step--done")
     end
 
@@ -59,7 +59,7 @@ describe "papers/_provenance_nl.html.erb", type: :view do
     before { render partial: "papers/provenance_nl", locals: { paper: paper } }
 
     it "leaves those steps out and keeps the PDF" do
-      expect(steps.map { |s| s.at_css("strong").text }).to eq(["Source repository", "Technical screening", "Published"])
+      expect(steps.map { |s| s.at_css("strong").text }).to eq(["Source repository", "Technical screening", "NeuroLibre publication"])
       expect(steps.last.css(".nl-provenance__btn").map { |b| b.text.squish }).to eq(["Download PDF"])
     end
   end
@@ -69,7 +69,7 @@ describe "papers/_provenance_nl.html.erb", type: :view do
     let(:structured) { "https://cdn.evidencepub.io/content/neurolibre-00048/index.json" }
 
     it "offers the structured content under the PDF" do
-      published = steps.find { |s| s.at_css("strong").text == "Published" }
+      published = steps.find { |s| s.at_css("strong").text == "NeuroLibre publication" }
       buttons = published.css(".nl-provenance__btn")
       expect(buttons.map { |b| b.text.squish }.last(2)).to eq(["Download PDF", "Structured content"])
       expect(buttons.last["href"]).to eq(structured)
@@ -81,13 +81,39 @@ describe "papers/_provenance_nl.html.erb", type: :view do
     end
     before { render partial: "papers/provenance_nl", locals: { paper: paper } }
 
-    it "adds a last step after Published with the walk and the crosswalks" do
-      expect(steps.map { |s| s.at_css("strong").text }.last(2)).to eq(["Published", "Explore and reuse"])
+    it "adds a last step after the NeuroLibre publication with the walk and the crosswalks" do
+      expect(steps.map { |s| s.at_css("strong").text }.last(2)).to eq(["NeuroLibre publication", "Explore and reuse"])
       last = steps.last
       expect(last.at_css(".nl-provenance__btn--sakiori")["href"]).to eq("https://sakiori.evidencepub.io/00048")
       links = last.css(".nl-provenance__artifact--crosswalk")
       expect(links.map { |l| l.text.squish }).to eq(["FAIR²", "Croissant"])
       expect(links.map { |l| l["href"] }).to eq(evidence[:crosswalks].map { |c| c[:url] })
+    end
+  end
+
+  context "when the paper has a peer-reviewed version" do
+    let(:paper) do
+      build(:accepted_paper, doi: "10.55458/neurolibre.00046", review_issue_id: 46,
+            prpub_doi: "https://doi.org/10.1103/c11p-d13h", prpub_journal: "Physical Review Applied\n")
+    end
+    before { render partial: "papers/provenance_nl", locals: { paper: paper } }
+
+    it "adds it right after the NeuroLibre publication, linked by its DOI" do
+      names = steps.map { |s| s.at_css("strong").text }
+      expect(names.last(2)).to eq(["NeuroLibre publication", "Peer-reviewed publication"])
+      peer = steps.last
+      expect(peer.at_css("a")["href"]).to eq("https://doi.org/10.1103/c11p-d13h")
+      expect(peer.at_css(".nl-provenance__journal").text).to eq("Physical Review Applied")
+      expect(peer.at_css(".nl-provenance__doi").text).to eq("doi:10.1103/c11p-d13h")
+    end
+  end
+
+  context "without a peer-reviewed version" do
+    let(:paper) { build(:accepted_paper, review_issue_id: 12, prpub_doi: "", prpub_journal: nil) }
+    before { render partial: "papers/provenance_nl", locals: { paper: paper } }
+
+    it "leaves that step out" do
+      expect(steps.map { |s| s.at_css("strong").text }).not_to include("Peer-reviewed publication")
     end
   end
 end

@@ -52,7 +52,9 @@
     }
 
     &:has(+ .nl-provenance__step--done)::before { background: linear-gradient(180deg, #d1d5db, #e2362b); }
-    &--done::before { background: linear-gradient(180deg, #e2362b, #b256a1); }
+    &--done::before { background: #e2362b; }
+    &--done:has(+ .nl-provenance__step--evidence)::before,
+    &--peer::before { background: linear-gradient(180deg, #e2362b, #b256a1); }
     &:last-child::before { display: none; }
   }
 
@@ -79,6 +81,14 @@
     color: #fff;
     box-shadow: 0 0 0 4px #fdecea;
   }
+
+  &__step--peer &__dot {
+    border-color: #e2362b;
+    color: #c8302a;
+  }
+
+  &__journal { font-style: italic; }
+  &__link &__doi { margin-top: 2px; }
 
   &__step--evidence &__dot {
     border-color: #b256a1;
