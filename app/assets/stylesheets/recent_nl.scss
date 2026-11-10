@@ -12,7 +12,7 @@ $nl-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
 .nl-recent {
   font-family: Inter, system-ui, sans-serif;
   color: $nl-ink;
-  background: #f5f3ef;
+  background: #ffffff;
   padding: 72px 24px 88px;
 
   a { color: $nl-ink; text-decoration: none; }
@@ -152,8 +152,8 @@ $nl-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
     overflow: hidden;
     border-radius: 18px;
     background: #ffffff;
-    border: 1px solid #e7e2d9;
-    box-shadow: 0 1px 2px rgba(18, 24, 38, .05);
+    border: 1px solid #e5e7eb;
+    box-shadow: 0 1px 3px rgba(18, 24, 38, .08);
     transition: box-shadow .2s, border-color .2s, transform .2s;
 
     &:hover, &:focus-within {
