@@ -35,7 +35,7 @@
   }
 
   // Each step draws the line down to the next dot. The last step has none,
-  // so the trail ends at "Published".
+  // so the trail ends at its last dot.
   &__step {
     position: relative;
     display: flex;
@@ -51,7 +51,8 @@
       background: #d1d5db;
     }
 
-    &:nth-last-child(2)::before { background: linear-gradient(180deg, #d1d5db, #e2362b); }
+    &:has(+ .nl-provenance__step--done)::before { background: linear-gradient(180deg, #d1d5db, #e2362b); }
+    &--done::before { background: linear-gradient(180deg, #e2362b, #b256a1); }
     &:last-child::before { display: none; }
   }
 
@@ -77,6 +78,20 @@
     border-color: #e2362b;
     color: #fff;
     box-shadow: 0 0 0 4px #fdecea;
+  }
+
+  &__step--evidence &__dot {
+    border-color: #b256a1;
+    color: #8a3a7c;
+  }
+
+  &__note {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    margin-top: 2px;
+    font-size: 12px;
+    color: #6b7280;
   }
 
   &__link, &__body {
@@ -124,6 +139,8 @@
     &--data:hover    { color: #0b6b7d; }
     &--code:hover    { color: #9a4a05; }
     &--runtime:hover { color: #3b6b31; }
+    &--crosswalk { background: #f3f4f6; color: #374151; }
+    &--crosswalk:hover { color: #374151; }
   }
 
   &__doi {
@@ -148,6 +165,13 @@
     font-size: 13.5px;
 
     &:hover, &:focus-visible { color: #c8302a; border-color: #d1d5db; }
+
+    &--sakiori {
+      border-color: #e7c9e1;
+      background: #fbf3f9;
+      color: #8a3a7c;
+      &:hover, &:focus-visible { color: #6f2c63; border-color: #b256a1; }
+    }
 
     &--primary {
       min-height: 46px;

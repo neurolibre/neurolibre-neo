@@ -1,8 +1,11 @@
 <%# Paper page sidebar: the steps from the source repository to the published
-    preprint, each with its link. Steps the paper has no data for are left
-    out. Styles in provenance_nl.scss (scoped to .nl-provenance). %>
+    preprint, each with its link, then what is built from it after
+    publication (Sakiori, crosswalks; NeurolibreEvidenceHelper). Steps the
+    paper has no data for are left out. Styles in provenance_nl.scss (scoped
+    to .nl-provenance). %>
 <%= stylesheet_link_tag "provenance_nl", media: "all" %>
 <% artifacts = nl_recent_layers(paper) %>
+<% evidence = nl_evidence(paper) %>
 <% repo_name = paper.repository_url.to_s.sub(%r{\Ahttps?://(www\.)?github\.com/}i, "").delete_suffix("/").delete_suffix(".git") %>
 
 <section class="nl-provenance" aria-labelledby="nl-provenance-title">
@@ -59,5 +62,29 @@
         <% end %>
       </div>
     </li>
+
+    <% if evidence %>
+      <li class="nl-provenance__step nl-provenance__step--evidence">
+        <span class="nl-provenance__dot"><%= icon("fa-solid", "diagram-project") %></span>
+        <div class="nl-provenance__body">
+          <strong>Explore and reuse</strong>
+          <% if evidence[:sakiori] %>
+            <%= link_to evidence[:sakiori], class: "nl-provenance__btn nl-provenance__btn--sakiori", target: "_blank", rel: "noopener" do %>
+              <%= icon("fa-solid", "route") %>Walk through it on Sakiori
+            <% end %>
+          <% end %>
+          <% if evidence[:crosswalks].any? %>
+            <span class="nl-provenance__note"><%= icon("fa-solid", "robot") %>Its data, described for AI agents</span>
+            <div class="nl-provenance__artifacts">
+              <% evidence[:crosswalks].each do |c| %>
+                <%= link_to c[:url], class: "nl-provenance__artifact nl-provenance__artifact--crosswalk", target: "_blank", rel: "noopener", title: "#{c[:label]} crosswalk (JSON-LD)" do %>
+                  <%= icon("fa-solid", "code") %><%= c[:label] %>
+                <% end %>
+              <% end %>
+            </div>
+          <% end %>
+        </div>
+      </li>
+    <% end %>
   </ol>
 </section>

@@ -3,6 +3,8 @@ require "rails_helper"
 describe "papers/_provenance_nl.html.erb", type: :view do
   let(:doc) { Nokogiri::HTML(rendered) }
   let(:steps) { doc.css(".nl-provenance__step") }
+  let(:evidence) { nil }
+  before { allow(view).to receive(:nl_evidence).and_return(evidence) }
 
   context "with every step present" do
     let(:paper) do
@@ -55,6 +57,25 @@ describe "papers/_provenance_nl.html.erb", type: :view do
     it "leaves those steps out and keeps the PDF" do
       expect(steps.map { |s| s.at_css("strong").text }).to eq(["Source repository", "Technical screening", "Published"])
       expect(steps.last.css(".nl-provenance__btn").map { |b| b.text.squish }).to eq(["Download PDF"])
+    end
+  end
+
+  context "when the CDN lists the paper's Sakiori walk and crosswalks" do
+    let(:paper) { build(:accepted_paper, doi: "10.55458/neurolibre.00048", review_issue_id: 48) }
+    let(:evidence) do
+      { sakiori: "https://sakiori.evidencepub.io/00048",
+        crosswalks: [{ label: "FAIR²", url: "https://cdn.evidencepub.io/crosswalks/10.55458/neurolibre.00048/fair2.json" },
+                     { label: "Croissant", url: "https://cdn.evidencepub.io/crosswalks/10.55458/neurolibre.00048/croissant.json" }] }
+    end
+    before { render partial: "papers/provenance_nl", locals: { paper: paper } }
+
+    it "adds a last step after Published with the walk and the crosswalks" do
+      expect(steps.map { |s| s.at_css("strong").text }.last(2)).to eq(["Published", "Explore and reuse"])
+      last = steps.last
+      expect(last.at_css(".nl-provenance__btn--sakiori")["href"]).to eq("https://sakiori.evidencepub.io/00048")
+      links = last.css(".nl-provenance__artifact--crosswalk")
+      expect(links.map { |l| l.text.squish }).to eq(["FAIR²", "Croissant"])
+      expect(links.map { |l| l["href"] }).to eq(evidence[:crosswalks].map { |c| c[:url] })
     end
   end
 end
