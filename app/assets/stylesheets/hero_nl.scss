@@ -52,8 +52,9 @@ $nl-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
     bottom: -238px;
     width: 440px;
     height: 816px;
-    // Rotate around the axon tip so the axon points into the lower-right corner.
-    transform: rotate(-45deg);
+    // Rotate around the axon tip, so the tip stays in the lower-right corner
+    // whatever the angle.
+    transform: rotate(-40deg);
     transform-origin: 252.6px 798px;
     pointer-events: none;
   }
