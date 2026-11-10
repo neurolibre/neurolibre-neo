@@ -9,7 +9,7 @@ describe "home/_hero_nl.html.erb", type: :view do
     expect(doc.at_css("h1.nl-hero__title").text.squish).to eq("More than a PDF")
     expect(rendered).to include("A NeuroLibre preprint packages the article together with its reproducibility artifacts.")
     expect(rendered).to include("Checked that it runs before it is published")
-    expect(rendered).to include("A NeuroLibre preprint is a record of research that can be traced back to its sources and reproduced from them.")
+    expect(rendered).to include("NeuroLibre preprints are fully traceable to their sources and reproducible by both humans and AI agents.")
   end
 
   it "links to submission and to the papers" do
