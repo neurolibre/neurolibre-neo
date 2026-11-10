@@ -118,6 +118,7 @@ class Paper < ApplicationRecord
   scope :not_archived, -> { where('archived = ?', false) }
   scope :by_track, -> (track_id) { where('track_id = ?', track_id) }
 
+  before_validation :set_track_from_subject, on: :create
   before_create :set_sha, :set_last_activity, :populate_resubmission_fields, :set_version
   after_create :notify_editors, :notify_author
 
@@ -767,6 +768,12 @@ private
       errors.add(:base, :invalid, message: "Invalid Git repository address. Check that the repository can be cloned using the value entered in the form, and that access doesn't require authentication.")
       return false
     end
+  end
+
+  # The submission form picks a subject; the track is the subject's track.
+  def set_track_from_subject
+    subject = Subject.find_by(name: suggested_subject) if suggested_subject.present?
+    self.track_id = subject.track_id if subject
   end
 
   def set_sha

@@ -8,6 +8,43 @@ describe PapersController, type: :controller do
     allow(Repository).to receive(:editors).and_return ["@user1", "@user2"]
   end
 
+  describe "submission form" do
+    let(:user) { create(:user) }
+    let!(:subject_mri) { create(:subject, name: "mri") }
+
+    before { login_as(user) }
+
+    it "prefills the version and the submission type" do
+      get :new
+      expect(response).to be_successful
+      expect(response.body).to include('value="v1.0.0"')
+      expect(response.body).to match(/<option selected="selected" value="new">/)
+    end
+
+    it "lists the subjects in a dropdown" do
+      get :new
+      expect(response.body).to match(%r{<select[^>]*name="paper\[suggested_subject\]"})
+      expect(response.body).to include('<option value="mri">mri</option>')
+    end
+
+    it "creates a paper from the defaults and a chosen subject, taking the track from the subject" do
+      expect {
+        post :create, params: { paper: { title: "A preprint", repository_url: "https://github.com/openjournals/joss",
+                                         software_version: "v1.0.0", submission_kind: "new",
+                                         suggested_subject: "mri", body: "Message to editors" } }
+      }.to change(Paper, :count).by(1)
+      expect(Paper.last.track_id).to eq(subject_mri.track_id)
+    end
+
+    it "ignores a track_id sent by the browser and uses the subject's track" do
+      other_track = create(:track)
+      post :create, params: { paper: { title: "A preprint", repository_url: "https://github.com/openjournals/joss",
+                                       software_version: "v1.0.0", submission_kind: "new",
+                                       suggested_subject: "mri", track_id: other_track.id, body: "Message" } }
+      expect(Paper.last.track_id).to eq(subject_mri.track_id)
+    end
+  end
+
   describe "GET #index" do
     it "should render all visible papers" do
       get :index, format: :html
@@ -130,8 +167,7 @@ describe PapersController, type: :controller do
                        git_branch: "joss-paper",
                        software_version: "v1.0.1",
                        submission_kind: "new",
-                       suggested_subject: "Astronomy & astrophysics",
-                       track_id: create(:track).id
+                       suggested_subject: create(:subject, name: "Astronomy & astrophysics").name
                      }
       post :create, params: {paper: paper_params}
       expect(response).to be_redirect # as it's created the thing

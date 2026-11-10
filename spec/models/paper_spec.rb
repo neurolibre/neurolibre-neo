@@ -11,6 +11,21 @@ describe Paper do
     expect { paper.save! }.to raise_error(ActiveRecord::RecordInvalid)
   end
 
+  describe "track from subject" do
+    it "takes the track from the chosen subject" do
+      subject_record = create(:subject, name: "fmri")
+      paper = build(:paper, suggested_subject: "fmri", track: nil)
+      expect(paper).to be_valid
+      expect(paper.track_id).to eq(subject_record.track_id)
+    end
+
+    it "is invalid when no known subject or track is given" do
+      paper = build(:paper, suggested_subject: "not-a-subject", track: nil)
+      expect(paper).not_to be_valid
+      expect(paper.errors.full_messages.join).to include("subject")
+    end
+  end
+
   describe "repository address check" do
     it "runs git ls-remote without a shell, passing the URL as one argument" do
       paper = build(:paper, repository_url: "https://github.com/openjournals/joss")

@@ -3,6 +3,7 @@ require 'rails_helper'
 RSpec.describe "papers/new", type: :view do
   let(:paper_types) { [] }
   let!(:paper) { assign(:paper, build(:paper)) }
+  let!(:subject_mri) { create(:subject, name: "mri") }
 
   before(:each) do
     allow(Repository).to receive(:editors).and_return %w(@user1 @user2 @user3)
@@ -28,8 +29,10 @@ RSpec.describe "papers/new", type: :view do
         assert_select "input#paper_git_branch[name=?]", "paper[git_branch]"
         assert_select "input#paper_software_version[name=?]", "paper[software_version]"
         assert_select "select#paper_submission_kind[name=?]", "paper[submission_kind]"
-        assert_select "input#paper_track_id[name=?]", "paper[track_id]"
-        assert_select "input#paper_suggested_subject[name=?]", "paper[suggested_subject]"
+        assert_select "input#paper_track_id", false
+        assert_select "select#paper_suggested_subject[name=?]", "paper[suggested_subject]" do
+          assert_select "option[value=?]", "mri"
+        end
         assert_select "textarea#paper_body[name=?]", "paper[body]"
         assert_select "input#author-check"
         assert_select "input#coc-check"
@@ -50,8 +53,10 @@ RSpec.describe "papers/new", type: :view do
         assert_select "input#paper_git_branch[name=?]", "paper[git_branch]"
         assert_select "input#paper_software_version[name=?]", "paper[software_version]"
         assert_select "select#paper_submission_kind[name=?]", "paper[submission_kind]"
-        assert_select "input#paper_track_id[name=?]", "paper[track_id]"
-        assert_select "input#paper_suggested_subject[name=?]", "paper[suggested_subject]"
+        assert_select "input#paper_track_id", false
+        assert_select "select#paper_suggested_subject[name=?]", "paper[suggested_subject]" do
+          assert_select "option[value=?]", "mri"
+        end
         assert_select "textarea#paper_body[name=?]", "paper[body]"
         assert_select "input#author-check"
         assert_select "input#coc-check"
