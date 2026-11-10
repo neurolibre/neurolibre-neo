@@ -1,0 +1,27 @@
+<%# The newest paper, large: full author list, archive chips, open button. %>
+<article class="nl-recent__featured">
+  <div class="nl-recent__featured-body">
+    <span class="nl-recent__new">New · <%= nl_recent_date(paper) %></span>
+    <h3><%= link_to paper.title, paper.seo_url %></h3>
+    <p class="nl-recent__authors"><%= nl_recent_author_names(paper).join(", ") %></p>
+    <span class="nl-recent__doi">doi:<%= paper.doi %></span>
+
+    <% layers = nl_recent_layers(paper) %>
+    <% if layers.any? %>
+      <div class="nl-recent__chips">
+        <% layers.each do |layer| %>
+          <%= link_to layer[:url], class: "nl-recent__chip nl-recent__chip--#{layer[:kind]}", target: "_blank", rel: "noopener",
+                      title: "#{layer[:label]} archive" do %><span class="dot" aria-hidden="true"></span><%= layer[:label] %><% end %>
+        <% end %>
+      </div>
+    <% end %>
+
+    <%= link_to nl_recent_open_url(paper), class: "nl-recent__open", target: "_blank", rel: "noopener" do %>
+      Open living preprint
+      <svg aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"></path></svg>
+    <% end %>
+  </div>
+  <div class="nl-recent__featured-image">
+    <%= image_tag pretty_card_image(paper), alt: "", loading: "lazy" %>
+  </div>
+</article>

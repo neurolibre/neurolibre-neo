@@ -1,19 +1,4 @@
 
 <%= render "home/hero_nl" %>
 
-<div class="container">
-  <h4>Recently Published Reproducible Preprints <span class="badge-count"><%= Paper.visible.count %></span></h4>
-
-  <div class="paper-list" id="all-papers">
-    <% if request.user_agent =~ /Mobile/ %>
-      <%= render partial: "papers/list", locals: { papers: @papers } %>
-  <% else %>
-    <%= render partial: "papers/list_nl", locals: { papers: @papers } %>
-  <% end %>
-  </div>
-  </div>
-
-  <div class="my-5 text-center">
-    <%= link_to "View all papers".html_safe, published_papers_path, class: "btn", data: { text: "View all papers"} %>
-  </div>
-</div>
+<%= render "home/recent_nl", papers: @papers %>

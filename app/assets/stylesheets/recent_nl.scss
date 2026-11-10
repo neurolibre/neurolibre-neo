@@ -1,0 +1,228 @@
+// NeuroLibre home page: recent papers (home/_recent_nl). Every rule is
+// scoped to .nl-recent so nothing leaks onto other pages.
+// Layer colours are the darker shades of the hero's, so they read on white.
+
+$nl-ink: #121826;
+$nl-muted: #4b5563;
+$nl-faint: #6b7280;
+$nl-red: #e2362b;
+$nl-red-dark: #c8302a;
+$nl-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+
+.nl-recent {
+  font-family: Inter, system-ui, sans-serif;
+  color: $nl-ink;
+  background: #f5f3ef;
+  padding: 72px 24px 88px;
+
+  a { color: $nl-ink; text-decoration: none; }
+  a:hover, a:focus { color: $nl-red-dark; }
+
+  h2, h3 { font-family: "Inter Tight", Inter, sans-serif; color: $nl-ink; margin: 0; }
+
+  &__inner {
+    max-width: 1160px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 28px;
+  }
+
+  &__head {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 16px;
+
+    h2 { font-weight: 800; font-size: 40px; letter-spacing: -0.03em; }
+  }
+
+  &__all {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+    padding: 0 20px;
+    border-radius: 999px;
+    border: 1px solid $nl-ink;
+    font-weight: 600;
+    font-size: 15px;
+  }
+
+  // ---- the newest paper ----
+  &__featured {
+    display: flex;
+    flex-wrap: wrap-reverse;
+    overflow: hidden;
+    border-radius: 22px;
+    background: #ffffff;
+    border: 1px solid rgba(226, 54, 43, .55);
+    box-shadow: 0 22px 50px rgba(18, 24, 38, .12);
+
+    h3 { font-weight: 800; font-size: 34px; line-height: 1.12; letter-spacing: -0.025em; }
+  }
+
+  &__featured-body {
+    flex: 1 1 420px;
+    min-width: 0;
+    padding: 34px 36px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  &__featured-image {
+    position: relative;
+    flex: 1 1 420px;
+    min-height: 340px;
+
+    img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+    &::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(90deg, #ffffff 0%, transparent 30%);
+    }
+  }
+
+  &__new {
+    align-self: flex-start;
+    padding: 6px 12px;
+    border-radius: 999px;
+    background: #fdecea;
+    border: 1px solid rgba(226, 54, 43, .35);
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    color: #b3261e;
+  }
+
+  &__authors { margin: 0; font-size: 15px; line-height: 1.6; color: $nl-muted; }
+  &__doi { font-family: $nl-mono; font-size: 13px; color: #374151; }
+
+  &__chips { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 6px; }
+
+  &__chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    min-height: 36px;
+    padding: 0 12px;
+    border-radius: 9px;
+    font-size: 13px;
+    font-weight: 600;
+
+    .dot { width: 8px; height: 8px; border-radius: 50%; }
+
+    &--prose { border: 1px solid rgba(111, 0, 183, .35); background: #f3ebff; color: #5b0096 !important; .dot { background: #6f00b7; } }
+    &--data { border: 1px solid rgba(15, 159, 184, .35); background: #e3f7fb; color: #0b6b7d !important; .dot { background: #0f9fb8; } }
+    &--code { border: 1px solid rgba(226, 112, 10, .35); background: #fff0e2; color: #9a4a05 !important; .dot { background: #e2700a; } }
+    &--runtime { border: 1px solid rgba(79, 138, 67, .35); background: #eaf4e6; color: #3b6b31 !important; .dot { background: #4f8a43; } }
+    &:hover, &:focus { filter: brightness(.96); }
+  }
+
+  &__open {
+    align-self: flex-start;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    min-height: 48px;
+    padding: 0 22px;
+    margin-top: 8px;
+    border-radius: 999px;
+    background: $nl-red;
+    color: #ffffff !important;
+    font-weight: 600;
+    font-size: 15px;
+
+    &:hover, &:focus { background: $nl-red-dark; }
+  }
+
+  // ---- the rest ----
+  &__grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 22px;
+  }
+
+  &__card {
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    border-radius: 18px;
+    background: #ffffff;
+    border: 1px solid #e7e2d9;
+    box-shadow: 0 1px 2px rgba(18, 24, 38, .05);
+    transition: box-shadow .2s, border-color .2s, transform .2s;
+
+    &:hover, &:focus-within {
+      border-color: rgba(226, 54, 43, .55);
+      box-shadow: 0 16px 36px rgba(18, 24, 38, .12);
+      transform: translateY(-2px);
+    }
+
+    h3 { font-weight: 700; font-size: 18px; line-height: 1.3; letter-spacing: -0.01em; }
+    .nl-recent__authors { font-size: 13px; line-height: 1.5; }
+  }
+
+  &__card-image {
+    display: block;
+    aspect-ratio: 16 / 9;
+    overflow: hidden;
+    background: #0b1626;
+
+    img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  }
+
+  &__card-body { flex: 1; display: flex; flex-direction: column; gap: 10px; padding: 18px 20px 20px; }
+  &__date { font-size: 12px; color: $nl-faint; }
+
+  &__card-foot {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    margin-top: auto;
+    padding-top: 6px;
+  }
+
+  &__dots { display: flex; gap: 5px; }
+  &__dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    &--prose { background: #6f00b7; }
+    &--data { background: #0f9fb8; }
+    &--code { background: #e2700a; }
+    &--runtime { background: #4f8a43; }
+  }
+
+  &__card-open {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+    font-size: 14px;
+    font-weight: 600;
+    color: $nl-red-dark !important;
+  }
+
+  // When the featured card stacks, the image sits above the text: fade downwards.
+  @media (max-width: 900px) {
+    &__featured-image::after { background: linear-gradient(0deg, #ffffff 0%, transparent 30%); }
+  }
+
+  @media (max-width: 575px) {
+    padding: 48px 16px 64px;
+    &__grid { grid-template-columns: 1fr; }
+    &__head h2 { font-size: 30px; }
+    &__featured-body { padding: 24px 22px; }
+    &__featured h3 { font-size: 26px; }
+    &__featured-image { min-height: 220px; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    &__card { transition: none; }
+    &__card:hover { transform: none; }
+  }
+}

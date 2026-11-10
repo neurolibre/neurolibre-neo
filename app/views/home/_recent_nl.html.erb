@@ -1,0 +1,28 @@
+<%# NeuroLibre home page: recent papers, the newest featured and the rest in a
+    grid. Parts in home/recent_nl/, styles in recent_nl.scss (scoped to
+    .nl-recent), helpers in NeurolibreRecentHelper. home/index renders this
+    with one line, so upstream changes merge cleanly. %>
+<%= stylesheet_link_tag "recent_nl", media: "all" %>
+<% papers = papers.reject(&:submitted?) %>
+<% prefetch_card_images(papers) %>
+
+<section class="nl-recent" aria-labelledby="nl-recent-title">
+  <div class="nl-recent__inner">
+    <div class="nl-recent__head">
+      <h2 id="nl-recent-title">Latest living preprints</h2>
+      <%= link_to "All #{Paper.visible.count} papers", published_papers_path, class: "nl-recent__all" %>
+    </div>
+
+    <% if papers.any? %>
+      <%= render "home/recent_nl/featured", paper: papers.first %>
+
+      <% if papers.size > 1 %>
+        <div class="nl-recent__grid">
+          <% papers.drop(1).each do |paper| %>
+            <%= render "home/recent_nl/card", paper: paper %>
+          <% end %>
+        </div>
+      <% end %>
+    <% end %>
+  </div>
+</section>
