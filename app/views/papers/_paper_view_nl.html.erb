@@ -1,0 +1,40 @@
+<%# The paper itself on its page: the living preprint by default, with a toggle
+    to the PDF. The PDF is only loaded when someone switches to it, and
+    "#pdf" in the address opens it directly. Papers without a living preprint
+    show the PDF as before. Behaviour in paper_view_controller.js, styles in
+    paper_view_nl.scss (scoped to .nl-paper-view). %>
+<%= stylesheet_link_tag "paper_view_nl", media: "all" %>
+<% living = paper.book_exec_url.presence %>
+<% pdf_src = "#{paper.pdf_url}#toolbar=0&navpanes=0&scrollbar=0&statusbar=0&messages=0&view=FitH" %>
+
+<div class="nl-paper-view" data-controller="paper-view">
+  <% if living %>
+    <div class="nl-paper-view__bar">
+      <div class="nl-paper-view__toggle" role="group" aria-label="View the paper as">
+        <button type="button" aria-pressed="true" data-paper-view-target="tab" data-view="living" data-action="paper-view#show">Living preprint</button>
+        <button type="button" aria-pressed="false" data-paper-view-target="tab" data-view="pdf" data-action="paper-view#show">PDF</button>
+      </div>
+      <%= link_to living, class: "nl-paper-view__open", target: "_blank", rel: "noopener" do %>
+        Open in a new tab
+        <svg aria-hidden="true" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 4h6v6M20 4l-9 9M19 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1h5"></path></svg>
+      <% end %>
+    </div>
+
+    <div class="nl-paper-view__living" data-paper-view-target="living">
+      <iframe src="<%= living %>" title="Living preprint: <%= paper.title %>" loading="eager" allow="fullscreen; clipboard-write"></iframe>
+    </div>
+
+    <div class="nl-paper-view__pdf" data-paper-view-target="pdf" hidden></div>
+    <template data-paper-view-target="pdfTemplate">
+      <object id="joss-paper" data="<%= pdf_src %>" type="application/pdf">
+        <embed src="<%= pdf_src %>" type="application/pdf">
+      </object>
+    </template>
+  <% else %>
+    <div class="nl-paper-view__pdf">
+      <object id="joss-paper" data="<%= pdf_src %>" type="application/pdf">
+        <embed src="<%= pdf_src %>" type="application/pdf">
+      </object>
+    </div>
+  <% end %>
+</div>

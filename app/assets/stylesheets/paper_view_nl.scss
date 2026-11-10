@@ -1,0 +1,83 @@
+// NeuroLibre paper page: living preprint / PDF toggle (papers/_paper_view_nl).
+// Every rule is scoped to .nl-paper-view so nothing leaks onto other pages.
+
+.nl-paper-view {
+  font-family: Inter, system-ui, sans-serif;
+
+  &__bar {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 14px;
+  }
+
+  // A two-option segmented control.
+  &__toggle {
+    display: inline-flex;
+    padding: 4px;
+    border-radius: 999px;
+    background: #f1f2f5;
+    border: 1px solid #e3e5ea;
+
+    button {
+      min-height: 40px;
+      padding: 0 18px;
+      border: 0;
+      border-radius: 999px;
+      background: transparent;
+      color: #374151;
+      font: 600 14px Inter, system-ui, sans-serif;
+      cursor: pointer;
+      transition: background .15s, color .15s, box-shadow .15s;
+
+      &:hover { color: #121826; }
+      &:focus-visible { outline: 2px solid #e2362b; outline-offset: 2px; }
+
+      &[aria-pressed="true"] {
+        background: #ffffff;
+        color: #121826;
+        box-shadow: 0 1px 3px rgba(18, 24, 38, .15);
+      }
+    }
+  }
+
+  &__open {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    min-height: 40px;
+    font-size: 14px;
+    font-weight: 600;
+    color: #c8302a;
+    text-decoration: none;
+
+    &:hover, &:focus { color: #9e221d; text-decoration: none; }
+  }
+
+  &__living {
+    iframe {
+      display: block;
+      width: 100%;
+      height: calc(100vh - 150px);
+      min-height: 720px;
+      border: 1px solid #e3e5ea;
+      border-radius: 12px;
+      background: #ffffff;
+    }
+  }
+
+  &__pdf {
+    object, embed {
+      display: block;
+      width: 100%;
+      // A4 proportions, as the page's own sizing script uses.
+      aspect-ratio: 1 / 1.41421;
+      height: auto;
+      border-radius: 12px;
+    }
+  }
+
+  [hidden] { display: none !important; }
+}

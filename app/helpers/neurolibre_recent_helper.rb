@@ -1,19 +1,20 @@
 # NeuroLibre-only helpers for the home page's recent papers (home/_recent_nl).
 # Kept out of upstream helpers so upstream changes merge cleanly.
 module NeurolibreRecentHelper
-  # A paper's archives as layers, in the hero's order, each with the DOI it
-  # links to. Only archives the paper has are returned.
+  # A paper's reproducibility artifacts, each with the archive DOI it links
+  # to and the icon the old cards used. Only archives the paper has are
+  # returned ("N/A" counts as none, as in PapersHelper#pretty_archive_badge).
   NL_RECENT_LAYERS = [
-    [:prose, "Prose", :book_doi],
-    [:data, "Data", :data_doi],
-    [:code, "Code", :repository_doi],
-    [:runtime, "Runtime", :docker_doi]
+    [:html, "HTML", :book_doi, %w[fa-solid file-code]],
+    [:data, "Data", :data_doi, %w[fa-solid database]],
+    [:code, "Code", :repository_doi, %w[fa-brands github]],
+    [:runtime, "Runtime", :docker_doi, %w[fa-brands docker]]
   ].freeze
 
   def nl_recent_layers(paper)
-    NL_RECENT_LAYERS.filter_map do |kind, label, field|
+    NL_RECENT_LAYERS.filter_map do |kind, label, field, icon|
       url = paper.public_send(field)
-      { kind: kind, label: label, url: url } if url.present?
+      { kind: kind, label: label, url: url, icon: icon } if url.present? && url != "N/A"
     end
   end
 

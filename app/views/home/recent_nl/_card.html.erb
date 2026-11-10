@@ -9,9 +9,15 @@
     <p class="nl-recent__authors"><%= nl_recent_authors_short(paper) %></p>
     <div class="nl-recent__card-foot">
       <% layers = nl_recent_layers(paper) %>
-      <span class="nl-recent__dots" aria-label="Archived: <%= layers.map { |l| l[:label].downcase }.to_sentence %>">
-        <% layers.each do |layer| %><span class="nl-recent__dot nl-recent__dot--<%= layer[:kind] %>" title="<%= layer[:label] %>"></span><% end %>
-      </span>
+      <div class="nl-recent__artifacts">
+        <span class="nl-recent__artifacts-label">Reproducibility artifacts</span>
+        <div class="nl-recent__icons">
+          <% layers.each do |layer| %>
+            <%= link_to icon(*layer[:icon]), layer[:url], class: "nl-recent__icon nl-recent__icon--#{layer[:kind]}", target: "_blank", rel: "noopener",
+                        title: "#{layer[:label]} archive", "aria-label": "#{layer[:label]} archive" %>
+          <% end %>
+        </div>
+      </div>
       <%= link_to "Open →", nl_recent_open_url(paper), class: "nl-recent__card-open", target: "_blank", rel: "noopener" %>
     </div>
   </div>

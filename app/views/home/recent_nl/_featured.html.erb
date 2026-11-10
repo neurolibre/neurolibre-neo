@@ -8,11 +8,14 @@
 
     <% layers = nl_recent_layers(paper) %>
     <% if layers.any? %>
-      <div class="nl-recent__chips">
-        <% layers.each do |layer| %>
-          <%= link_to layer[:url], class: "nl-recent__chip nl-recent__chip--#{layer[:kind]}", target: "_blank", rel: "noopener",
-                      title: "#{layer[:label]} archive" do %><span class="dot" aria-hidden="true"></span><%= layer[:label] %><% end %>
-        <% end %>
+      <div class="nl-recent__artifacts">
+        <span class="nl-recent__artifacts-label">Reproducibility artifacts</span>
+        <div class="nl-recent__chips">
+          <% layers.each do |layer| %>
+            <%= link_to layer[:url], class: "nl-recent__chip nl-recent__chip--#{layer[:kind]}", target: "_blank", rel: "noopener",
+                        title: "#{layer[:label]} archive" do %><%= icon(*layer[:icon]) %><%= layer[:label] %><% end %>
+          <% end %>
+        </div>
       </div>
     <% end %>
 

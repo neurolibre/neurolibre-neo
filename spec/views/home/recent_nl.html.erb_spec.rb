@@ -22,14 +22,26 @@ describe "home/_recent_nl.html.erb", type: :view do
     expect(doc.css(".nl-recent__card h3").map { |h| h.text.squish }).to eq(["An older preprint"])
   end
 
-  it "links each archive chip to the paper's archive DOI, in layer order" do
-    chips = doc.css(".nl-recent__featured .nl-recent__chip")
-    expect(chips.map { |c| c.text.squish }).to eq(%w[Prose Data Code Runtime])
-    expect(chips.map { |c| c["href"] }).to eq(archives.values_at(:book_doi, :data_doi, :repository_doi, :docker_doi))
+  it "links each reproducibility artifact to its archive DOI, opening in a new tab" do
+    artifacts = doc.at_css(".nl-recent__featured .nl-recent__artifacts")
+    expect(artifacts.text).to include("Reproducibility artifacts")
+    links = artifacts.css("a")
+    expect(links.map { |a| a.text.squish }).to eq(%w[HTML Data Code Runtime])
+    expect(links.map { |a| a["href"] }).to eq(archives.values_at(:book_doi, :data_doi, :repository_doi, :docker_doi))
+    expect(links.map { |a| a["target"] }.uniq).to eq(["_blank"])
+    expect(links.map { |a| a.at_css("svg, i") }).to all(be_present)
   end
 
-  it "only shows the archives a paper has" do
-    expect(doc.css(".nl-recent__card .nl-recent__dot").map { |d| d["title"] }).to eq(["Data"])
+  it "shows a card's artifacts as icon links, only the ones the paper has" do
+    links = doc.css(".nl-recent__card .nl-recent__artifacts a")
+    expect(links.map { |a| a["aria-label"] }).to eq(["Data archive"])
+    expect(links.first["href"]).to eq("https://doi.org/10.5281/zenodo.9")
+    expect(links.first["target"]).to eq("_blank")
+  end
+
+  it "treats N/A as no archive" do
+    paper = build(:accepted_paper, data_doi: "N/A", docker_doi: "N/A")
+    expect(view.nl_recent_layers(paper).map { |l| l[:kind] }).to eq([])
   end
 
   it "opens the living preprint, and links to all papers with the count" do

@@ -101,7 +101,16 @@ $nl-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
   &__authors { margin: 0; font-size: 15px; line-height: 1.6; color: $nl-muted; }
   &__doi { font-family: $nl-mono; font-size: 13px; color: #374151; }
 
-  &__chips { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 6px; }
+  &__artifacts { display: flex; flex-direction: column; gap: 8px; margin-top: 6px; }
+  &__artifacts-label {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    color: $nl-faint;
+  }
+
+  &__chips { display: flex; flex-wrap: wrap; gap: 8px; }
 
   &__chip {
     display: inline-flex;
@@ -113,12 +122,12 @@ $nl-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
     font-size: 13px;
     font-weight: 600;
 
-    .dot { width: 8px; height: 8px; border-radius: 50%; }
+    i, svg { font-size: 14px; }
 
-    &--prose { border: 1px solid rgba(111, 0, 183, .35); background: #f3ebff; color: #5b0096 !important; .dot { background: #6f00b7; } }
-    &--data { border: 1px solid rgba(15, 159, 184, .35); background: #e3f7fb; color: #0b6b7d !important; .dot { background: #0f9fb8; } }
-    &--code { border: 1px solid rgba(226, 112, 10, .35); background: #fff0e2; color: #9a4a05 !important; .dot { background: #e2700a; } }
-    &--runtime { border: 1px solid rgba(79, 138, 67, .35); background: #eaf4e6; color: #3b6b31 !important; .dot { background: #4f8a43; } }
+    &--html { border: 1px solid rgba(111, 0, 183, .35); background: #f3ebff; color: #5b0096 !important; }
+    &--data { border: 1px solid rgba(15, 159, 184, .35); background: #e3f7fb; color: #0b6b7d !important; }
+    &--code { border: 1px solid rgba(226, 112, 10, .35); background: #fff0e2; color: #9a4a05 !important; }
+    &--runtime { border: 1px solid rgba(79, 138, 67, .35); background: #eaf4e6; color: #3b6b31 !important; }
     &:hover, &:focus { filter: brightness(.96); }
   }
 
@@ -164,6 +173,8 @@ $nl-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
 
     h3 { font-weight: 700; font-size: 18px; line-height: 1.3; letter-spacing: -0.01em; }
     .nl-recent__authors { font-size: 13px; line-height: 1.5; }
+    .nl-recent__artifacts { margin-top: 0; gap: 6px; }
+    .nl-recent__artifacts-label { font-size: 10px; }
   }
 
   &__card-image {
@@ -180,22 +191,30 @@ $nl-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
 
   &__card-foot {
     display: flex;
-    align-items: center;
+    align-items: flex-end;
     justify-content: space-between;
     gap: 10px;
     margin-top: auto;
     padding-top: 6px;
   }
 
-  &__dots { display: flex; gap: 5px; }
-  &__dot {
-    width: 10px;
-    height: 10px;
-    border-radius: 50%;
-    &--prose { background: #6f00b7; }
-    &--data { background: #0f9fb8; }
-    &--code { background: #e2700a; }
-    &--runtime { background: #4f8a43; }
+  // A card's artifacts: one icon link each, in its layer colour.
+  &__icons { display: flex; gap: 6px; }
+  &__icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 34px;
+    height: 34px;
+    border-radius: 9px;
+    font-size: 15px;
+    transition: transform .15s;
+
+    &:hover, &:focus { transform: translateY(-1px); filter: brightness(.95); }
+    &--html { background: #f3ebff; color: #5b0096 !important; }
+    &--data { background: #e3f7fb; color: #0b6b7d !important; }
+    &--code { background: #fff0e2; color: #9a4a05 !important; }
+    &--runtime { background: #eaf4e6; color: #3b6b31 !important; }
   }
 
   &__card-open {
