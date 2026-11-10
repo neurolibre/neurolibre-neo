@@ -1,0 +1,127 @@
+<%# The preprint drawn as five stacked layers: runtime, code, data, prose and
+    the article on top. The figures and numbers are illustrative. %>
+<div class="nl-hero__visual" role="img" aria-label="A NeuroLibre preprint shown as five layers: the runtime environment, the code, the data, the prose, and the article on top, whose page scrolls through text, interactive figures and a table">
+  <div class="nl-hero__stack" aria-hidden="true">
+
+    <div class="nl-hero__plate nl-hero__plate--runtime">
+      <div class="nl-hero__plate-head"><span>Runtime</span><span>DOI</span></div>
+      <div class="nl-hero__cmd">FROM python:3.11</div>
+      <div class="nl-hero__cmd">pip install -r requirements.txt</div>
+      <div class="nl-hero__cmd">COPY notebooks/ data/</div>
+    </div>
+
+    <div class="nl-hero__plate nl-hero__plate--code">
+      <div class="nl-hero__plate-head"><span>Code</span><span>analysis.py · DOI</span></div>
+      <div>
+        <div><span class="kw">import</span> pandas <span class="kw">as</span> pd</div>
+        <div><span class="kw">import</span> matplotlib.pyplot <span class="kw">as</span> plt</div>
+        <div class="gap"></div>
+        <div><span class="kw">def</span> <span class="fn">fa_by_group</span>(path):</div>
+        <div class="indent">df = pd.read_csv(path)</div>
+        <div class="indent"><span class="kw">return</span> df.groupby(<span class="str">"group"</span>)[<span class="str">"fa"</span>].mean()</div>
+        <div class="gap"></div>
+        <div>fa_by_group(<span class="str">"data/fa.csv"</span>).plot.bar()</div>
+      </div>
+    </div>
+
+    <div class="nl-hero__plate nl-hero__plate--data">
+      <div class="nl-hero__plate-head"><span>Data</span><span>DOI</span></div>
+      <div class="nl-hero__row nl-hero__row--head"><span>subject</span><span>group</span><span>age</span><span>fa</span></div>
+      <% NeurolibreHeroHelper::NL_HERO_DATA_ROWS.each_with_index do |row, i| %>
+        <div class="nl-hero__row" style="animation-delay: <%= i %>s"><% row.each do |cell| %><span><%= cell %></span><% end %></div>
+      <% end %>
+    </div>
+
+    <div class="nl-hero__plate nl-hero__plate--prose">
+      <div class="nl-hero__plate-head"><span>Prose</span><span>MyST</span></div>
+      <div class="heading"># Results</div>
+      <div>Anisotropy falls with age in both groups, and faster in group B.</div>
+      <div class="directive">:::{figure} #fig-fa</div>
+      <div>See the interactive version below.<span class="caret"></span></div>
+    </div>
+
+    <div class="nl-hero__plate nl-hero__plate--article">
+      <div class="nl-hero__article-head">
+        <%= image_tag "joss2.svg", alt: "" %>
+        <div class="nl-hero__title-bar"></div>
+      </div>
+
+      <div class="nl-hero__viewport">
+        <div class="nl-hero__scroll">
+          <div class="nl-hero__text">
+            <div class="nl-hero__line" style="width: 96%"></div>
+            <div class="nl-hero__line" style="width: 90%"></div>
+            <div class="nl-hero__line" style="width: 72%"></div>
+          </div>
+
+          <div class="nl-hero__figure">
+            <div class="nl-hero__figure-head"><span>Figure 1</span><span>interactive</span></div>
+            <div class="nl-hero__bars">
+              <div class="nl-hero__bar nl-hero__bar--1"></div>
+              <div class="nl-hero__bar nl-hero__bar--2"></div>
+              <div class="nl-hero__bar nl-hero__bar--3"></div>
+            </div>
+          </div>
+
+          <div class="nl-hero__text">
+            <div class="nl-hero__line" style="width: 94%"></div>
+            <div class="nl-hero__line" style="width: 84%"></div>
+          </div>
+
+          <div class="nl-hero__figure">
+            <div class="nl-hero__figure-head"><span>Figure 2</span><span>interactive</span></div>
+            <svg viewBox="0 0 380 110">
+              <path class="nl-hero__curve" d="M10 92 C 60 88, 90 70, 140 62 S 230 30, 280 28 S 350 18, 370 14" fill="none" stroke="#b256a1" stroke-width="3" stroke-linecap="round"></path>
+              <% nl_hero_scatter.each do |pt| %>
+                <circle class="nl-hero__point" cx="<%= pt[:x] %>" cy="<%= pt[:y] %>" r="3" fill="#37cae2" style="animation-delay: <%= pt[:delay] %>"></circle>
+              <% end %>
+            </svg>
+            <div class="nl-hero__slider"><div class="nl-hero__track"></div><div class="nl-hero__knob"></div></div>
+          </div>
+
+          <div class="nl-hero__text">
+            <div class="nl-hero__line" style="width: 92%"></div>
+            <div class="nl-hero__line" style="width: 96%"></div>
+            <div class="nl-hero__line" style="width: 60%"></div>
+          </div>
+
+          <div class="nl-hero__figure">
+            <div class="nl-hero__figure-head">
+              <span>Figure 3</span>
+              <span class="nl-hero__toggle"><span class="thumb"></span><span>by group</span><span>by age</span></span>
+            </div>
+            <svg viewBox="0 0 380 120">
+              <path class="nl-hero__ridge" d="M10 40 C 70 40, 110 6, 160 8 S 240 40, 370 40 Z" fill="#37cae2" fill-opacity=".55" stroke="#37cae2" stroke-width="2"></path>
+              <path class="nl-hero__ridge" d="M10 76 C 90 76, 150 30, 200 34 S 280 76, 370 76 Z" fill="#f97c0c" fill-opacity=".5" stroke="#f97c0c" stroke-width="2" style="animation-delay: -1.2s"></path>
+              <path class="nl-hero__ridge" d="M10 112 C 120 112, 190 62, 250 66 S 320 112, 370 112 Z" fill="#659b59" fill-opacity=".55" stroke="#659b59" stroke-width="2" style="animation-delay: -2.4s"></path>
+            </svg>
+          </div>
+
+          <div class="nl-hero__text">
+            <div class="nl-hero__line" style="width: 90%"></div>
+            <div class="nl-hero__line" style="width: 70%"></div>
+          </div>
+
+          <div class="nl-hero__table">
+            <div class="nl-hero__figure-head">Table 1</div>
+            <div class="nl-hero__trow nl-hero__trow--head">
+              <span>region</span><span>n</span>
+              <span>mean FA<svg aria-hidden="true" width="8" height="8" viewBox="0 0 10 10"><path d="M5 1 L9 7 H1 Z" fill="#6f00b7"></path></svg></span>
+              <span>change</span>
+            </div>
+            <% NeurolibreHeroHelper::NL_HERO_TABLE_ROWS.each_with_index do |(region, n, mean, change), i| %>
+              <div class="nl-hero__trow" style="animation-delay: <%= (i * 1.4).round(1) %>s">
+                <span><%= region %></span><span><%= n %></span><span><%= mean %></span><span class="<%= change.start_with?('-') ? 'down' : 'up' %>"><%= change %></span>
+              </div>
+            <% end %>
+          </div>
+
+          <div class="nl-hero__text">
+            <div class="nl-hero__line" style="width: 94%"></div>
+            <div class="nl-hero__line" style="width: 80%"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

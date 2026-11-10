@@ -1,0 +1,49 @@
+<%# NeuroLibre home page hero. Parts live in home/hero_nl/, styles in
+    hero_nl.scss (scoped to .nl-hero), generated data in NeurolibreHeroHelper.
+    home/index renders this with one line, so upstream changes merge cleanly. %>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@600;700;800&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<%= stylesheet_link_tag "hero_nl", media: "all" %>
+
+<section class="nl-hero" aria-labelledby="nl-hero-title">
+  <%= render "home/hero_nl/neuron" %>
+
+  <% nl_hero_particles.each do |dot| %>
+    <span aria-hidden="true" class="nl-hero__dot" style="left: <%= dot[:x] %>; top: <%= dot[:y] %>; width: <%= dot[:size] %>; height: <%= dot[:size] %>; background: <%= dot[:color] %>; box-shadow: 0 0 10px 2px <%= dot[:color] %>; animation-delay: <%= dot[:delays].join(', ') %>"></span>
+  <% end %>
+
+  <div class="nl-hero__inner">
+    <div class="nl-hero__copy">
+      <h1 id="nl-hero-title" class="nl-hero__title">More than a <span>PDF</span></h1>
+      <p class="nl-hero__lead">A NeuroLibre preprint packages the article together with its reproducibility artifacts. Every component is archived and assigned its own DOI.</p>
+
+      <div class="nl-hero__actions">
+        <%= link_to new_paper_path, class: "nl-hero__btn nl-hero__btn--primary" do %>
+          Start submission
+          <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"></path></svg>
+        <% end %>
+        <%= link_to "Explore papers", papers_path, class: "nl-hero__btn nl-hero__btn--ghost" %>
+      </div>
+
+      <div class="nl-hero__check">
+        <svg aria-hidden="true" width="40" height="40" viewBox="0 0 40 40">
+          <path d="M20 1.5l3.9 3.1 4.9-.9 2 4.6 4.6 2-.9 4.9 3.1 3.9-3.1 3.9.9 4.9-4.6 2-2 4.6-4.9-.9L20 38.5l-3.9-3.1-4.9.9-2-4.6-4.6-2 .9-4.9L2.4 20l3.1-3.9-.9-4.9 4.6-2 2-4.6 4.9.9z" fill="#659b59"></path>
+          <path d="M12.5 20.5l5 5 10-11" fill="none" stroke="#ffffff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"></path>
+        </svg>
+        <div>
+          <strong>Checked that it runs before it is published</strong>
+          <p>A NeuroLibre preprint is a record of research that can be traced back to its sources and reproduced from them.</p>
+        </div>
+      </div>
+
+      <ul class="nl-hero__legend">
+        <li><%= render "home/hero_nl/leaf", kind: :prose %>Prose</li>
+        <li><%= render "home/hero_nl/leaf", kind: :data %>Data</li>
+        <li><%= render "home/hero_nl/leaf", kind: :code %>Code</li>
+        <li><%= render "home/hero_nl/leaf", kind: :runtime %>Runtime</li>
+      </ul>
+    </div>
+
+    <%= render "home/hero_nl/stack" %>
+  </div>
+</section>

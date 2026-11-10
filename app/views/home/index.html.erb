@@ -1,59 +1,6 @@
 
-<div style="background-color:#091926;width:100%;padding:0;margin-bottom:1em;">
-<div class="container" >
-  <div id="particle-container" style="max-height:50%;">
-    <% 12.times do %>
-      <div class="particle"></div>
-    <% end %>
-    <% 12.times do %>
-      <div class="particle2"></div>
-    <% end %>
-  </div>
+<%= render "home/hero_nl" %>
 
-  <div class="hero">
-  
-    <div class="hero-content col-lg-5">
-    <h1 style="color:aliceblue;margin-top:10px;"><%= Rails.application.settings['name'] %> is <%= setting(:tagline).html_safe %></h1>
-    <br>
-    <h1 style="color:aliceblue;">More than a PDF <%= icon('fa-brands', 'github') %> <%= icon('fa-solid', 'arrow-right') %> <%= icon('fa-solid fa-beat green', 'heart',) %> </h1> 
-      <% if request.user_agent =~ /Mobile/ %>
-    <p class="lead" style="color:blanchedalmond;background-color:#091926;margin:3px;border-radius:5px;text-shadow: 0 0 white;">Publish <span style="color:#6ae384;">living preprints</span> from your <span style="color:orange;">jupyter notebooks & markdowns</span>, with the <u>option</u> to enable
-       <span style="color:#02faf9;">live compute</span> by including your <span style="color:#02faf9;">code, data, and runtime.</span></p>
-  <% else %>
-     <p class="lead" style="color:blanchedalmond;"> Publish <span style="color:#6ae384;">living preprints</span> from your <span style="color:orange;">jupyter notebooks & markdowns</span>, with the <u>option</u> to enable
-       <span style="color:#02faf9;">live compute</span> by including your <span style="color:#02faf9;">code, data, and runtime.</span></p>
-  <% end %>
-
-       <br>
-
-       <%= link_to "<button class=\"continue-application\" id=\"large-screen-submit-button\"><div><div class=\"pencil\"></div><div class=\"folder\"><div class=\"top\"><svg viewBox=\"0 0 24 27\"><path d=\"M1,0 L23,0 C23.5522847,-1.01453063e-16 24,0.44771525 24,1 L24,8.17157288 C24,8.70200585 23.7892863,9.21071368 23.4142136,9.58578644 L20.5857864,12.4142136 C20.2107137,12.7892863 20,13.2979941 20,13.8284271 L20,26 C20,26.5522847 19.5522847,27 19,27 L1,27 C0.44771525,27 6.76353751e-17,26.5522847 0,26 L0,1 C-6.76353751e-17,0.44771525 0.44771525,1.01453063e-16 1,0 Z\"></path></svg></div><div class=\"paper\"></div></div></div>Start submission</button>".html_safe, new_paper_path, class: "lead"%>
-    </div>
-
-    
-    <% if request.user_agent =~ /Mobile/ %>
-    <div style="background-color: rgba(46,41,78,0.5); border-radius:10px; margin-top:20px;" class="hero-nav col-lg-4 offset-lg-3 align-self-end">
-    <% else %>
-    <div  class="hero-nav col-lg-4 offset-lg-3 align-self-end">
-    <% end %>
-      <%= link_to papers_path do %>
-      <%= image_tag 'icon_papers-white.svg' %>
-      <span style="color:aliceblue;">Explore Papers</span>
-      <% end %>
-      <%= link_to "https://docs.neurolibre.org" do %>
-      <%= image_tag 'icon_docs-white.svg' %>
-      <span style="color:aliceblue;">Documentation</span>
-      <% end %>
-      <%= link_to about_path do %>
-      <%= image_tag 'icon_info-white.svg' %>
-      <span style="color:aliceblue;">Learn More</span>
-      <% end %>
-  </div>
-
-
-</div>
-</div>
-
-</div>
 <div class="container">
 <center><p class="lead"> Rooting for reproducible research. One publication at a time.<br>🌰 🌱 🌺</p></center>
 <div class="announcement">
