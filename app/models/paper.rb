@@ -118,6 +118,8 @@ class Paper < ApplicationRecord
   scope :not_archived, -> { where('archived = ?', false) }
   scope :by_track, -> (track_id) { where('track_id = ?', track_id) }
 
+  include NeurolibreSubmission
+
   before_create :set_sha, :set_last_activity, :populate_resubmission_fields, :set_version
   after_create :notify_editors, :notify_author
 

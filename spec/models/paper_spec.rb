@@ -11,6 +11,54 @@ describe Paper do
     expect { paper.save! }.to raise_error(ActiveRecord::RecordInvalid)
   end
 
+  describe "data DOI question on the submission form" do
+    it "is not checked for papers created outside the form" do
+      expect(build(:paper)).to be_valid
+    end
+
+    it "requires an answer when the form sends the question unanswered" do
+      paper = build(:paper, has_data_doi: "")
+      expect(paper).not_to be_valid
+      expect(paper.errors.full_messages.join).to include("data already have a DOI")
+    end
+
+    it "requires a DOI when the answer is yes" do
+      paper = build(:paper, has_data_doi: "yes", data_doi: "")
+      expect(paper).not_to be_valid
+      expect(paper.errors.full_messages.join).to include("data DOI")
+    end
+
+    it "rejects a value that is not a DOI" do
+      expect(build(:paper, has_data_doi: "yes", data_doi: "my data on zenodo")).not_to be_valid
+    end
+
+    it "accepts a DOI or a doi.org link when the answer is yes" do
+      expect(build(:paper, has_data_doi: "yes", data_doi: "10.5281/zenodo.123")).to be_valid
+      expect(build(:paper, has_data_doi: "yes", data_doi: "https://doi.org/10.5281/zenodo.123")).to be_valid
+    end
+
+    it "clears any DOI when the answer is no" do
+      paper = build(:paper, has_data_doi: "no", data_doi: "10.5281/zenodo.123")
+      expect(paper).to be_valid
+      expect(paper.data_doi).to be_nil
+    end
+  end
+
+  describe "track from subject" do
+    it "takes the track from the chosen subject" do
+      subject_record = create(:subject, name: "fmri")
+      paper = build(:paper, suggested_subject: "fmri", track: nil)
+      expect(paper).to be_valid
+      expect(paper.track_id).to eq(subject_record.track_id)
+    end
+
+    it "is invalid when no known subject or track is given" do
+      paper = build(:paper, suggested_subject: "not-a-subject", track: nil)
+      expect(paper).not_to be_valid
+      expect(paper.errors.full_messages.join).to include("subject")
+    end
+  end
+
   describe "repository address check" do
     it "runs git ls-remote without a shell, passing the URL as one argument" do
       paper = build(:paper, repository_url: "https://github.com/openjournals/joss")

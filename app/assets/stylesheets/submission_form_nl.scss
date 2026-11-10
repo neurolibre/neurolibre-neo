@@ -1,0 +1,99 @@
+// NeuroLibre submission form (papers/_form_nl). Every rule is scoped to
+// .nl-submission-form so nothing leaks onto other pages; Turbo keeps
+// stylesheets loaded across navigations.
+.nl-submission-form {
+  .nl-section {
+    background: #fff;
+    border: 1px solid #e3e6ea;
+    border-radius: 8px;
+    padding: 1.25rem 1.5rem;
+    margin-bottom: 1.25rem;
+  }
+
+  .nl-section-title {
+    font-size: 1.05rem;
+    font-weight: 600;
+    margin: 0 0 1rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid #eef0f2;
+  }
+
+  .nl-optional {
+    font-size: 0.75rem;
+    font-weight: 400;
+    color: #6c757d;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    margin-left: 0.4rem;
+  }
+
+  label {
+    font-weight: 500;
+    margin-bottom: 0.3rem;
+  }
+
+  .required-mark {
+    color: #dc3545;
+    margin-left: 2px;
+  }
+
+  .nl-guidance {
+    font-size: 0.9rem;
+    color: #495057;
+    margin-bottom: 0.75rem;
+  }
+
+  .form-check {
+    margin-bottom: 0.5rem;
+  }
+
+  .nl-legend {
+    font-size: 1rem;
+    font-weight: 500;
+    margin-bottom: 0.5rem;
+  }
+
+  // Yes / No answers shown as two pill buttons side by side.
+  .nl-choice {
+    display: inline-flex;
+    align-items: center;
+    position: relative;
+    margin-right: 0.5rem;
+
+    .form-check-input {
+      position: absolute;
+      opacity: 0;
+      margin: 0;
+    }
+
+    .form-check-label {
+      padding: 0.4rem 1.1rem;
+      border: 1px solid #ced4da;
+      border-radius: 999px;
+      cursor: pointer;
+      user-select: none;
+    }
+
+    .form-check-input:checked + .form-check-label {
+      background: #343a40;
+      border-color: #343a40;
+      color: #fff;
+    }
+
+    .form-check-input:focus-visible + .form-check-label {
+      box-shadow: 0 0 0 0.2rem rgba(52, 58, 64, 0.25);
+    }
+  }
+
+  .form-check-label {
+    font-weight: 400;
+  }
+
+  .nl-actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.75rem;
+    margin-top: 1.25rem;
+  }
+}

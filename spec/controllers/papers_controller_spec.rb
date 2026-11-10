@@ -8,6 +8,74 @@ describe PapersController, type: :controller do
     allow(Repository).to receive(:editors).and_return ["@user1", "@user2"]
   end
 
+  describe "submission form" do
+    let(:user) { create(:user) }
+    let!(:subject_mri) { create(:subject, name: "mri") }
+
+    before { login_as(user) }
+
+    it "prefills the version and the submission type" do
+      get :new
+      expect(response).to be_successful
+      expect(response.body).to include('value="v1.0.0"')
+      expect(response.body).to match(/<option selected="selected" value="new">/)
+      expect(response.body).to match(/<input[^>]*value="main"[^>]*name="paper\[git_branch\]"/)
+    end
+
+    it "marks each required field with a red asterisk, and only those" do
+      get :new
+      doc = Nokogiri::HTML(response.body)
+      marked = doc.css("label:has(span.required-mark)").map { |l| l["for"] }.sort
+      expect(marked).to eq(%w(paper_body paper_data_doi paper_repository_url paper_software_version paper_submission_kind
+                              paper_suggested_subject paper_title))
+      expect(doc.css("legend:has(span.required-mark)").map(&:text).join).to include("data already have a DOI")
+    end
+
+    it "tells authors to contact the editors when their subject is not listed" do
+      get :new
+      expect(response.body).to include("If your subject is not on the list, please")
+      expect(response.body).to include("mailto:#{Rails.application.settings[:editor_email]}")
+    end
+
+    it "lists the subjects in a dropdown" do
+      get :new
+      expect(response.body).to match(%r{<select[^>]*name="paper\[suggested_subject\]"})
+      expect(response.body).to include('<option value="mri">mri</option>')
+    end
+
+    it "creates a paper from the defaults and a chosen subject, taking the track from the subject" do
+      expect {
+        post :create, params: { paper: { title: "A preprint", repository_url: "https://github.com/openjournals/joss",
+                                         software_version: "v1.0.0", submission_kind: "new",
+                                         suggested_subject: "mri", body: "Message to editors" } }
+      }.to change(Paper, :count).by(1)
+      expect(Paper.last.track_id).to eq(subject_mri.track_id)
+    end
+
+    it "keeps the data DOI from the form" do
+      post :create, params: { paper: { title: "A preprint", repository_url: "https://github.com/openjournals/joss",
+                                       software_version: "v1.0.0", submission_kind: "new", suggested_subject: "mri",
+                                       body: "Message", has_data_doi: "yes", data_doi: "10.5281/zenodo.123" } }
+      expect(Paper.last.data_doi).to eq("10.5281/zenodo.123")
+    end
+
+    it "asks whether the data have a DOI, with the DOI field hidden until Yes" do
+      get :new
+      doc = Nokogiri::HTML(response.body)
+      expect(doc.css("input[type=radio][name='paper[has_data_doi]']").map { |r| r["value"] }).to eq(%w(yes no))
+      expect(doc.at_css("label[for=paper_has_data_doi_yes]")).to be_present
+      expect(doc.at_css("[data-submission-form-target=dataDoi][hidden]")).to be_present
+    end
+
+    it "ignores a track_id sent by the browser and uses the subject's track" do
+      other_track = create(:track)
+      post :create, params: { paper: { title: "A preprint", repository_url: "https://github.com/openjournals/joss",
+                                       software_version: "v1.0.0", submission_kind: "new",
+                                       suggested_subject: "mri", track_id: other_track.id, body: "Message" } }
+      expect(Paper.last.track_id).to eq(subject_mri.track_id)
+    end
+  end
+
   describe "GET #index" do
     it "should render all visible papers" do
       get :index, format: :html
@@ -130,8 +198,7 @@ describe PapersController, type: :controller do
                        git_branch: "joss-paper",
                        software_version: "v1.0.1",
                        submission_kind: "new",
-                       suggested_subject: "Astronomy & astrophysics",
-                       track_id: create(:track).id
+                       suggested_subject: create(:subject, name: "Astronomy & astrophysics").name
                      }
       post :create, params: {paper: paper_params}
       expect(response).to be_redirect # as it's created the thing

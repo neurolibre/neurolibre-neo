@@ -1,0 +1,23 @@
+<section class="nl-section">
+  <h2 class="nl-section-title">Submission</h2>
+
+  <div class="form-row">
+    <div class="form-group col-md-6">
+      <%= f.label :submission_kind do %>Type of submission<%= required_mark %><% end %>
+      <%= f.select :submission_kind, { "New submission" => "new", "Resubmission" => "resubmission", "Major new version" => "new version" },
+                   { include_blank: false },
+                   class: "form-control", data: { submission_form_target: "kind", action: "submission-form#toggleParentDoi" } %>
+    </div>
+    <div class="form-group col-md-6">
+      <%= f.label :suggested_subject do %>Main subject of the paper<%= required_mark %><% end %>
+      <%= f.select :suggested_subject, Subject.order(:name).pluck(:name), { prompt: "Select a subject" }, class: "form-control", required: true %>
+      <small class="form-text text-muted">If your subject is not on the list, please <%= mail_to setting(:editor_email), "contact us" %>.</small>
+    </div>
+  </div>
+
+  <div class="form-group" id="published-parent-doi" data-submission-form-target="parentDoi" hidden>
+    <%= f.label :published_parent_doi, "DOI of the published version of the preprint" %>
+    <%= f.text_field :published_parent_doi, placeholder: "e.g. https://doi.org/10.55458/neurolibre.12345", class: "form-control" %>
+    <small class="form-text text-muted">The existing DOI of your published preprint.</small>
+  </div>
+</section>

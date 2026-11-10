@@ -1,0 +1,23 @@
+<%# NeuroLibre submission form. Sections are partials in papers/form_nl/,
+    styles in submission_form_nl.scss, behaviour in submission_form_controller.js.
+    Upstream's papers/_form is left untouched. %>
+<%= stylesheet_link_tag "submission_form_nl", media: "all" %>
+
+<%= form_for paper, html: { class: "nl-submission-form", data: { controller: "submission-form" } } do |f| %>
+  <%= render partial: "shared/errors", locals: { object: paper } if paper.errors.any? %>
+
+  <%- if paper_types.present? %>
+    <div class="nl-section">
+      <div class="form-group">
+        <%= f.label :kind, "Type" %>
+        <%= f.select :kind, paper_types, {}, class: "form-control" %>
+      </div>
+    </div>
+  <%- end %>
+
+  <%= render "papers/form_nl/preprint", f: f %>
+  <%= render "papers/form_nl/submission", f: f %>
+  <%= render "papers/form_nl/data", f: f %>
+  <%= render "papers/form_nl/message", f: f %>
+  <%= render "papers/form_nl/checks", f: f %>
+<% end %>
