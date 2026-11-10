@@ -185,8 +185,6 @@ $nl-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
 
     h3 { font-weight: 700; font-size: 18px; line-height: 1.3; letter-spacing: -0.01em; }
     .nl-recent__authors { font-size: 13px; line-height: 1.5; }
-    .nl-recent__doi { font-size: 12px; }
-    .nl-recent__artifacts { margin-top: auto; padding-top: 6px; }
     .nl-recent__artifacts { margin-top: 0; gap: 6px; }
     .nl-recent__artifacts-label { font-size: 10px; }
   }
@@ -203,6 +201,35 @@ $nl-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
 
   &__card-body { flex: 1; display: flex; flex-direction: column; gap: 10px; padding: 18px 20px 20px; }
   &__date { font-size: 12px; color: $nl-faint; }
+
+  // The card's last rows, at the bottom whatever the title's length: the
+  // artifacts label across the card, then the icons on the left with the DOI
+  // small at the lower right, level with them. A card too narrow for both
+  // breaks the DOI after its "/" (a <wbr>) rather than overflowing.
+  &__card-foot {
+    margin-top: auto;
+    padding-top: 6px;
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    align-items: end;
+    column-gap: 10px;
+    row-gap: 6px;
+
+    .nl-recent__artifacts { display: contents; }
+    .nl-recent__artifacts-label { grid-column: 1 / -1; }
+    .nl-recent__icons { grid-column: 1; }
+
+    .nl-recent__doi {
+      grid-column: 2;
+      justify-self: end;
+      text-align: right;
+      padding-bottom: 2px;
+      font-size: 10.5px;
+      line-height: 1.35;
+      color: $nl-faint;
+    }
+  }
+
 
 
   // A card's artifacts: one icon link each, in its layer colour.

@@ -9,18 +9,23 @@
     <span class="nl-recent__date"><%= nl_recent_date(paper) %></span>
     <h3><%= link_to paper.title, paper.seo_url, class: "nl-recent__stretch", target: "_blank", rel: "noopener" %></h3>
     <p class="nl-recent__authors"><%= nl_recent_authors_short(paper) %></p>
-    <span class="nl-recent__doi">doi:<%= paper.doi %></span>
-    <% layers = nl_recent_layers(paper) %>
-    <% if layers.any? %>
-      <div class="nl-recent__artifacts">
-        <span class="nl-recent__artifacts-label">Reproducibility artifacts</span>
-        <div class="nl-recent__icons">
-          <% layers.each do |layer| %>
-            <%= link_to icon(*layer[:icon]), layer[:url], class: "nl-recent__icon nl-recent__icon--#{layer[:kind]}", target: "_blank", rel: "noopener",
-                        title: "#{layer[:label]} archive", "aria-label": "#{layer[:label]} archive" %>
-          <% end %>
+    <%# Pinned to the bottom of the card, so the artifacts line up across a row
+        whatever the title's length; the DOI sits at the lower right. %>
+    <div class="nl-recent__card-foot">
+      <% layers = nl_recent_layers(paper) %>
+      <% if layers.any? %>
+        <div class="nl-recent__artifacts">
+          <span class="nl-recent__artifacts-label">Reproducibility artifacts</span>
+          <div class="nl-recent__icons">
+            <% layers.each do |layer| %>
+              <%= link_to icon(*layer[:icon]), layer[:url], class: "nl-recent__icon nl-recent__icon--#{layer[:kind]}", target: "_blank", rel: "noopener",
+                          title: "#{layer[:label]} archive", "aria-label": "#{layer[:label]} archive" %>
+            <% end %>
+          </div>
         </div>
-      </div>
-    <% end %>
+      <% end %>
+      <% prefix, suffix = paper.doi.to_s.split("/", 2) %>
+      <span class="nl-recent__doi" title="doi:<%= paper.doi %>"><%= prefix %><% if suffix %>/<wbr><%= suffix %><% end %></span>
+    </div>
   </div>
 </article>
