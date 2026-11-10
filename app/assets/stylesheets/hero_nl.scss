@@ -17,6 +17,7 @@ $nl-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
 @keyframes nl-hero-p3 { 0%, 100% { transform: translateZ(152px); } 50% { transform: translateZ(158px); } }
 @keyframes nl-hero-p4 { 0%, 100% { transform: translateZ(228px); } 50% { transform: translateZ(240px); } }
 @keyframes nl-hero-p5 { 0%, 100% { transform: translateZ(312px); } 50% { transform: translateZ(338px); } }
+@keyframes nl-hero-signal { from { stroke-dashoffset: 0; } to { stroke-dashoffset: -1; } }
 @keyframes nl-hero-twinkle { 0%, 100% { opacity: .15; transform: scale(.6); } 50% { opacity: 1; transform: scale(1); } }
 @keyframes nl-hero-drift { 0% { transform: translate(0, 0); } 50% { transform: translate(6px, -14px); } 100% { transform: translate(0, 0); } }
 @keyframes nl-hero-scroll { 0%, 6% { transform: translateY(0); } 47%, 55% { transform: translateY(-700px); } 94%, 100% { transform: translateY(0); } }
@@ -57,6 +58,17 @@ $nl-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
     transform: rotate(-40deg);
     transform-origin: 252.6px 798px;
     pointer-events: none;
+  }
+
+  // A short bright stretch of line that keeps travelling around the outline.
+  &__signal {
+    stroke: #ff8a7e;
+    stroke-width: 2.2;
+    stroke-linecap: round;
+    stroke-opacity: .9;
+    stroke-dasharray: .035 .965;
+    filter: drop-shadow(0 0 4px rgba(255, 106, 92, .9));
+    animation: nl-hero-signal 7s linear infinite;
   }
 
   &__dot {
