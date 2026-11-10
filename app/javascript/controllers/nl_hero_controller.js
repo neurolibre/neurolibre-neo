@@ -25,10 +25,19 @@ export default class extends Controller {
     window.addEventListener("resize", this.fit)
     this.fit()
     if (document.fonts) document.fonts.ready.then(this.fit)
+
+    // Pause the animations while the hero is scrolled out of view.
+    if ("IntersectionObserver" in window) {
+      this.observer = new IntersectionObserver(([entry]) => {
+        this.element.classList.toggle("is-offscreen", !entry.isIntersecting)
+      })
+      this.observer.observe(this.element)
+    }
   }
 
   disconnect() {
     window.removeEventListener("resize", this.fit)
+    if (this.observer) this.observer.disconnect()
   }
 
   // Tie the layers together while "Start submission" is hovered or focused.

@@ -48,7 +48,7 @@ describe "home/_hero_nl.html.erb", type: :view do
   it "renders the same particles on every request" do
     first = doc.css(".nl-hero__dot").map { |d| d["style"] }
     second = Nokogiri::HTML(view.render(partial: "home/hero_nl")).css(".nl-hero__dot").map { |d| d["style"] }
-    expect(first.size).to eq(56)
+    expect(first.size).to eq(32)
     expect(second).to eq(first)
   end
 end

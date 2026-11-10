@@ -18,24 +18,27 @@ module NeurolibreHeroHelper
     end
   end
 
-  def nl_hero_particles(count = 56)
+  def nl_hero_particles(count = 32)
     rnd = NlHeroSequence.new(13)
     palette = ["#CFF6FF", "#CFF6FF", "#CFF6FF", NL_HERO_COLORS[:data], NL_HERO_COLORS[:code],
                NL_HERO_COLORS[:runtime], NL_HERO_COLORS[:accent]]
     Array.new(count) do
       x = format("%.1f%%", 2 + rnd.next * 96)
       y = format("%.1f%%", 2 + rnd.next * 92)
-      size = format("%.1fpx", 1.4 + rnd.next * 2.6)
+      radius = 1.4 + rnd.next * 2.6
+      size = format("%.1fpx", radius / 2)       # the bright core
+      glow = format("%.1fpx", radius * 4)       # the box the glow fades out in
+      offset = format("%.1fpx", -radius * 1.5)  # keep the dot centred where it was
       color = palette[(rnd.next * palette.length).floor]
       delays = [format("%.2fs", rnd.next * 3.8), format("%.2fs", rnd.next * 9)]
-      { x: x, y: y, size: size, color: color, delays: delays }
+      { x: x, y: y, size: size, glow: glow, offset: offset, color: color, delays: delays }
     end
   end
 
   # Points for the illustrative scatter plot in the article layer.
   def nl_hero_scatter
     rnd = NlHeroSequence.new(13)
-    (56 * 6).times { rnd.next } # continue after the particles, as in the design
+    (56 * 6).times { rnd.next } # same points as the design, independent of the particle count
     Array.new(10) do |j|
       x = 24 + j * 36
       y = 92 - (x / 380.0) * 78 + (rnd.next - 0.5) * 22

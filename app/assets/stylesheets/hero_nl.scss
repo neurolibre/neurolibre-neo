@@ -23,15 +23,15 @@ $nl-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
 @keyframes nl-hero-scroll { 0%, 6% { transform: translateY(0); } 47%, 55% { transform: translateY(-700px); } 94%, 100% { transform: translateY(0); } }
 @keyframes nl-hero-ridge { 0%, 100% { transform: scaleY(1); } 50% { transform: scaleY(.62); } }
 @keyframes nl-hero-seg { 0%, 40% { transform: translateX(0); } 50%, 90% { transform: translateX(100%); } 100% { transform: translateX(0); } }
-@keyframes nl-hero-trow { 0%, 100% { background: transparent; } 8%, 22% { background: rgba(111, 0, 183, .10); } 30% { background: transparent; } }
+@keyframes nl-hero-glow-in { 0%, 100% { opacity: 0; } 8%, 22% { opacity: 1; } 30% { opacity: 0; } }
 @keyframes nl-hero-sort { 0%, 45% { transform: rotate(0); } 55%, 100% { transform: rotate(180deg); } }
-@keyframes nl-hero-bar1 { 0%, 100% { height: 78%; } 50% { height: 52%; } }
-@keyframes nl-hero-bar2 { 0%, 100% { height: 56%; } 50% { height: 82%; } }
-@keyframes nl-hero-bar3 { 0%, 100% { height: 34%; } 50% { height: 64%; } }
+@keyframes nl-hero-bar1 { 0%, 100% { transform: scaleY(.78); } 50% { transform: scaleY(.52); } }
+@keyframes nl-hero-bar2 { 0%, 100% { transform: scaleY(.56); } 50% { transform: scaleY(.82); } }
+@keyframes nl-hero-bar3 { 0%, 100% { transform: scaleY(.34); } 50% { transform: scaleY(.64); } }
 @keyframes nl-hero-draw { 0% { stroke-dashoffset: 260; } 60%, 100% { stroke-dashoffset: 0; } }
-@keyframes nl-hero-pulse { 0%, 100% { r: 3; } 50% { r: 5.5; } }
-@keyframes nl-hero-knob { 0%, 100% { left: 12%; } 50% { left: 78%; } }
-@keyframes nl-hero-row { 0%, 100% { background: transparent; } 10%, 24% { background: rgba(55, 202, 226, .32); } 34% { background: transparent; } }
+@keyframes nl-hero-pulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.8); } }
+@keyframes nl-hero-knob { 0%, 100% { transform: translateX(0); } 50% { transform: translateX(var(--nl-knob-travel, 240px)); } }
+
 @keyframes nl-hero-caret { 0%, 49% { opacity: 1; } 50%, 100% { opacity: 0; } }
 
 .nl-hero {
@@ -74,7 +74,7 @@ $nl-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
   &__dot {
     position: absolute;
     border-radius: 50%;
-    animation: nl-hero-twinkle 3.8s ease-in-out infinite, nl-hero-drift 9s ease-in-out infinite;
+    animation: nl-hero-twinkle 3.8s ease-in-out infinite;
   }
 
   // ---- layout ----
@@ -257,7 +257,7 @@ $nl-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
     color: #d7ebd0;
     background: rgba(18, 40, 20, .78);
     border: 1px solid rgba(140, 200, 120, .75);
-    box-shadow: 0 0 44px rgba(101, 155, 89, .6), 0 60px 90px rgba(0, 0, 0, .55);
+    box-shadow: 0 0 22px rgba(101, 155, 89, .55);
 
     .nl-hero__plate-head { color: #9fd08f; }
     .nl-hero__cmd { padding: 10px 12px; border-radius: 8px; background: rgba(101, 155, 89, .22); }
@@ -272,7 +272,7 @@ $nl-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
     color: #ffe0c2;
     background: rgba(48, 24, 6, .78);
     border: 1px solid rgba(249, 124, 12, .8);
-    box-shadow: 0 0 44px rgba(249, 124, 12, .5);
+    box-shadow: 0 0 22px rgba(249, 124, 12, .5);
 
     .nl-hero__plate-head { color: #ffaa5c; }
     .kw { color: #ff9e5c; }
@@ -290,7 +290,7 @@ $nl-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
     color: #cff4fb;
     background: rgba(6, 40, 50, .78);
     border: 1px solid rgba(55, 202, 226, .8);
-    box-shadow: 0 0 44px rgba(55, 202, 226, .5);
+    box-shadow: 0 0 22px rgba(55, 202, 226, .5);
 
     .nl-hero__plate-head { color: #7fe0f0; margin-bottom: 8px; }
   }
@@ -301,15 +301,27 @@ $nl-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
     border-radius: 4px;
     border-bottom: 1px solid rgba(55, 202, 226, .16);
     font-family: $nl-mono;
-    animation: nl-hero-row 5s ease-in-out infinite;
+    position: relative;
 
-    span { flex: 1; }
+    span { flex: 1; position: relative; }
+
+    // highlight sweep: an overlay that fades, so the row itself is not repainted
+    &::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      border-radius: 4px;
+      background: rgba(55, 202, 226, .32);
+      opacity: 0;
+      animation: nl-hero-glow-in 5s ease-in-out infinite;
+      animation-delay: inherit;
+    }
 
     &--head {
       font-family: Inter, sans-serif;
       font-weight: 600;
       border-bottom-color: rgba(55, 202, 226, .45);
-      animation: none;
+      &::before { display: none; }
     }
   }
 
@@ -322,7 +334,7 @@ $nl-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
     color: #e6d6ff;
     background: rgba(30, 4, 52, .82);
     border: 1px solid rgba(160, 80, 240, .85);
-    box-shadow: 0 0 44px rgba(111, 0, 183, .65);
+    box-shadow: 0 0 22px rgba(111, 0, 183, .6);
 
     .nl-hero__plate-head, .heading { color: #b98cff; }
     .directive { color: #9f7fd6; }
@@ -345,7 +357,7 @@ $nl-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
     color: #1b1640;
     background: rgba(250, 248, 255, .97);
     border: 1px solid #ffffff;
-    box-shadow: 0 0 60px rgba(111, 0, 183, .45), 0 40px 70px rgba(5, 10, 20, .55);
+    box-shadow: 0 0 30px rgba(111, 0, 183, .4);
   }
 
   &__article-head {
@@ -400,20 +412,24 @@ $nl-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
   &__bars { height: 92px; display: flex; align-items: flex-end; gap: 14px; }
   &__bar {
     flex: 1;
+    height: 100%;
     border-radius: 4px 4px 0 0;
+    transform-origin: 50% 100%;
     &--1 { background: $nl-data; animation: nl-hero-bar1 3.2s ease-in-out infinite; }
     &--2 { background: $nl-code; animation: nl-hero-bar2 3.2s ease-in-out infinite; }
     &--3 { background: $nl-runtime; animation: nl-hero-bar3 3.2s ease-in-out infinite; }
   }
 
   &__curve { stroke-dasharray: 260; animation: nl-hero-draw 4s ease-out infinite; }
-  &__point { animation: nl-hero-pulse 2.4s ease-in-out infinite; }
+  &__point { transform-box: fill-box; transform-origin: center; animation: nl-hero-pulse 2.4s ease-in-out infinite; }
 
   &__slider { position: relative; height: 18px; }
   &__track { position: absolute; left: 0; right: 0; top: 8px; height: 3px; border-radius: 2px; background: #e5e0f2; }
   &__knob {
     position: absolute;
     top: 2px;
+    left: 12%;
+    --nl-knob-travel: 220px;
     width: 14px;
     height: 14px;
     margin-left: -7px;
@@ -465,9 +481,20 @@ $nl-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
     border-radius: 4px;
     border-bottom: 1px solid #f1edf9;
     font-family: $nl-mono;
-    animation: nl-hero-trow 6s ease-in-out infinite;
+    position: relative;
 
-    span { flex: 1; }
+    span { flex: 1; position: relative; }
+
+    &::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      border-radius: 4px;
+      background: rgba(111, 0, 183, .10);
+      opacity: 0;
+      animation: nl-hero-glow-in 6s ease-in-out infinite;
+      animation-delay: inherit;
+    }
     span:first-child { flex: 1.6; font-family: Inter, sans-serif; }
     .down { color: #b3261e; }
     .up { color: #2f6b26; }
@@ -476,7 +503,7 @@ $nl-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
       font-family: Inter, sans-serif;
       font-weight: 600;
       border-bottom-color: #d9d2ec;
-      animation: none;
+      &::before { display: none; }
       svg { animation: nl-hero-sort 6s ease-in-out infinite; margin-left: 3px; }
     }
   }
@@ -625,6 +652,9 @@ $nl-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
     &__visual { height: 430px; }
     &__stack { margin-top: 40px; scale: .6; }
   }
+
+  // nl_hero_controller.js sets this while the hero is scrolled out of view.
+  &.is-offscreen, &.is-offscreen * { animation-play-state: paused !important; }
 
   @media (prefers-reduced-motion: reduce) {
     *, *::before, *::after { animation: none !important; transition: none !important; }

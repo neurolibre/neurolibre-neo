@@ -9,7 +9,7 @@
   <%= render "home/hero_nl/neuron" %>
 
   <% nl_hero_particles.each do |dot| %>
-    <span aria-hidden="true" class="nl-hero__dot" style="left: <%= dot[:x] %>; top: <%= dot[:y] %>; width: <%= dot[:size] %>; height: <%= dot[:size] %>; background: <%= dot[:color] %>; box-shadow: 0 0 10px 2px <%= dot[:color] %>; animation-delay: <%= dot[:delays].join(', ') %>"></span>
+    <span aria-hidden="true" class="nl-hero__dot" style="left: <%= dot[:x] %>; top: <%= dot[:y] %>; width: <%= dot[:glow] %>; height: <%= dot[:glow] %>; margin: <%= dot[:offset] %>; background: radial-gradient(circle, <%= dot[:color] %> 0 <%= dot[:size] %>, transparent 70%); animation-delay: <%= dot[:delays].first %>"></span>
   <% end %>
 
   <div class="nl-hero__inner">
