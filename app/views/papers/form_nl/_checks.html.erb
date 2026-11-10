@@ -1,0 +1,23 @@
+<%# The checkbox ids, the .pre-check class and #author-submit are what
+    upstream's custom/papers.js uses to enable the button; keep them. %>
+<section class="nl-section">
+  <h2 class="nl-section-title">Before you submit</h2>
+
+  <div class="form-check">
+    <input type="checkbox" id="author-check" class="pre-check form-check-input">
+    <label class="form-check-label" for="author-check">I certify that I am submitting software for which I am a primary author</label>
+  </div>
+  <div class="form-check">
+    <input type="checkbox" id="paper-check" class="pre-check form-check-input">
+    <label class="form-check-label" for="paper-check">I have verified that my paper compiles using one of <a href="https://joss.readthedocs.io/en/latest/submitting.html#checking-that-your-paper-compiles" target="_blank">these tools</a>.</label>
+  </div>
+  <div class="form-check">
+    <input type="checkbox" id="coc-check" class="pre-check form-check-input">
+    <label class="form-check-label" for="coc-check">I confirm that I read and will adhere to the <%= setting(:abbreviation) %> <a href="/about#code_of_conduct" target="_blank">code of conduct</a></label>
+  </div>
+
+  <div class="nl-actions">
+    <%= submit_tag("Submit paper", class: "btn paper-submit disabled", disabled: "disabled", id: "author-submit") %>
+    <small class="text-muted">The button turns on once all three boxes are ticked.</small>
+  </div>
+</section>

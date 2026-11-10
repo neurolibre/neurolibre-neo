@@ -1,0 +1,61 @@
+// NeuroLibre submission form (papers/_form_nl). Every rule is scoped to
+// .nl-submission-form so nothing leaks onto other pages; Turbo keeps
+// stylesheets loaded across navigations.
+.nl-submission-form {
+  .nl-section {
+    background: #fff;
+    border: 1px solid #e3e6ea;
+    border-radius: 8px;
+    padding: 1.25rem 1.5rem;
+    margin-bottom: 1.25rem;
+  }
+
+  .nl-section-title {
+    font-size: 1.05rem;
+    font-weight: 600;
+    margin: 0 0 1rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid #eef0f2;
+  }
+
+  .nl-optional {
+    font-size: 0.75rem;
+    font-weight: 400;
+    color: #6c757d;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    margin-left: 0.4rem;
+  }
+
+  label {
+    font-weight: 500;
+    margin-bottom: 0.3rem;
+  }
+
+  .required-mark {
+    color: #dc3545;
+    margin-left: 2px;
+  }
+
+  .nl-guidance {
+    font-size: 0.9rem;
+    color: #495057;
+    margin-bottom: 0.75rem;
+  }
+
+  .form-check {
+    margin-bottom: 0.5rem;
+  }
+
+  .form-check-label {
+    font-weight: 400;
+  }
+
+  .nl-actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.75rem;
+    margin-top: 1.25rem;
+  }
+}

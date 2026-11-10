@@ -1,0 +1,25 @@
+<section class="nl-section">
+  <h2 class="nl-section-title">Your preprint</h2>
+
+  <div class="form-group">
+    <%= f.label :title do %>Title<%= required_mark %><% end %>
+    <%= f.text_field :title, placeholder: "What's the title of this preprint?", class: "form-control", required: true %>
+  </div>
+
+  <div class="form-row">
+    <div class="form-group col-md-6">
+      <%= f.label :repository_url do %>Preprint's Git repository URL<%= required_mark %><% end %>
+      <%= f.text_field :repository_url, placeholder: "e.g. https://github.com/neurolibre/template", class: "form-control", required: true %>
+    </div>
+    <div class="form-group col-md-3">
+      <%= f.label :git_branch, "Git branch" %>
+      <%= f.text_field :git_branch, class: "form-control" %>
+      <small class="form-text text-muted">The branch name, not a path. Leave as main unless the paper is on another branch.</small>
+    </div>
+    <div class="form-group col-md-3">
+      <%= f.label :software_version do %>Repository version<%= required_mark %><% end %>
+      <%= f.text_field :software_version, class: "form-control", required: true %>
+      <small class="form-text text-muted">Leave as v1.0.0 unless your repository has its own release tag.</small>
+    </div>
+  </div>
+</section>
