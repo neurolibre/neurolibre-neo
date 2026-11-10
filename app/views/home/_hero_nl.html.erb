@@ -18,7 +18,8 @@
       <p class="nl-hero__lead">A NeuroLibre preprint packages the article together with its reproducibility artifacts. Every component is archived and assigned its own DOI.</p>
 
       <div class="nl-hero__actions">
-        <%= link_to new_paper_path, class: "nl-hero__btn nl-hero__btn--primary" do %>
+        <%= link_to new_paper_path, class: "nl-hero__btn nl-hero__btn--primary",
+              data: { action: "mouseenter->nl-hero#pack mouseleave->nl-hero#unpack focus->nl-hero#pack blur->nl-hero#unpack" } do %>
           Start submission
           <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"></path></svg>
         <% end %>

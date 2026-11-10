@@ -7,7 +7,10 @@ import { Controller } from "@hotwired/stimulus"
 // 2. On desktop widths, makes the hero exactly fill the window below the
 //    navbar, scaling the layered stack, and the copy if needed, to fit.
 //
-// It only sets CSS variables on the hero; hero_nl.scss decides what they do,
+// 3. Ties the layers together with red strings while "Start submission" is
+//    hovered or focused (the .is-packed class).
+//
+// It only sets CSS variables and that class on the hero; hero_nl.scss decides what they do,
 // and the hero keeps its fixed design size if this does not run.
 const DESKTOP = 992        // px, the layout's lg breakpoint
 const STACK_PAINT = 590    // px, how tall the layers actually paint at scale 1
@@ -27,6 +30,10 @@ export default class extends Controller {
   disconnect() {
     window.removeEventListener("resize", this.fit)
   }
+
+  // Tie the layers together while "Start submission" is hovered or focused.
+  pack() { this.element.classList.add("is-packed") }
+  unpack() { this.element.classList.remove("is-packed") }
 
   fit() {
     const hero = this.element

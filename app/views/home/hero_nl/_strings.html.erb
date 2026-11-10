@@ -1,0 +1,30 @@
+<%# Two red strings that tie the layers together like a gift when the
+    "Start submission" button is hovered or focused (see nl_hero_controller.js).
+    They rise up the four sides, cross the top page, and tie into a bow.
+    Hidden until then; styles in hero_nl.scss under .nl-hero__strings. %>
+<div class="nl-hero__strings" aria-hidden="true">
+  <div class="nl-hero__str nl-hero__str--under-x"><i></i></div>
+  <div class="nl-hero__str nl-hero__str--under-y"><i></i></div>
+
+  <div class="nl-hero__str nl-hero__str--front"><i></i></div>
+  <div class="nl-hero__str nl-hero__str--right"><i></i></div>
+  <div class="nl-hero__str nl-hero__str--back"><i></i></div>
+  <div class="nl-hero__str nl-hero__str--left"><i></i></div>
+
+  <div class="nl-hero__str nl-hero__str--top-front"><i></i></div>
+  <div class="nl-hero__str nl-hero__str--top-right"><i></i></div>
+  <div class="nl-hero__str nl-hero__str--top-back"><i></i></div>
+  <div class="nl-hero__str nl-hero__str--top-left"><i></i></div>
+
+  <div class="nl-hero__bow-shadow"></div>
+  <div class="nl-hero__str nl-hero__str--riser"><i></i></div>
+  <div class="nl-hero__bow">
+    <svg viewBox="0 0 120 80" width="120" height="80">
+      <path class="loop" pathLength="1" d="M60 52 C 50 40, 26 22, 14 30 C 4 37, 10 54, 30 56 C 42 57, 52 54, 60 52"></path>
+      <path class="loop" pathLength="1" d="M60 52 C 70 40, 94 22, 106 30 C 116 37, 110 54, 90 56 C 78 57, 68 54, 60 52"></path>
+      <path class="tail" pathLength="1" d="M57 54 C 53 61, 48 67, 41 73"></path>
+      <path class="tail" pathLength="1" d="M63 54 C 67 61, 72 67, 80 72"></path>
+      <path class="knot" pathLength="1" d="M55 50 C 56 46, 64 46, 65 50 C 66 55, 54 56, 55 50"></path>
+    </svg>
+  </div>
+</div>

@@ -441,6 +441,116 @@ $nl-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
     }
   }
 
+  // ---- packing: two red strings tie the layers like a gift ----
+  // nl_hero_controller.js adds .is-packed while "Start submission" is hovered
+  // or focused. The strings are fully hidden otherwise (opacity 0), so no
+  // glowing ends show before they appear.
+  &.is-packed &__plate {
+    animation: none;
+    transition: transform .35s cubic-bezier(.3, .7, .3, 1);
+  }
+  &.is-packed &__plate--runtime { transform: translateZ(0); }
+  &.is-packed &__plate--code { transform: translateZ(76px); }
+  &.is-packed &__plate--data { transform: translateZ(152px); }
+  &.is-packed &__plate--prose { transform: translateZ(228px); }
+  &.is-packed &__plate--article { transform: translateZ(312px); }
+
+  &__strings { position: absolute; inset: 0; transform-style: preserve-3d; pointer-events: none; }
+
+  &__str {
+    position: absolute;
+    transform-style: preserve-3d;
+
+    > i {
+      position: absolute;
+      inset: 0;
+      display: block;
+      border-radius: 2px;
+      background: linear-gradient(90deg, #8e1712, #ff6a5c 45%, #ffc2ba 52%, #e2362b 60%, #8e1712);
+      box-shadow: 0 0 8px rgba(255, 77, 63, .75);
+      opacity: 0;
+      transform: scaleX(0);
+      // Untying: everything pulls back at once, quickly.
+      transition: transform .22s ease-in, opacity .12s linear .1s;
+    }
+
+    // Strings that run along y grow along y; the rest along x.
+    &--under-y, &--front, &--back, &--top-front, &--top-back, &--riser {
+      > i { transform: scaleY(0); background: linear-gradient(180deg, #8e1712, #ff6a5c 45%, #ffc2ba 52%, #e2362b 60%, #8e1712); }
+    }
+
+    // Geometry, in the stack's own coordinates (430 x 310, top page at z = 312).
+    &--under-x { left: 0; top: 153.5px; width: 430px; height: 3px; transform: translateZ(-2px); }
+    &--under-y { left: 213.5px; top: 0; width: 3px; height: 310px; transform: translateZ(-2px); }
+    &--front { left: 213.5px; top: 310px; width: 3px; height: 316px; transform-origin: 50% 0; transform: translateZ(-2px) rotateX(90deg); > i { transform-origin: 50% 0; } }
+    &--back { left: 213.5px; top: 0; width: 3px; height: 316px; transform-origin: 50% 0; transform: translateZ(-2px) rotateX(90deg); > i { transform-origin: 50% 0; } }
+    &--right { left: 430px; top: 153.5px; width: 316px; height: 3px; transform-origin: 0 50%; transform: translateZ(-2px) rotateY(-90deg); > i { transform-origin: 0 50%; } }
+    &--left { left: 0; top: 153.5px; width: 316px; height: 3px; transform-origin: 0 50%; transform: translateZ(-2px) rotateY(-90deg); > i { transform-origin: 0 50%; } }
+    &--top-front { left: 213.5px; top: 155px; width: 3px; height: 155px; transform: translateZ(314px); > i { transform-origin: 50% 100%; } }
+    &--top-back { left: 213.5px; top: 0; width: 3px; height: 155px; transform: translateZ(314px); > i { transform-origin: 50% 0; } }
+    &--top-right { left: 215px; top: 153.5px; width: 215px; height: 3px; transform: translateZ(314px); > i { transform-origin: 100% 50%; } }
+    &--top-left { left: 0; top: 153.5px; width: 215px; height: 3px; transform: translateZ(314px); > i { transform-origin: 0 50%; } }
+    &--riser { left: 213.5px; top: 155px; width: 3px; height: 30px; transform-origin: 50% 0; transform: translateZ(314px) rotateX(90deg); > i { transform-origin: 50% 0; } }
+  }
+
+  &__bow-shadow {
+    position: absolute;
+    left: 185px;
+    top: 135px;
+    width: 60px;
+    height: 40px;
+    border-radius: 50%;
+    background: radial-gradient(closest-side, rgba(90, 10, 10, .28), transparent);
+    transform: translateZ(313px);
+    opacity: 0;
+    transition: opacity .15s;
+  }
+
+  // The bow faces the viewer and sits just above the crossing; the riser
+  // string runs up into its knot.
+  &__bow {
+    position: absolute;
+    left: 155px;
+    top: 115px;
+    width: 120px;
+    height: 80px;
+    transform: translateZ(344px) rotateZ(38deg) rotateX(-58deg) translateY(-12px) scale(1.15);
+
+    svg { display: block; overflow: visible; }
+    path {
+      fill: none;
+      stroke: #e2362b;
+      stroke-width: 2.5;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      stroke-dasharray: 1;
+      stroke-dashoffset: 1;
+      opacity: 0;
+      transition: stroke-dashoffset .15s ease-in, opacity .1s linear .08s;
+    }
+    .knot { stroke: #b3201a; stroke-width: 3; }
+  }
+
+  // Tying, in order: up the sides, across the top, up into the bow.
+  &.is-packed &__str > i,
+  &.is-packed &__bow path { opacity: 1; }
+  &.is-packed &__str > i { transform: none; transition: transform .34s cubic-bezier(.3, .7, .3, 1), opacity .05s linear; }
+  &.is-packed &__bow path { stroke-dashoffset: 0; transition: stroke-dashoffset .26s ease-in-out, opacity .05s linear; }
+  &.is-packed &__bow-shadow { opacity: 1; transition-delay: .8s; }
+
+  &.is-packed &__str--under-x > i, &.is-packed &__str--under-y > i, &.is-packed &__str--front > i { transition-delay: 0s; }
+  &.is-packed &__str--right > i { transition-delay: .06s; }
+  &.is-packed &__str--back > i { transition-delay: .12s; }
+  &.is-packed &__str--left > i { transition-delay: .18s; }
+  &.is-packed &__str--top-front > i { transition-delay: .42s; transition-duration: .2s; }
+  &.is-packed &__str--top-right > i { transition-delay: .47s; transition-duration: .2s; }
+  &.is-packed &__str--top-back > i { transition-delay: .52s; transition-duration: .2s; }
+  &.is-packed &__str--top-left > i { transition-delay: .57s; transition-duration: .2s; }
+  &.is-packed &__str--riser > i { transition-delay: .76s; transition-duration: .12s; }
+  &.is-packed &__bow .loop { transition-delay: .86s; }
+  &.is-packed &__bow .tail { transition-delay: 1.06s; transition-duration: .14s; }
+  &.is-packed &__bow .knot { transition-delay: 1.12s; transition-duration: .12s; }
+
   // ---- desktop: fill the window below the navbar ----
   // nl_hero_controller.js sets --nl-hero-h (window height below the navbar),
   // --nl-hero-pad, and the scales for the stack and the copy. Without it the
@@ -477,6 +587,6 @@ $nl-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
   }
 
   @media (prefers-reduced-motion: reduce) {
-    *, *::before, *::after { animation: none !important; }
+    *, *::before, *::after { animation: none !important; transition: none !important; }
   }
 }

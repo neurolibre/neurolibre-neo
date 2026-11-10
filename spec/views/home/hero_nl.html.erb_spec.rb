@@ -28,6 +28,13 @@ describe "home/_hero_nl.html.erb", type: :view do
     expect(doc.at_css(".nl-hero__copy")["data-nl-hero-target"]).to eq("copy")
   end
 
+  it "ties the layers together with strings while Start submission is hovered or focused" do
+    action = doc.at_css("a.nl-hero__btn--primary")["data-action"]
+    expect(action).to include("mouseenter->nl-hero#pack", "mouseleave->nl-hero#unpack", "focus->nl-hero#pack", "blur->nl-hero#unpack")
+    expect(doc.css(".nl-hero__stack .nl-hero__strings .nl-hero__str").size).to eq(11)
+    expect(doc.css(".nl-hero__bow path").size).to eq(5)
+  end
+
   it "labels the four layer colours in the legend" do
     expect(doc.css(".nl-hero__legend li").map { |li| li.text.squish }).to eq(%w[Prose Data Code Runtime])
   end
